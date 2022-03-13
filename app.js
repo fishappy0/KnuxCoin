@@ -16,6 +16,19 @@ app.set('view engine', 'handlebars')
 
 app.get('/', (req, res) => res.render('index'))
 
+//Trang đăng nhập
+app.get('/login', (req, res) => res.render('account/login')) 
+app.post('/login', (req, res) =>{
+
+})
+
+//Trang đăng kí
+app.get('/register', (req, res) => res.render('account/register'))
+app.post('/register', (req, res) =>{
+
+})
+
+
 app.use(express.static(__dirname+'/public'))
 
 app.listen(port, ()=> console.log(

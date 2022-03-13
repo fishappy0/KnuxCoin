@@ -15,12 +15,13 @@ body {
   flex-direction: column;
 }
 
-/*<=== Nav Cluster ===>*/
+/*<=== Cụm Điều hướng (Bao gồm cả thanh logo và thanh điều hướng) ===>*/
 .nav_cluster {
   flex: auto;
   background-color: #ff1400;
 }
 
+/*<== Thanh logo ==>*/
 .upper_nav {
   color: #ff1400;
   display: flex;
@@ -56,7 +57,7 @@ body {
 
 .upper_nav_padding_div {
 }
-/*<=== Bottom Nav ===>*/
+/*<=== Thanh Điều hướng ===>*/
 
 .bottom_nav {
   background-color: #bd190acb;
@@ -101,16 +102,7 @@ body {
   padding-right: 20px;
 }
 
-footer {
-  background-color: #ff1400;
-  color: white;
-  font-size: 1.5rem;
-  font-family: Arial, Helvetica, sans-serif;
-  padding-left: 10px;
-}
-.footer-text {
-}
-
+/* <== Phần Giới thiệu ở giữa màn hình ==> */
 .intro_cluster {
   display: flex;
 }
@@ -165,4 +157,13 @@ footer {
   padding-bottom: 5px;
   padding-left: 10px;
   padding-right: 10px;
+}
+
+/* <== Phần giới thiệu ở cuối trang ==> */
+footer {
+  background-color: #ff1400;
+  color: white;
+  font-size: 1.5rem;
+  font-family: Arial, Helvetica, sans-serif;
+  padding-left: 10px;
 }

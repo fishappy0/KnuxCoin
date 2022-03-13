@@ -1,0 +1,130 @@
+body {
+  display: flex;
+  flex-direction: row;
+  background-color: #bd2a1c;
+  vertical-align: middle;
+}
+
+/* Phần cách 2 bên hông */
+.spacing {
+  flex: auto;
+}
+
+/* Phần body */
+.register_container_wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.register_container {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  padding-left: 50px;
+  padding-right: 50px;
+  align-items: center;
+  background-color: white;
+  height: 80%;
+  border-radius: 25px;
+}
+
+.register_form_wrapper {
+  display: flex;
+  flex-direction: row;
+}
+
+.register_form {
+  display: flex;
+  flex-direction: column;
+  padding-top: 50px;
+}
+
+/* Phần trong form */
+.register_fields {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.register_upper_boxes {
+  width: 60%;
+  font-size: 1.25rem;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.text_box_label_spacing_a {
+  background-color: rgb(236, 114, 114);
+  padding-left: 5px;
+}
+
+.logo_text {
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-size: 3.5rem;
+  line-height: 3.5rem;
+  font-weight: bold;
+  text-decoration: none;
+  color: red;
+}
+
+hr {
+  border-top: 2px solid gray;
+  width: 35%;
+}
+
+.text_box_container {
+  display: flex;
+  flex-direction: row;
+  margin-left: 20px;
+  margin-bottom: 20px;
+}
+
+.text_box_label {
+  padding-right: 12px;
+  padding-left: 12px;
+  padding-top: 2px;
+  background-color: rgb(236, 114, 114);
+  color: white;
+
+  vertical-align: middle;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+  background-clip: padding-box;
+
+  font-size: 1rem;
+  font-weight: 900;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.random_spacing_top {
+  padding-top: 50px;
+}
+
+/* Phần nút */
+.login {
+  text-decoration: none;
+  background-color: rgb(121, 121, 121);
+  color: white;
+  padding: 20px;
+  text-align: center;
+  border-radius: 5px;
+
+  font-size: 2rem;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.login:hover {
+  background-color: rgb(192, 192, 192);
+}
+
+.register {
+  background-color: rgb(245, 43, 43);
+  color: white;
+  border-style: none;
+  padding: 20px;
+  margin-left: 10px;
+  border-radius: 5px;
+
+  font-size: 2rem;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.register:hover {
+  background-color: rgb(245, 102, 102);
+}
