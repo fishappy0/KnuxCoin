@@ -1,0 +1,107 @@
+Danh sách việc cần làm:
+
+-   Các tính năng của trang web:
+
+[ ] Đăng kí tài khoản:
+-[ ] Nhập thông tin căn bản: phone, email, họ tên, ngày tháng năm sinh
+--[X] Tạo form và site
+--[ ] Sanitize thông tin
+--[ ] Post được thông tin
+-[ ] Gửi thông tin vào database mongodb
+-[ ] Tạo tài khoản cho người dùng gồm username (số ngẫu nhiên 10 số từ 0 tới 9 suggest: Math.round(Math.random() * 10000000000)) 
+     và pass ngẫu nhiên (6 ký tự bất kì (gọi random chữ suggest tính năng: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5)))
+-[ ] Gửi email kèm thông tin tài khoản trên cho người dùng (suggest dùng nodemailer: https://nodemailer.com/smtp/oauth2/) 
+-[ ] Thông báo lên màn hình bằng flash (req.session.flash('check email bla bla')) (https://stackoverflow.com/questions/25564123/express-handlebars-show-flash-messages)
+
+[ ] Buộc đổi mật khẩu:
+-[ ] Trang đổi mật khẩu html + css
+-[ ] Check tk trong database + session bằng middleware xem coi key "đã đổi mk" có check hay chưa
+-[ ] sau khi đổi mk thì check key "đã đổi mk" thành true
+
+[ ] Xác minh tài khoản
+-[ ] Tương tự như đổi mk, thêm key "đã xác minh" vào database
+-[ ] Check key nếu true thì cho xài ko thì ko cho xài
+-[ ] Thêm check "tài khoản vô hiệu hoá" vào database (check này dùng chung cho tính năng dưới )
+
+
+[ ] Khoá tài khoản tự động
+-[ ] Thêm check "đăng nhập nhiều lần" vào database
+-[ ] Thêm check "đăng nhập bất thường" vào database
+-[ ] Thêm tính năng reset "đăng nhập bất thường" khi đăng nhập thành công
+-[ ] Thêm check "user là admin" vào database để khi admin đăng nhập nhiều lần sẽ không bị khoá 
+
+[ ] Xem thông tin cá nhân
+-[ ] Trang cá nhân html + css
+-[ ] Rót data từ database vào trang cá nhân
+
+[ ] Đổi mk
+-[ ] Trang đổi mk
+-[ ] gửi đường link tới người dùng (https://www.tutsmake.com/forgot-reset-password-in-node-js-express-mysql/)
+
+[ ] Chức năng nạp tiền vào tk
+-[ ] thêm 3 "thẻ" vào database:
+ "111111"| 10/10/2022 | 411 (nạp thoải mái)
+, "222222" | 11/11/2022 | 443 (nạp đc dúng 1tr)
+, "333333" | 12/12/2022 | 577 (báo hết tiền)
+-[ ] Thêm form để "nạp" (aka nhập 1 đống số và save vào database) 
+-[ ] Thêm check vào trang nạp (check coi trong 3 thẻ trên đúng số thẻ thì báo kiểu select from where coi có hay k á mà trong mongo là find)
+-[ ] Thêm vào lịch sử giao dịch ở database
+
+
+[ ] Chức năng rút tiền
+-[ ] Thêm form rút tiền
+-[ ] Thêm check sau vào form khi bấm post:
++check xem cái key "số lần rút" của tk trong database coi bé hơn 2
++số tiền rút là bội số của 50 000 VND (check if số % 50000 == 0)
++tiền trên 5tr thì:
+     [ ] hiện flash msg chờ admin duyệt 
+     [ ] vẫn hiện lịch sử giao dịch bth vào database
+     [ ] nhưng không trừ tiền
+     [ ] admin bấm duyệt thì update tiền (maybe thêm key "chờ duyệt" vào database để show ra phía user rồi khi admin bấm duyệt thì update tiền + trạng thái ?)
+
+
+[ ] Chức năng lịch sử giao dịch
+-[ ] Rót dữ liệu từ table lịch sử giao dịch vào trang ez
+
+
+[ ] Chức năng quản lí tài khoản
+-[ ] rót dữ liệu từ database vào, sort theo loại account, có 2 loại key:
++ key "vô hiệu hoá" và key "đã duyệt" đều là bool hết, từ 2 key và mỗi key có 2 giá trị true và false
+ta có 4 loại tk: tk đã bị vô hiệu hoá, tk bth, tk chưa duyệt và tk đã duyệt
+-[ ] sort account (continued)
++ tk hiển thị theo order: tk chờ duyệt (hiển thị trước) > tk đã kích hoạt > tk đã bị vô hiệu hoá > tk đang Khoá
+
+[ ] Chức năng show full thông tin tài khoản
+-[ ] click vào tk bất kì thì hiển thị full thông tin của tk đó (aka rót từ database ra, show mọi thứ như username, tiền bla bla)
+
+[ ] Chức năng phê duyệt rút tiền
+-[ ] thêm nút post (maybe dùng middleware)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+------------------ phần todo riêng của mỗi người (tự assign để cho dễ track) -------------------
+
+
+
+việc riêng cho fishappy0:
+[ ] Hoàn tất khung sườn toàn bộ trang html(handlebars) + CSS (3/20)
+[ ] Thêm responsive-ness
+[ ] Chỉnh chu lại màu + theme

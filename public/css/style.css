@@ -6,6 +6,7 @@
 a {
   text-decoration: none;
 }
+
 .index_overall_container {
   background-color: rgb(228, 224, 224);
   height: 100vh;
@@ -447,4 +448,148 @@ body {
 }
 .register_register:hover {
   background-color: rgb(245, 102, 102);
+}
+
+/*
+******************
+** user layout ***
+******************
+*/
+
+.user_layout_container {
+  display: flex;
+  flex-direction: column;
+}
+
+.user_layout_nav_bar_container {
+  display: flex;
+  flex-direction: column;
+}
+
+/* <===> Phía trên thanh điều hướng <===> */
+.user_layout_upper_nav_bar_container {
+  display: flex;
+  flex-direction: row;
+  background-color: #ff1400;
+  padding-bottom: 20px;
+  padding-top: 10px;
+}
+
+.user_layout_upper_nav_logo_text {
+  margin-top: 25px;
+  padding-left: 15px;
+  color: white;
+  font-size: 30px;
+  font-weight: 900;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
+.user_layout_logo_container {
+  flex: auto;
+  padding-left: 10px;
+}
+
+.user_layout_logo_link {
+  display: flex;
+  flex-direction: row;
+}
+
+.user_login_container {
+  flex: initial;
+  padding-right: 20px;
+}
+
+/* hình avatar profile */
+.user_layout_user_image {
+  position: relative;
+  display: inline-block;
+  border-radius: 10px;
+}
+
+.user_layout_login_options_window {
+  display: none;
+  position: absolute;
+  min-width: 23%;
+  z-index: 100;
+  margin-right: 3%;
+  right: 0;
+}
+
+.user_layout_login_options_window ul {
+  list-style: none;
+  text-align: center;
+  align-items: center;
+  padding-left: 0;
+}
+.user_layout_login_options_window li {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 5px;
+  padding-right: 5px;
+  font-size: 17x;
+  font-weight: 600;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.user_layout_login_box_button {
+  color: #ff1400;
+}
+.user_layout_login_box_button:hover {
+  color: white;
+  background-color: #9b1509;
+  border-radius: 30px;
+  padding: 10px;
+}
+/* Phần sổ xuống của thanh profile */
+.user_layout_upper_user_information {
+  color: white;
+  font-size: 18px;
+  font-weight: 800;
+  background-color: #eb2917;
+  z-index: 101;
+  margin-bottom: 5px;
+  margin-top: -35px;
+  border-radius: 30px;
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-bottom: 5px;
+}
+
+.user_layout_login-box:hover .user_layout_login_options_window {
+  display: block;
+  background-color: gold;
+  border-radius: 30px;
+}
+.user_layout_login-box:hover .user_layout_user_image {
+  border-color: white;
+  border-style: solid;
+}
+
+/* Thanh điều hướng (lowernav) */
+.user_layout_lower_nav_bar_container {
+  background-color: #9b1509;
+  color: white;
+  padding: 5px;
+}
+.user_layout_lower_nav_bar_container a {
+  color: white;
+  padding-left: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.user_layout_lower_nav_bar_container a:hover {
+  color: gold;
+}
+
+.user-text {
+  padding-right: 20px;
+  align-items: center;
+  text-align: center;
+  margin-top: 25px;
+  color: white;
+  font-size: 25px;
+  font-weight: 600;
+  font-family: Arial, Helvetica, sans-serif;
 }
