@@ -203,7 +203,8 @@ body {
   padding-right: 50px;
   align-items: center;
   background-color: white;
-  height: 80%;
+  min-height: 80%;
+  max-height: 100%;
   border-radius: 25px;
 }
 
@@ -341,7 +342,8 @@ body {
   text-align: center;
   align-items: center;
   background-color: white;
-  height: 80%;
+  min-height: 80%;
+  max-height: 100%;
   border-radius: 25px;
 }
 
