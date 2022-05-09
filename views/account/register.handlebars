@@ -14,7 +14,7 @@
         <div class="register_spacing"></div>
         <form
           class="register_form"
-          action=""
+          action="/register"
           enctype="multipart/form-data"
           role="form"
           method="POST"
@@ -60,10 +60,18 @@
               />
             </div>
             <div class="register_text_box_container">
-              <div class="register_text_box_label">ID Picture (both sides)</div>
+              <div class="register_text_box_label">ID Picture (Upper side)</div>
               <input
                 type="file"
-                name="id_photo"
+                name="id_photo_sidea"
+                class="register_upper_boxes"
+                accept="image/*"
+                required
+              />
+              <div class="register_text_box_label">ID Picture (Lower side)</div>
+              <input
+                type="file"
+                name="id_photo_sideb"
                 class="register_upper_boxes"
                 accept="image/*"
                 required
