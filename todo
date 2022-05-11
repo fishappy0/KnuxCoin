@@ -2,12 +2,18 @@ Danh sách việc cần làm:
 
 -   Các tính năng của trang web:
 
+[X] Đăng Nhập:
+-[X] Redirect
+-[X] Đọc t tin từ db
+
 [ ] Đăng kí tài khoản:
--[ ] Nhập thông tin căn bản: phone, email, họ tên, ngày tháng năm sinh
+-[X] Nhập thông tin căn bản: phone, email, họ tên, ngày tháng năm sinh
 --[X] Tạo form và site
---[ ] Sanitize thông tin
---[ ] Post được thông tin
--[ ] Gửi thông tin vào database mongodb
+--[X] Sanitize thông tin
+--[X] Post được thông tin
+-[ ] Gửi thông tin vào database mongodb:
+--[X] Gửi String vào db
+--[ ] Gửi file vào db
 -[ ] Tạo tài khoản cho người dùng gồm username (số ngẫu nhiên 10 số từ 0 tới 9 suggest: Math.round(Math.random() * 10000000000)) 
      và pass ngẫu nhiên (6 ký tự bất kì (gọi random chữ suggest tính năng: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5)))
 -[ ] Gửi email kèm thông tin tài khoản trên cho người dùng (suggest dùng nodemailer: https://nodemailer.com/smtp/oauth2/) 
