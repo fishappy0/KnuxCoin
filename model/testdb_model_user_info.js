@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const userSchema = new mongoose.Schema({});
 const testDB = mongoose.model('test_db_info', {
+    userid: String,
     full_name: String,
     email: String,
     address: String,
@@ -16,18 +17,14 @@ const testDB = mongoose.model('test_db_info', {
 })
 // var functions = {};
 
-module.exports.verifyAccount = function (uname, passphrase, sKey){
-   if (testDB.findOne({username: uname, password: passphrase, serverKey: sKey}, (err, account) =>{
-       if(err) throw err; 
-   }) != null) return true;
-   return false;
-}
-
-module.exports.createAccount = function (uname, passphrase, sKey){
+module.exports.createAccount = function (fName, mail, location, birth, id_up, id_down){
     const oneData = new testDB({
-        username:  uname,
-        password: passphrase,
-        serverKey: sKey
+        full_name: fName,
+        email: mail,
+        address: location,
+        dob: birth,
+        id_sidea,
+        id_sideb,
     });
     oneData.save().then(() => 
             console.log(`<KnuxCoin Web> Created account for ${uname}`)
