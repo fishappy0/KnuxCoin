@@ -1,0 +1,64 @@
+<div class="admin_layout_container">
+    <div class="admin_layout_body">
+      <!-- {{{content}}} -->
+
+      <body>
+        <div class="container-fluid" id="align-table">
+          <form id="" method="POST">
+            <div class="menu">
+              <h2>User Account List ({{userList.length}}) </h2>
+              <div class="float-item">
+                <label>ID: </label>
+                <input type="text" name="userId" value="">
+                <label>Name: </label>
+                <input type="text" name="userName" value="">
+                <button type="submit" class="btn btn-basic"><span class="glyphicon glyphicon-filter"></span>
+                  Search</button>
+                <button type="button" class="btn btn-success" onclick="window.location.reload()"><span
+                    class="glyphicon glyphicon-refresh"></span> Refresh</button>
+
+              </div>
+            </div>
+          </form>
+          <table class="table table-responsible">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Day of Birth</th>
+                <th>Created Date</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            {{#each userList}}
+            <tbody>
+              <tr>
+                <td>
+                  {{_id}}
+                </td>
+                <td>
+                  {{full_name}}
+                </td>
+                <td>
+                  {{email}}
+                <td>
+                  {{ dob }}
+                </td>
+                <td>
+                  {{ createdAt }}
+                </td>
+                <td>
+                  <a href="/admin/detail/{{_id}}"><button type="button" class="btn btn-info"
+                      name="details">Details</button></a>
+                </td>
+              <tr>
+            </tbody>
+            {{/each}}
+          </table>
+          <p>Total number of users: <strong class="text-danger">{{userList.length}}</strong></p>
+        </div>
+      </body>
+    </div>
+  </div>
+  </body>
