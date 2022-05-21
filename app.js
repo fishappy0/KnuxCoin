@@ -13,8 +13,18 @@ const mongoUrl = "mongodb://0.0.0.0:27017/test-db";
 mongoose.connect(mongoUrl).then(() => { console.log(`<KnuxCoin Web> Connected to the database at ${mongoUrl}`) });
 
 var app = express();
-
-
+function convert(string) {
+  var date = new Date(string),
+    day = ("0" + date.getDate()).slice(-2),
+    month = ("0" + (date.getMonth() + 1)).slice(-2);
+  return [day, month, date.getFullYear()].join("-");
+}
+handlebars.registerHelper('dateFormat', function (date) {
+  return convert(date)
+})
+handlebars.registerHelper('dateHour', function (date) {
+  return new Date(date).toUTCString()
+})
 handlebars.registerHelper('eq', function (val1, val2, opt) {
   if (val1 == val2) { return opt.fn(this); }
   return opt.inverse(this);

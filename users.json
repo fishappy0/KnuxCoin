@@ -1,0 +1,101 @@
+[{
+  "_id": {
+    "$oid": "627ac534c08345d18053419b"
+  },
+  "email": "admin@gmail.com",
+  "full_name": "Admin 1",
+  "address": "123",
+  "phone": "0123456789",
+  "dob": {
+    "$date": {
+      "$numberLong": "1652194363370"
+    }
+  },
+  "createdAt": {
+    "$date": {
+      "$numberLong": "1652194363370"
+    }
+  },
+  "lockedAt": {
+    "$date": {
+      "$numberLong": "1652194363370"
+    }
+  },
+  "loginFail": 3,
+  "abnormalLogin": 1,
+  "__v": 0,
+  "status": "locked"
+},{
+  "_id": {
+    "$oid": "627bbb42742494f14ef0a32f"
+  },
+  "email": "admin2@gmail.com",
+  "full_name": "Admin 2",
+  "address": "123",
+  "phone": "0123456789",
+  "dob": {
+    "$date": {
+      "$numberLong": "1652194363370"
+    }
+  },
+  "createdAt": {
+    "$date": {
+      "$numberLong": "1652194363370"
+    }
+  },
+  "lockedAt": {
+    "$date": {
+      "$numberLong": "1652194363370"
+    }
+  },
+  "loginFail": 3,
+  "abnormalLogin": 1,
+  "__v": 0,
+  "status": "locked"
+},{
+  "_id": {
+    "$oid": "627bcb662cdc59e8d981d72e"
+  },
+  "email": "admin3@gmail.com",
+  "full_name": "Admin 3",
+  "address": "123",
+  "phone": "0123456789",
+  "dob": {
+    "$date": {
+      "$numberLong": "1652194363370"
+    }
+  },
+  "createdAt": {
+    "$date": {
+      "$numberLong": "1652194363370"
+    }
+  },
+  "lockedAt": null,
+  "loginFail": 0,
+  "abnormalLogin": 0,
+  "__v": 0,
+  "status": "approved"
+},{
+  "_id": {
+    "$oid": "626ffc30a70f91670e68ac77"
+  },
+  "email": "admin4@gmail.com",
+  "full_name": "Admin 4",
+  "address": "123",
+  "phone": "0123456789",
+  "dob": {
+    "$date": {
+      "$numberLong": "1652194363370"
+    }
+  },
+  "createdAt": {
+    "$date": {
+      "$numberLong": "1652194363370"
+    }
+  },
+  "lockedAt": null,
+  "loginFail": 0,
+  "abnormalLogin": 0,
+  "__v": 0,
+  "status": "approved"
+}]

@@ -7,7 +7,7 @@
         <div class="container-fluid" id="align-table">
           <form id="" method="POST">
             <div class="menu">
-              <h2>User Account List ({{waiting.length}}) </h2>
+              <h2>List Of Accounts Waiting For Verification ({{waiting.length}}) </h2>
               <div class="float-item">
                 <label>ID: </label>
                 <input type="text" name="userId" value="">
@@ -44,10 +44,10 @@
                 <td>
                   {{email}}
                 <td>
-                  {{ dob }}
+                  {{dateFormat dob }}
                 </td>
                 <td>
-                  {{ createdAt }}
+                  {{dateHour createdAt }}
                 </td>
                 <td>
                   <a href="/admin/detail/{{_id}}"><button type="button" class="btn btn-info"

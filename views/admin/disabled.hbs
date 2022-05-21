@@ -1,4 +1,5 @@
 <div class="admin_layout_container">
+  
     <div class="admin_layout_body">
       <!-- {{{content}}} -->
 
@@ -6,7 +7,7 @@
         <div class="container-fluid" id="align-table">
           <form id="" method="POST">
             <div class="menu">
-              <h2>User Account List ({{userList.length}}) </h2>
+              <h2>List Of Disabled Accounts ({{disable.length}}) </h2>
               <div class="float-item">
                 <label>ID: </label>
                 <input type="text" name="userId" value="">
@@ -31,7 +32,7 @@
                 <th>Action</th>
               </tr>
             </thead>
-            {{#each userList}}
+            {{#each disable}}
             <tbody>
               <tr>
                 <td>
@@ -56,9 +57,9 @@
             </tbody>
             {{/each}}
           </table>
-          <p>Total number of users: <strong class="text-danger">{{userList.length}}</strong></p>
+          <p>Total number of users: <strong class="text-danger">{{disable.length}}</strong></p>
         </div>
       </body>
     </div>
   </div>
-  </body>
+</div>
