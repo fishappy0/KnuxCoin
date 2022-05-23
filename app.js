@@ -10,6 +10,7 @@ var adminRouter = require('./routes/admin');
 const mongoose = require('mongoose');
 const { handlebars } = require('hbs');
 const mongoUrl = "mongodb://0.0.0.0:27017/test-db";
+const port = 8080;
 mongoose.connect(mongoUrl).then(() => { console.log(`<KnuxCoin Web> Connected to the database at ${mongoUrl}`) });
 
 var app = express();
@@ -48,5 +49,6 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
+app.listen(port);
+console.log(`<KnuxCoin Web> Application started at localhost:${port}`)
 module.exports = app;
