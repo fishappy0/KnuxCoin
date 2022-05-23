@@ -56,45 +56,48 @@
                                             <input type="text" class="form-control" value="{{dateHour detail.lockedAt}}"
                                                 name="lockedDate" readonly="">
                                         </div>
-                                        {{/eq}}
                                         <div class="form-group">
-                                            <label for="frontId">Front ID Card</label>
-                                            <img src="/images/icon/default-person.png" alt="Front ID Card" width="300"
-                                                height="150">
+                                            <label>Failed Login Attempt</label>
+                                            <input type="text" class="form-control" value="{{detail.loginFail}}"
+                                                name="lockedDate" readonly="">
                                         </div>
+                                        {{/eq}}
                                     </div>
                                     <div class="col-md-6">
-
+                                        <div class="form-group">
+                                            <label for="frontId">Front ID Card</label>
+                                            <img src="{{detail.idcard.[0].front}}" alt="Front ID Card" width="300"
+                                                height="200">
+                                        </div>
                                         <div class="form-group">
                                             <label for="backId">Back ID Card</label>
-                                            <img src="/images/icon/default-person.png" alt="Front ID Card" width="300"
-                                                height="150">
-
+                                            <img src="{{detail.idcard.[0].back}}" alt="Front ID Card" width="300"
+                                                height="200">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label>Account Status:
                                         {{#eq detail.status "approved"}}
-                                        <td><button class="btn btn-success">Approved</button></td>
+                                        <td><button class="btn btn-success"><strong>Active</strong></button></td>
                                         {{/eq }}
 
                                         {{#eq detail.status "locked"}}
-                                        <td><button type="button" class="btn btn-danger">Locked</button></td>
+                                        <td><button type="button" class="btn btn-light"><strong>Locked</strong></button></td>
                                         {{/eq }}
 
                                         {{#eq detail.status "disabled"}}
-                                        <td><button type="button" class="btn btn-danger">Disabled</button></td>
+                                        <td><button type="button" class="btn btn-danger"><strong>Disabled</strong></button></td>
                                         {{/eq }}
 
                                         {{#eq detail.status "unapproved"}}
                                         <td><button name="unapproved" type="button"
-                                                class="btn btn-warning">Unapproved</button></td>
+                                                class="btn btn-warning"><strong>Unapproved</strong></button></td>
                                         {{/eq }}
 
                                         {{#eq detail.status "waiting"}}
-                                        <td><button name="waiting" type="button" class="btn btn-warning">Wait for
-                                                update</button></td>
+                                        <td><button name="waiting" type="button" class="btn btn-warning"><stong>Wait for
+                                                update</stong></button></td>
                                         {{/eq }}
                                     </label>
                                 </div>
@@ -103,7 +106,7 @@
                                 <div class="container text-center">
                                     <td>
                                         {{#eq detail.status "unapproved"}}
-                                        <a><button data-id="{{detail._id}}" type="button"
+                                        <a><button data-id="{{detail._id}}" type="button" id="approvebtn"
                                                 class="btn btn-success btn-approve" name="aprrove">Approve</button></a>
 
                                         <a><button data-id="{{detail._id}}" type="button"
@@ -111,10 +114,10 @@
                                                 name="complementary">Complementary</button></a>
 
                                         <a><button data-id="{{detail._id}}" type="button"
-                                                class="btn btn-danger btn-decline" name="decline">Decline</button></a>
+                                                class="btn btn-danger btn-disable" name="disable">Disable</button></a>
                                         {{/eq }}
                                         {{#eq detail.status "waiting"}}
-                                        <a><button data-id="{{detail._id}}" type="button"
+                                        <a><button data-id="{{detail._id}}" type="button" id="approvebtn"
                                                 class="btn btn-success btn-approve" name="aprrove">Approve</button></a>
 
                                         <a><button data-id="{{detail._id}}" type="button"
@@ -122,7 +125,7 @@
                                                 name="complementary">Complementary</button></a>
 
                                         <a><button data-id="{{detail._id}}" type="button"
-                                                class="btn btn-danger btn-decline" name="decline">Decline</button></a>
+                                                class="btn btn-danger btn-disable" name="disable">Disable</button></a>
                                         {{/eq }}
                                         {{#eq detail.status "locked"}}
                                         <a><button data-id="{{detail._id}}" data-name="{{detail.full_name}}"
@@ -161,22 +164,22 @@
         </div>
     </div>
 
-    <!-- Decline Modal -->
-    <div class="modal fade" id="decline-confirm" tabindex="-1" role="dialog" aria-labelledby="decline"
+    <!-- Disable Modal -->
+    <div class="modal fade" id="disable-confirm" tabindex="-1" role="dialog" aria-labelledby="decline"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Decline Account</h4>
+                    <h4 class="modal-title">Disable Account</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    Do you want to decline this account?
+                    Do you want to disable this account?
                 </div>
                 <div class="modal-footer">
-                    <button data-id="id" id="declined" type="button" class="btn btn-danger">Confirm</button>
+                    <button data-id="id" id="disabled" type="button" class="btn btn-danger">Confirm</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
@@ -229,121 +232,3 @@
         </div>
     </div>
 </body>
-<script>
-    function goBack() {
-        window.history.back();
-    }
-    //active account
-    $('.btn-approve').click(e => {
-        const btn = e.target
-        const userid = btn.dataset.id
-        console.log(userid)
-        $('#approved').attr('data-id', userid)
-        $('#approve-confirm').modal('show')
-    })
-
-    $('#approve-confirm').click(e => {
-        $('#approve-confirm').modal('hide')
-        const btn = e.target
-        const userid = btn.dataset.id
-        console.log(userid)
-        $.ajax({
-            url: '/admin/approve',
-            method: 'post',
-            data: { userid: userid },
-            success: function (data) {
-                alert('Account is Actived')
-                window.location.reload()
-            },
-        })
-    })
-
-    //decline account
-    $('.btn-decline').click(e => {
-        const btn = e.target
-        const userid = btn.dataset.id
-        console.log(userid)
-        $('#declined').attr('data-id', userid)
-        $('#decline-confirm').modal('show')
-    })
-
-    $('#decline-confirm').click(e => {
-        $('#decline-confirm').modal('hide')
-        const btn = e.target
-        const userid = btn.dataset.id
-        console.log(userid)
-        $.ajax({
-            url: '/admin/decline',
-            method: 'post',
-            data: { userid: userid },
-            success: function (data) {
-                alert('Account is Disabled')
-                window.location.reload()
-            },
-        })
-    })
-
-    //send request to account
-    $('.btn-send').click(e => {
-        const btn = e.target
-        const userid = btn.dataset.id
-        console.log(userid)
-        $('#sent').attr('data-id', userid)
-        $('#send-confirm').modal('show')
-    })
-
-    $('#send-confirm').click(e => {
-        $('#send-confirm').modal('hide')
-        const btn = e.target
-        const userid = btn.dataset.id
-        console.log(userid)
-        $.ajax({
-            url: '/admin/request',
-            method: 'post',
-            data: { userid: userid },
-            success: function (data) {
-                alert('Account required additional information')
-                window.location.reload()
-            },
-        })
-    })
-
-    //unlock account
-    $('.btn-unlock').click(e => {
-        const btn = e.target
-        const userid = btn.dataset.id
-        const userName = btn.dataset.name
-        const lockedDate = btn.dataset.lock
-
-        console.log(userid)
-        console.log(userName)
-        console.log(lockedDate)
-
-        $('#account').html(userName)
-
-        $('#unlocked').attr('data-id', userid)
-        $('#unlocked').attr('data-lock', lockedDate)
-
-        $('#unlock-confirm').modal('show')
-    })
-
-    $('#unlock-confirm').click(e => {
-        $('#unlock-confirm').modal('hide')
-        const btn = e.target
-        const userid = btn.dataset.id
-        const lockedDate = btn.dataset.lock
-
-        console.log(lockedDate)
-        console.log(userid)
-        $.ajax({
-            url: '/admin/unlock',
-            method: 'post',
-            data: { userid: userid, lockedDate: lockedDate },
-            success: function (data) {
-                alert('Account is Unlocked')
-                window.location.reload()
-            },
-        })
-    })
-
-</script>

@@ -11,7 +11,12 @@ const userSchema = new mongoose.Schema({
     loginFail: Number,
     abnormalLogin: Number,
     status: String,
-
+    idcard: [{
+        front: String,
+        back: String,
+    }],
+    username: String, 
+    password: String,
 });
 var User = mongoose.model('User', userSchema);//Tạo collection
 module.exports = User;

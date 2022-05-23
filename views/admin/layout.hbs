@@ -10,7 +10,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-  
+  <script src="/javascripts/main.js"></script>
 </head>
 
 <body>
@@ -96,11 +96,22 @@
                 </li>
               </ul>
             </li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#">Transaction Pending List
+                <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                <li><a href="/admin/withdraw"><span class="glyphicon glyphicon-glyphicon glyphicon-list-alt"></span>
+                    Withdraw</a>
+                </li>
+                <li><a href="/admin/transfer"><span
+                      class="glyphicon glyphicon-glyphicon glyphicon-list-alt"></span>Transfer</a></li>
+              </ul>
+            </li>
           </ul>
         </div>
       </div>
     </nav>
-  {{{body}}}
+    {{{body}}}
 </body>
 
 </html>
