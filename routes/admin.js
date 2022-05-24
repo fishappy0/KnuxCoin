@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 const User = require('../models/testdb_model');
 const Transaction = require('../models/transaction');
+const Wallet = require('../models/wallet');
 var mongoose = require('mongoose')
 /* GET users listing. */
 router.get('/', function (req, res, next) {
@@ -342,20 +343,130 @@ router.get('/transfer', (req, res, next) => {
 //xử lý đồng ý giao dịch
 router.post('/accept', (req, res, next) => {
     console.log(req.body.transid)
+    const amount = req.body.amount;
+    const fee = req.body.fee;
+    console.log(req.body.receiver)
+    console.log(amount - fee)
+    let error = undefined
     Transaction.findOne({ _id: mongoose.Types.ObjectId(req.body.transid) }, (e, trans) => {
         if (trans && !e) {
-            Transaction.updateOne(
-                { _id: mongoose.Types.ObjectId(req.body.transid) },
-                { $set: { status: 'success' } },
-                function (e) {
-                    if (e) {
-                        console.log(e);
-                        return res.sendStatus(500)
+            if (trans.type == "withdraw") {
+                Wallet.findOne({ userId: { $elemMatch: { id: mongoose.Types.ObjectId(req.body.sender) } } }, (e, wallet) => {
+                    console.log({ wallet })
+                    if (wallet.balance < 5000000) {
+                        error = 'User has insufficient balance\nPlease decline this transaction!'
+                        return res.render('admin/transdetail', { error })
+                        //console.log('User has insufficient balance\nPlease decline this transaction!')
                     } else {
-                        res.redirect('/')
+                        Wallet.updateOne(
+                            { userId: { $elemMatch: { id: mongoose.Types.ObjectId(req.body.sender) } } },
+                            { $set: { balance: (wallet.balance) - (amount - fee) } },
+                            function (err) {
+                                if (err) {
+                                    console.log(err);
+                                    return res.sendStatus(500)
+                                } else {
+                                    Transaction.updateOne(
+                                        { _id: mongoose.Types.ObjectId(req.body.transid) },
+                                        { $set: { status: 'success' } },
+                                        function (e) {
+                                            if (e) {
+                                                console.log(e);
+                                                return res.sendStatus(500)
+                                            } else {
+                                                res.redirect('/')
+                                            }
+                                        }
+                                    );
+                                }
+                            }
+                        )
                     }
-                }
-            )
+                })
+            } else if (trans.type == "transfer") {
+                Wallet.findOne({ userId: { $elemMatch: { id: mongoose.Types.ObjectId(req.body.sender) } } }, (e, walletSender) => {
+                    console.log(walletSender)
+                    if (walletSender.balance < 5000000) {
+                        error = 'User has insufficient balance\nPlease decline this transaction!'
+                        return res.render('admin/transdetail', { error })
+                    } else {
+                        Wallet.findOne({ userId: { $elemMatch: { id: mongoose.Types.ObjectId(req.body.receiver) } } }, (e, walletReceiver) => {
+                            if (trans.charge_party == "recipient") {
+                                Wallet.updateOne(
+                                    { userId: { $elemMatch: { id: mongoose.Types.ObjectId(req.body.receiver) } } },
+                                    { $set: { balance: (walletReceiver.balance) + (amount - fee) } },
+                                    function (err) {
+                                        if (err) {
+                                            console.log(err);
+                                            return res.sendStatus(500)
+                                        } else {
+                                            Wallet.updateOne(
+                                                { userId: { $elemMatch: { id: mongoose.Types.ObjectId(req.body.sender) } } },
+                                                { $set: { balance: (walletSender.balance) - (amount) } },
+                                                function (err) {
+                                                    if (err) {
+                                                        console.log(err);
+                                                        return res.sendStatus(500)
+                                                    } else {
+                                                        Transaction.updateOne(
+                                                            { _id: mongoose.Types.ObjectId(req.body.transid) },
+                                                            { $set: { status: 'success' } },
+                                                            function (e) {
+                                                                if (e) {
+                                                                    console.log(e);
+                                                                    return res.sendStatus(500)
+                                                                } else {
+                                                                    res.redirect('/')
+                                                                }
+                                                            }
+                                                        );
+                                                    }
+                                                }
+                                            )
+                                        }
+                                    }
+                                )
+
+                            } else if (trans.charge_party == "sender") {
+                                Wallet.updateOne(
+                                    { userId: { $elemMatch: { id: mongoose.Types.ObjectId(req.body.receiver) } } },
+                                    { $set: { balance: (walletReceiver.balance) + (amount) } },
+                                    function (err) {
+                                        if (err) {
+                                            console.log(err);
+                                            return res.sendStatus(500)
+                                        } else {
+                                            Wallet.updateOne(
+                                                { userId: { $elemMatch: { id: mongoose.Types.ObjectId(req.body.sender) } } },
+                                                { $set: { balance: (walletSender.balance) - (amount) - (fee) } },
+                                                function (err) {
+                                                    if (err) {
+                                                        console.log(err);
+                                                        return res.sendStatus(500)
+                                                    } else {
+                                                        Transaction.updateOne(
+                                                            { _id: mongoose.Types.ObjectId(req.body.transid) },
+                                                            { $set: { status: 'success' } },
+                                                            function (e) {
+                                                                if (e) {
+                                                                    console.log(e);
+                                                                    return res.sendStatus(500)
+                                                                } else {
+                                                                    res.redirect('/')
+                                                                }
+                                                            }
+                                                        );
+                                                    }
+                                                }
+                                            )
+                                        }
+                                    }
+                                )
+                            }
+                        })
+                    }
+                })
+            }
         } else {
             console.log(e);
             return res.sendStatus(500)

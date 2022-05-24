@@ -74,12 +74,14 @@
                                         <div class="form-group">
                                             <label for="amount">Amount</label>
                                             <input type="text" class="form-control"
-                                                value="{{currencyFormat detail.amount ' đ'}}" name="amount" readonly="">
+                                                value="{{currencyFormat detail.amount ' đ'}}" id="amount" name="amount"
+                                                readonly="">
                                         </div>
                                         <div class="form-group">
                                             <label for="fee">Fee</label>
                                             <input type="text" class="form-control"
-                                                value="{{currencyFormat detail.fee ' đ'}}" name="fee" readonly="">
+                                                value="{{currencyFormat detail.fee ' đ'}}" id="fee" name="fee"
+                                                readonly="">
                                         </div>
                                         <div class="form-group">
                                             {{#eq detail.type "transfer"}}
@@ -106,13 +108,13 @@
                                         {{#eq detail.type "phonecard"}}
                                         <div class="form-group">
                                             <label>Operator</label>
-                                            <input type="text" class="form-control" value="{{detail.operator}}" name="card"
-                                                readonly="">
+                                            <input type="text" class="form-control" value="{{detail.operator}}"
+                                                name="card" readonly="">
                                         </div>
                                         <div class="form-group">
                                             <label>Card Number</label>
-                                            <input type="text" class="form-control" value="{{detail.phonecard}}" name="card"
-                                                readonly="">
+                                            <input type="text" class="form-control" value="{{detail.phonecard}}"
+                                                name="card" readonly="">
                                         </div>
                                         {{/eq}}
                                         {{#eq detail.type "recharge"}}
@@ -163,7 +165,9 @@
                                 <div class="container text-center">
                                     <td>
                                         {{#eq detail.status "pending"}}
-                                        <a><button data-id="{{detail._id}}" type="button"
+                                        <a><button data-id="{{detail._id}}" data-amount="{{detail.amount}}"
+                                                data-fee="{{detail.fee}}" data-sender="{{detail.userId.[0].id}}"
+                                                data-receiver="{{detail.recipient.[0].id}}" type="button"
                                                 class="btn btn-success btn-accept" name="accept">Accept</button></a>
                                         <a><button data-id="{{detail._id}}" type="button"
                                                 class="btn btn-danger btn-decline" name="decline">Decline</button></a>
@@ -172,6 +176,14 @@
                                     </td>
                                 </div>
                             </div>
+                            {{#if error}}
+                            <div class="form-group">
+                                <div class="alert alert-danger alert-dismissible fade show">
+                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                    Invalid username or password!
+                                </div>
+                            </div>
+                            {{/if}}
                         </div>
                     </div>
                 </div>
@@ -193,7 +205,8 @@
                     Do you want to accept this transfer transaction?
                 </div>
                 <div class="modal-footer">
-                    <button data-id="id" id="accepted" type="button" class="btn btn-success">Confirm</button>
+                    <button data-id="id" data-amount="" data-fee="" data-sender="" data-receiver="" id="accepted"
+                        type="button" class="btn btn-success">Confirm</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>

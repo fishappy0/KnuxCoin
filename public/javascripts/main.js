@@ -119,8 +119,20 @@ $(document).ready(function () {
     $('.btn-accept').click(e => {
         const btn = e.target
         const transid = btn.dataset.id
+        const sender = btn.dataset.sender
+        const amount = btn.dataset.amount
+        const fee = btn.dataset.fee
+        const receiver = btn.dataset.receiver
         console.log(transid)
+        console.log(amount)
+        console.log(fee)
+        console.log(sender)
+        console.log(receiver)
         $('#accepted').attr('data-id', transid)
+        $('#accepted').attr('data-amount', amount)
+        $('#accepted').attr('data-fee', fee)
+        $('#accepted').attr('data-sender', sender)
+        $('#accepted').attr('data-receiver', receiver)
         $('#accept-confirm').modal('show')
     })
 
@@ -128,15 +140,27 @@ $(document).ready(function () {
         $('#accept-confirm').modal('hide')
         const btn = e.target
         const transid = btn.dataset.id
+        const amount = btn.dataset.amount
+        const sender = btn.dataset.sender
+        const fee = btn.dataset.fee
+        const receiver = btn.dataset.receiver
         console.log(transid)
+        console.log(amount)
+        console.log(sender)
+        console.log(fee)
+        console.log(receiver)
+
         $.ajax({
             url: '/admin/accept',
             method: 'post',
-            data: { transid: transid },
+            data: { transid: transid, amount: amount, fee: fee, sender: sender, receiver: receiver },
             success: function (data) {
                 alert('Transaction is Accepted')
                 window.location.reload()
             },
+            error: function(){
+                alert('User has insufficient balance\nPlease decline this transaction!')
+            }
         })
     })
 
