@@ -7,7 +7,7 @@
       <div class="container-fluid" id="align-table">
         <form id="" method="POST">
           <div class="menu">
-            <h2>List Of Accounts Waiting For Verification ({{waiting.length}}) </h2>
+            <h2>List Of Locked Accounts ({{lock.length}}) </h2>
             <div class="float-item">
               <label>ID: </label>
               <input type="text" name="userId" value="">
@@ -28,11 +28,11 @@
               <th>Full Name</th>
               <th>Email</th>
               <th>Day of Birth</th>
-              <th>Created Date</th>
+              <th>Locked Date</th>
               <th>Action</th>
             </tr>
           </thead>
-          {{#each waiting}}
+          {{#each lock}}
           <tbody>
             <tr>
               <td>
@@ -47,7 +47,7 @@
                 {{dateFormat dob }}
               </td>
               <td>
-                {{dateHour createdAt }}
+                {{dateHour lockedAt }}
               </td>
               <td>
                 <a href="/admin/detail/{{_id}}"><button type="button" class="btn btn-info"
@@ -57,7 +57,7 @@
           </tbody>
           {{/each}}
         </table>
-        <p>Total number of users: <strong class="text-danger">{{waiting.length}}</strong></p>
+        <p>Total number of users: <strong class="text-danger">{{lock.length}}</strong></p>
         <nav aria-label="Page navigation example">
           <ul class="pagination justify-content-center">
             {{#paginate pagination type="first"}}

@@ -4,10 +4,19 @@ const userSchema = new mongoose.Schema({
     full_name: String,
     email: String,
     address: String,
-    dob: Date.parse(),
+    dob: Date,
     phone: String,
-    createdAt: Date.parse(),
+    createdAt: Date,
+    lockedAt: Date,
+    loginFail: Number,
+    abnormalLogin: Number,
     status: String,
+    idcard: [{
+        front: String,
+        back: String,
+    }],
+    username: String, 
+    password: String,
 });
 var User = mongoose.model('User', userSchema);//Tạo collection
 module.exports = User;
@@ -18,20 +27,21 @@ const testDB = mongoose.model('test_dbs', {
     serverKey: String
 })
 
-module.exports.verifyAccount = async function (uname, passphrase){
-    let returnedQuery =  await testDB.findOne({username: uname, 
-                   password: passphrase
-                  });
+module.exports.verifyAccount = async function (uname, passphrase) {
+    let returnedQuery = await testDB.findOne({
+        username: uname,
+        password: passphrase
+    });
     return returnedQuery;
 }
 
-module.exports.createAccount = async function (uname, passphrase, sKey){
+module.exports.createAccount = async function (uname, passphrase, sKey) {
     const oneData = await new testDB({
-        username:  uname,
+        username: uname,
         password: passphrase,
         serverKey: sKey
     });
-    await oneData.save(); 
+    await oneData.save();
     console.log(`<KnuxCoin Web> Created account for ${uname}`);
 }
 
@@ -58,7 +68,7 @@ module.exports.createAccount = async function (uname, passphrase, sKey){
 //     if(err) throw err;
 //     console.log(`cat name: ${Cat.name}`)
 // })
-// const 
+// const
 // const kitty = new Cat({
 //     name: 'kat'
 // });
