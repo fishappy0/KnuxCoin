@@ -12,6 +12,25 @@ const userSchema = new mongoose.Schema({
     status: String,
 
 });
+const userDB = mongoose.model('user',userSchema)
 var User = mongoose.model('User', userSchema);//Tạo collection
 module.exports = User;
+
+module.exports.createAccount = async function(full_name, email, address, dob, phone){
+    let current_time = new Date(Date.now())
+    const oneData = await new userDB({
+        full_name: full_name,
+        email: email,
+        address: address,
+        dob: dob,
+        phone: phone,
+        createdAt: current_time.toString(),
+        lockedAt: "",
+        loginFail: 0,
+        abnormalLogin: 0,
+        status: "waiting"
+    })
+    await oneData.save();
+    console.log(`<KnuxCoin Web> Created user with phone number ${phone}`);
+}
 

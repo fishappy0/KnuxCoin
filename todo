@@ -6,35 +6,35 @@ Danh sách việc cần làm:
 -[X] Redirect
 -[X] Đọc t tin từ db
 
-[ ] Đăng kí tài khoản:
+[X] Đăng kí tài khoản:
 -[X] Nhập thông tin căn bản: phone, email, họ tên, ngày tháng năm sinh
 --[X] Tạo form và site
 --[X] Sanitize thông tin
 --[X] Post được thông tin
--[ ] Gửi thông tin vào database mongodb:
+-[X] Gửi thông tin vào database mongodb:
 --[X] Gửi String vào db
---[ ] Gửi file vào db
--[ ] Tạo tài khoản cho người dùng gồm username (số ngẫu nhiên 10 số từ 0 tới 9 suggest: Math.round(Math.random() * 10000000000)) 
+- XXXXXXX Gửi file vào db -> Gửi file vào thư mục gốc rồi dùng sđt search ra id người dùng bên bảng Account
+-[X] Tạo tài khoản cho người dùng gồm username (số ngẫu nhiên 10 số từ 0 tới 9 suggest: Math.round(Math.random() * 10000000000)) 
      và pass ngẫu nhiên (6 ký tự bất kì (gọi random chữ suggest tính năng: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5)))
--[ ] Gửi email kèm thông tin tài khoản trên cho người dùng (suggest dùng nodemailer: https://nodemailer.com/smtp/oauth2/) 
--[ ] Thông báo lên màn hình bằng flash (req.session.flash('check email bla bla')) (https://stackoverflow.com/questions/25564123/express-handlebars-show-flash-messages)
+-[?(mail bị lỗi)] Gửi email kèm thông tin tài khoản trên cho người dùng (suggest dùng nodemailer: https://nodemailer.com/smtp/oauth2/) 
+-[X] Thông báo lên màn hình bằng flash (req.session.flash('check email bla bla')) (https://stackoverflow.com/questions/25564123/express-handlebars-show-flash-messages)
 
 [ ] Buộc đổi mật khẩu:
 -[ ] Trang đổi mật khẩu html + css
 -[ ] Check tk trong database + session bằng middleware xem coi key "đã đổi mk" có check hay chưa
 -[ ] sau khi đổi mk thì check key "đã đổi mk" thành true
 
-[ ] Xác minh tài khoản
--[ ] Tương tự như đổi mk, thêm key "đã xác minh" vào database
--[ ] Check key nếu true thì cho xài ko thì ko cho xài
--[ ] Thêm check "tài khoản vô hiệu hoá" vào database (check này dùng chung cho tính năng dưới )
+[X] Xác minh tài khoản
+-[X] Tương tự như đổi mk, thêm key "đã xác minh" vào database
+-[X] Check key nếu true thì cho xài ko thì ko cho xài
+-[X] Thêm check "tài khoản vô hiệu hoá" vào database (check này dùng chung cho tính năng dưới )
 
 
-[ ] Khoá tài khoản tự động
--[ ] Thêm check "đăng nhập nhiều lần" vào database
--[ ] Thêm check "đăng nhập bất thường" vào database
--[ ] Thêm tính năng reset "đăng nhập bất thường" khi đăng nhập thành công
--[ ] Thêm check "user là admin" vào database để khi admin đăng nhập nhiều lần sẽ không bị khoá 
+[X] Khoá tài khoản tự động
+-[X] Thêm check "đăng nhập nhiều lần" vào database
+-[X] Thêm check "đăng nhập bất thường" vào database
+-[X] Thêm tính năng reset "đăng nhập bất thường" khi đăng nhập thành công
+-[X] Thêm check "user là admin" vào database để khi admin đăng nhập nhiều lần sẽ không bị khoá 
 
 [ ] Xem thông tin cá nhân
 -[ ] Trang cá nhân html + css
@@ -108,6 +108,5 @@ An Khánh làm chức năng của admin sẽ báo cáo tiến độ làm việc.
 
 
 việc riêng cho fishappy0:
-[ ] Hoàn tất khung sườn toàn bộ trang html(handlebars) + CSS (3/20)
-[ ] Thêm responsive-ness
-[ ] Chỉnh chu lại màu + theme
++ Hoàn thành sơ giao điện + layer
++ Hoàn thành chức năng tạo tài khoản và đăng nhập + tạo hàm đổi mật khẩu trong model account

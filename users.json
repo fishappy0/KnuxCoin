@@ -23,7 +23,6 @@
   },
   "loginFail": 3,
   "abnormalLogin": 1,
-  "__v": 0,
   "status": "locked"
 },{
   "_id": {
@@ -50,7 +49,6 @@
   },
   "loginFail": 3,
   "abnormalLogin": 1,
-  "__v": 0,
   "status": "locked"
 },{
   "_id": {
@@ -73,7 +71,6 @@
   "lockedAt": null,
   "loginFail": 0,
   "abnormalLogin": 0,
-  "__v": 0,
   "status": "approved"
 },{
   "_id": {
@@ -96,7 +93,6 @@
   "lockedAt": null,
   "loginFail": 0,
   "abnormalLogin": 0,
-  "__v": 0,
   "status": "approved"
 },{
   "_id": {
@@ -118,7 +114,6 @@
   },
   "loginFail": 0,
   "abnormalLogin": 0,
-  "__v": 0,
   "status": "approved"
 },{
   "_id": {
@@ -140,7 +135,6 @@
   },
   "loginFail": 0,
   "abnormalLogin": 0,
-  "__v": 0,
   "status": "approved"
 },{
   "_id": {
@@ -162,7 +156,6 @@
   },
   "loginFail": 0,
   "abnormalLogin": 0,
-  "__v": 0,
   "status": "approved"
 },{
   "_id": {
@@ -189,7 +182,6 @@
   },
   "loginFail": 3,
   "abnormalLogin": 1,
-  "__v": 0,
   "status": "locked"
 },{
   "_id": {
@@ -216,7 +208,6 @@
   },
   "loginFail": 3,
   "abnormalLogin": 1,
-  "__v": 0,
   "status": "locked"
 },{
   "_id": {
@@ -243,7 +234,6 @@
   },
   "loginFail": 3,
   "abnormalLogin": 1,
-  "__v": 0,
   "status": "locked"
 },{
   "_id": {
@@ -265,7 +255,6 @@
   },
   "loginFail": 0,
   "abnormalLogin": 0,
-  "__v": 0,
   "status": "disabled"
 },{
   "_id": {
@@ -287,7 +276,6 @@
   },
   "loginFail": 0,
   "abnormalLogin": 0,
-  "__v": 0,
   "status": "disabled"
 },{
   "_id": {
@@ -309,7 +297,6 @@
   },
   "loginFail": 0,
   "abnormalLogin": 0,
-  "__v": 0,
   "status": "disabled"
 },{
   "_id": {
@@ -331,7 +318,6 @@
   },
   "loginFail": 0,
   "abnormalLogin": 0,
-  "__v": 0,
   "status": "waiting"
 },{
   "_id": {
@@ -353,7 +339,6 @@
   },
   "loginFail": 0,
   "abnormalLogin": 0,
-  "__v": 0,
   "status": "waiting"
 },{
   "_id": {
@@ -375,7 +360,6 @@
   },
   "loginFail": 0,
   "abnormalLogin": 0,
-  "__v": 0,
   "status": "unapproved"
 },{
   "_id": {
@@ -397,6 +381,5 @@
   },
   "loginFail": 0,
   "abnormalLogin": 0,
-  "__v": 0,
   "status": "unapproved"
 }]
