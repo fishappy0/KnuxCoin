@@ -44,7 +44,7 @@ Danh sách việc cần làm:
 -[ ] Trang đổi mk
 -[ ] gửi đường link tới người dùng (https://www.tutsmake.com/forgot-reset-password-in-node-js-express-mysql/)
 
-[ ] Chức năng nạp tiền vào tk
+[x] Chức năng nạp tiền vào tk
 -[x] thêm 3 "thẻ" vào database:
  "111111"| 10/10/2022 | 411 (nạp thoải mái),
  "222222" | 11/11/2022 | 443 (nạp đc dúng 1tr),

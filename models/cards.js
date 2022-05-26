@@ -107,8 +107,7 @@ module.exports.recharge = async function (cardId, cardNumber, expiryDate, cvv, a
       return 'Mã CVV không hợp lệ';
     }
 
-    // Tìm bằng email vì users không có id.
-    const user = await User.findOne({ _email: req.user.email });
+    const user = await User.findOneAndUpdate({ id: req.user.id });
     user.balance += amount;
     await user.save();
     return 'Nạp tiền thành công';
@@ -123,11 +122,11 @@ module.exports.recharge = async function (cardId, cardNumber, expiryDate, cvv, a
       return 'Mã CVV không hợp lệ';
     }
 
-    const user = await User.findOne({ _email: req.user.email });
     if (amount > 1000000) {
       return 'Không thể nạp quá 1 triệu';
     }
 
+    const user = await User.findOneAndUpdate({ id: req.user.id });
     user.balance += amount;
     await user.save();
     return 'Nạp tiền thành công';
