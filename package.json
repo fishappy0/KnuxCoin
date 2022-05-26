@@ -18,7 +18,7 @@
     "express-handlebars-paginate": "^1.0.3",
     "express-session": "^1.17.3",
     "fs": "^0.0.1-security",
-    "handlebars-helpers": "^0.10.0",
+    "handlebars-helpers": "^0.9.8",
     "handlebars-paginate": "^0.1.0",
     "hbs": "^4.2.0",
     "http-errors": "~1.6.3",

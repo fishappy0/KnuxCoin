@@ -4,12 +4,13 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+const crypto = require('crypto');
+const session = require('express-session');
+var dashboardRouter = require('./routes/dashboard');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var adminRouter = require('./routes/admin');
-var dashboardRouter = require('./routes/dashboard');
-const crypto = require('crypto');
-const session = require('express-session');
+var balanceRouter = require('./routes/balance');
 const mongoose = require('mongoose');
 const { handlebars } = require('hbs');
 const { env } = require('process');
@@ -59,6 +60,9 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/admin', adminRouter);
 app.use('/dashboard', dashboardRouter);
+// Nạp tiền, rút tiền, chuyển tiền,...
+app.use('/balance', balanceRouter);
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
