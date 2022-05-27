@@ -13,7 +13,7 @@
   },
   "createdAt": {
     "$date": {
-      "$numberLong": "1652367163370"
+      "$numberLong": "1652194363370"
     }
   },
   "lockedAt": {
@@ -52,126 +52,6 @@
   "status": "locked"
 },{
   "_id": {
-    "$oid": "627bcb662cdc59e8d981d72e"
-  },
-  "email": "admin3@gmail.com",
-  "full_name": "Admin 3",
-  "address": "123",
-  "phone": "0123456789",
-  "dob": {
-    "$date": {
-      "$numberLong": "1652194363370"
-    }
-  },
-  "createdAt": {
-    "$date": {
-      "$numberLong": "1652194363370"
-    }
-  },
-  "lockedAt": null,
-  "loginFail": 0,
-  "abnormalLogin": 0,
-  "status": "approved"
-},{
-  "_id": {
-    "$oid": "626ffc30a70f91670e68ac77"
-  },
-  "email": "admin4@gmail.com",
-  "full_name": "Admin 4",
-  "address": "123",
-  "phone": "0123456789",
-  "dob": {
-    "$date": {
-      "$numberLong": "1652194363370"
-    }
-  },
-  "createdAt": {
-    "$date": {
-      "$numberLong": "1652194363370"
-    }
-  },
-  "lockedAt": null,
-  "loginFail": 0,
-  "abnormalLogin": 0,
-  "status": "approved"
-},{
-  "_id": {
-    "$oid": "6289f2762faabf6d5a8e68a8"
-  },
-  "email": "admin5@gmail.com",
-  "full_name": "Admin 5",
-  "address": "123",
-  "phone": "0123456789",
-  "dob": {
-    "$date": {
-      "$numberLong": "1652194363371"
-    }
-  },
-  "createdAt": {
-    "$date": {
-      "$numberLong": "1652194363372"
-    }
-  },
-  "loginFail": 0,
-  "abnormalLogin": 0,
-<<<<<<< HEAD
-  "__v": 0,
-  "status": "approved",
-  "idcard": [
-    {
-      "front": "https://icons.veryicon.com/png/o/miscellaneous/former-building-people/front-of-id-card.png",
-      "back": "https://icons.veryicon.com/png/o/miscellaneous/former-building-people/back-of-id-card.png"
-    }
-  ],
-  "password": "123456",
-  "username": "admin"
-=======
-  "status": "approved"
->>>>>>> main
-},{
-  "_id": {
-    "$oid": "6289f5792faabf6d5a8e68aa"
-  },
-  "email": "admin6@gmail.com",
-  "full_name": "Admin 6",
-  "address": "123",
-  "phone": "0123456789",
-  "dob": {
-    "$date": {
-      "$numberLong": "1652194363371"
-    }
-  },
-  "createdAt": {
-    "$date": {
-      "$numberLong": "1652194363372"
-    }
-  },
-  "loginFail": 0,
-  "abnormalLogin": 0,
-  "status": "approved"
-},{
-  "_id": {
-    "$oid": "6289f58d2faabf6d5a8e68ab"
-  },
-  "email": "admin7@gmail.com",
-  "full_name": "Admin 7",
-  "address": "123",
-  "phone": "0123456789",
-  "dob": {
-    "$date": {
-      "$numberLong": "1652194363371"
-    }
-  },
-  "createdAt": {
-    "$date": {
-      "$numberLong": "1652194363372"
-    }
-  },
-  "loginFail": 0,
-  "abnormalLogin": 0,
-  "status": "approved"
-},{
-  "_id": {
     "$oid": "6289f5e12faabf6d5a8e68ac"
   },
   "email": "admin8@gmail.com",
@@ -188,13 +68,6 @@
       "$numberLong": "1652194363372"
     }
   },
-<<<<<<< HEAD
-  "lockedAt": null,
-  "loginFail": 0,
-  "abnormalLogin": 0,
-  "__v": 0,
-  "status": "disabled"
-=======
   "lockedAt": {
     "$date": {
       "$numberLong": "1652194363372"
@@ -203,7 +76,6 @@
   "loginFail": 3,
   "abnormalLogin": 1,
   "status": "locked"
->>>>>>> main
 },{
   "_id": {
     "$oid": "6289f62e2faabf6d5a8e68ad"
@@ -276,12 +148,7 @@
   },
   "loginFail": 0,
   "abnormalLogin": 0,
-<<<<<<< HEAD
-  "__v": 0,
-  "status": "unapproved"
-=======
   "status": "disabled"
->>>>>>> main
 },{
   "_id": {
     "$oid": "6289f69f2faabf6d5a8e68b0"
@@ -302,12 +169,7 @@
   },
   "loginFail": 0,
   "abnormalLogin": 0,
-<<<<<<< HEAD
-  "__v": 0,
-  "status": "waiting"
-=======
   "status": "disabled"
->>>>>>> main
 },{
   "_id": {
     "$oid": "6289f6b62faabf6d5a8e68b1"
@@ -349,12 +211,7 @@
   },
   "loginFail": 0,
   "abnormalLogin": 0,
-<<<<<<< HEAD
-  "__v": 0,
-  "status": "approved"
-=======
   "status": "waiting"
->>>>>>> main
 },{
   "_id": {
     "$oid": "6289f6e12faabf6d5a8e68b3"
@@ -375,12 +232,7 @@
   },
   "loginFail": 0,
   "abnormalLogin": 0,
-<<<<<<< HEAD
-  "__v": 0,
-  "status": "approved"
-=======
   "status": "waiting"
->>>>>>> main
 },{
   "_id": {
     "$oid": "6289f6ef2faabf6d5a8e68b4"
@@ -401,12 +253,7 @@
   },
   "loginFail": 0,
   "abnormalLogin": 0,
-<<<<<<< HEAD
-  "__v": 0,
-  "status": "approved"
-=======
   "status": "unapproved"
->>>>>>> main
 },{
   "_id": {
     "$oid": "6289f6fe2faabf6d5a8e68b5"
@@ -427,10 +274,5 @@
   },
   "loginFail": 0,
   "abnormalLogin": 0,
-<<<<<<< HEAD
-  "__v": 0,
-  "status": "disabled"
-=======
   "status": "unapproved"
->>>>>>> main
 }]

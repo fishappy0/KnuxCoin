@@ -4,6 +4,7 @@ const crypto = require("crypto");
 const mongoose = require("mongoose");
 const { dbg } = require("../local_utils");
 const accountDB = mongoose.model("Account", {
+  user_id: Object,
   account_id: String,
   username: String,
   password: String,
@@ -18,9 +19,9 @@ module.exports.verifyAccount = async function (uname, passphrase) {
   if (returnedQuery == null) {
     return null;
   } else {
-    const isSamePassword = await dbg(
+    const isSamePassword = await
       bcrypt.compare(passphrase, returnedQuery["password"])
-    );
+    ;
     if (isSamePassword) {
       return returnedQuery;
     } else {
@@ -29,12 +30,7 @@ module.exports.verifyAccount = async function (uname, passphrase) {
   }
 };
 
-module.exports.createAccount = async function (phone) {
-  let current_time = new Date(Date.now());
-  let account_id =
-    current_time.getFullYear().toString().slice(2) +
-    "U" +
-    Math.round(Math.random() * 10000000).toString();
+module.exports.createAccount = async function (account_id, phone, object_user_id) {
 
   let login_username = Math.round(Math.random() * 10000000000);
 
@@ -45,8 +41,9 @@ module.exports.createAccount = async function (phone) {
     await bcrypt.genSalt(10)
   );
 
-  let credentials_arr = [account_id, login_username, login_password];
+  let credentials_arr = [login_username, login_password];
   const oneData = await new accountDB({
+    user_id: object_user_id,
     account_id: account_id,
     username: login_username,
     password: hashed_password,
@@ -69,7 +66,7 @@ module.exports.addAdminAccount = async function(){
   console.log(`Created admin account`);
 }
 
-module.exports.changePassword = async function (user_id, new_password) {
+module.exports.changePassword = async function (uname, new_password) {
   let hashed_password = await bcrypt.hash(new_password, 10);
-  accountDB.findByIdAndUpdate(user_id, hashed_password);
+  await accountDB.findOneAndUpdate({username:uname}, {password: hashed_password});
 };
