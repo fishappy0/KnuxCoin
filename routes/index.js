@@ -67,7 +67,7 @@ router.post("/password", parseBody, async function (req, res, next) {
   let new_pass = body.new_password.toString();
   let verify_new_pass = body.verify_new_password.toString();
   let error = undefined
- 
+
   if (await accountModel.verifyAccount(req.session.username, old_pass) != null) {
     await accountModel.changePassword(username, new_pass);
     req.session.first_time = false;

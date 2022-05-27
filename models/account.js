@@ -22,7 +22,7 @@ module.exports.verifyAccount = async function (uname, passphrase) {
   } else {
     const isSamePassword = await
       bcrypt.compare(passphrase, returnedQuery["password"])
-    ;
+      ;
     if (isSamePassword) {
       return returnedQuery;
     } else {
@@ -56,7 +56,7 @@ module.exports.createAccount = async function (account_id, phone, object_user_id
   console.log(`<KnuxCoin Web> Created account for ${login_username}`);
   return credentials_arr;
 };
-module.exports.addAdminAccount = async function(){
+module.exports.addAdminAccount = async function () {
   const oneData = await new accountDB({
     account_id: '22A00001',
     username: 'admin',
@@ -71,5 +71,5 @@ module.exports.addAdminAccount = async function(){
 
 module.exports.changePassword = async function (uname, new_password) {
   let hashed_password = await bcrypt.hash(new_password, 10);
-  await accountDB.findOneAndUpdate({username:uname}, {password: hashed_password, first_time_login: false});
+  await accountDB.findOneAndUpdate({ username: uname }, { password: hashed_password, first_time_login: false });
 };

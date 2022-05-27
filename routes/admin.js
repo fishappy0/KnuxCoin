@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 const User = require('../models/users');
 const Transaction = require('../models/transaction');
-const Wallet = require('../models/wallet');
 var mongoose = require('mongoose')
 /* GET users listing. */
 router.get('/', function (req, res, next) {
@@ -370,15 +369,15 @@ router.post('/accept', (req, res, next) => {
     Transaction.findOne({ _id: mongoose.Types.ObjectId(req.body.transid) }, (e, trans) => {
         if (trans && !e) {
             if (trans.type == "withdraw") {
-                Wallet.findOne({ userId: { $elemMatch: { id: mongoose.Types.ObjectId(req.body.sender) } } }, (e, wallet) => {
+                User.findOne({ _id: mongoose.Types.ObjectId(req.body.sender) }, (e, wallet) => {
                     console.log({ wallet })
                     if (wallet.balance < 5000000) {
                         error = 'User has insufficient balance\nPlease decline this transaction!'
                         return res.render('admin/transdetail', { error })
                         //console.log('User has insufficient balance\nPlease decline this transaction!')
                     } else {
-                        Wallet.updateOne(
-                            { userId: { $elemMatch: { id: mongoose.Types.ObjectId(req.body.sender) } } },
+                        User.updateOne(
+                            { _id: mongoose.Types.ObjectId(req.body.sender) },
                             { $set: { balance: (wallet.balance) - (amount - fee) } },
                             function (err) {
                                 if (err) {
@@ -403,25 +402,24 @@ router.post('/accept', (req, res, next) => {
                     }
                 })
             } else if (trans.type == "transfer") {
-                if (typeof (req.session.isAdmin) == "undefined" || req.session.isAdmin == false) res.redirect('/');
-                Wallet.findOne({ userId: { $elemMatch: { id: mongoose.Types.ObjectId(req.body.sender) } } }, (e, walletSender) => {
+                User.findOne({ _id: mongoose.Types.ObjectId(req.body.sender) }, (e, walletSender) => {
                     console.log(walletSender)
                     if (walletSender.balance < 5000000) {
                         error = 'User has insufficient balance\nPlease decline this transaction!'
                         return res.render('admin/transdetail', { error })
                     } else {
-                        Wallet.findOne({ userId: { $elemMatch: { id: mongoose.Types.ObjectId(req.body.receiver) } } }, (e, walletReceiver) => {
+                        User.findOne({ _id: mongoose.Types.ObjectId(req.body.receiver) }, (e, walletReceiver) => {
                             if (trans.charge_party == "recipient") {
-                                Wallet.updateOne(
-                                    { userId: { $elemMatch: { id: mongoose.Types.ObjectId(req.body.receiver) } } },
+                                User.updateOne(
+                                    { _id: mongoose.Types.ObjectId(req.body.receiver) },
                                     { $set: { balance: (walletReceiver.balance) + (amount - fee) } },
                                     function (err) {
                                         if (err) {
                                             console.log(err);
                                             return res.sendStatus(500)
                                         } else {
-                                            Wallet.updateOne(
-                                                { userId: { $elemMatch: { id: mongoose.Types.ObjectId(req.body.sender) } } },
+                                            User.updateOne(
+                                                { _id: mongoose.Types.ObjectId(req.body.sender) },
                                                 { $set: { balance: (walletSender.balance) - (amount) } },
                                                 function (err) {
                                                     if (err) {
@@ -448,17 +446,16 @@ router.post('/accept', (req, res, next) => {
                                 )
 
                             } else if (trans.charge_party == "sender") {
-                                if (typeof (req.session.isAdmin) == "undefined" || req.session.isAdmin == false) res.redirect('/');
-                                Wallet.updateOne(
-                                    { userId: { $elemMatch: { id: mongoose.Types.ObjectId(req.body.receiver) } } },
+                                User.updateOne(
+                                    { _id: mongoose.Types.ObjectId(req.body.receiver) },
                                     { $set: { balance: (walletReceiver.balance) + (amount) } },
                                     function (err) {
                                         if (err) {
                                             console.log(err);
                                             return res.sendStatus(500)
                                         } else {
-                                            Wallet.updateOne(
-                                                { userId: { $elemMatch: { id: mongoose.Types.ObjectId(req.body.sender) } } },
+                                            User.updateOne(
+                                                { _id: mongoose.Types.ObjectId(req.body.sender) },
                                                 { $set: { balance: (walletSender.balance) - (amount) - (fee) } },
                                                 function (err) {
                                                     if (err) {
@@ -494,7 +491,6 @@ router.post('/accept', (req, res, next) => {
         }
     })
 })
-
 //xử lý từ chối giao dịch
 router.post('/decline', (req, res, next) => {
     console.log(req.body.transid)
@@ -600,7 +596,6 @@ router.get('/transaction/search', (req, res) => {
                     console.log(e);
                     return res.sendStatus(500)
                 }
-                //return res.redirect('/admin/withdraw')
                 res.render('admin/transpending', {
                     layout: 'admin/layout',
                     pagination: {
@@ -636,7 +631,6 @@ router.get('/history/search', (req, res) => {
                     console.log(e);
                     return res.sendStatus(500)
                 }
-                //return res.redirect('/admin/withdraw')
                 res.render('admin/transpending', {
                     layout: 'admin/layout',
                     pagination: {
