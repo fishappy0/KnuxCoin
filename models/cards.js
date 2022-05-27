@@ -1,6 +1,8 @@
 // Model của thẻ (hõ trợ chức năng nạp tiền)
 const mongoose = require('mongoose');
 const User = require('../models/users');
+const Transaction = require('../models/transaction');
+const Wallet = require('../models/wallet');
 /**
   * Đọc tài liệu của thầy để biết tại sao có cái này.
   * CardId = STT
@@ -107,9 +109,9 @@ module.exports.recharge = async function (cardId, cardNumber, expiryDate, cvv, a
       return 'Mã CVV không hợp lệ';
     }
 
-    const user = await User.findOneAndUpdate({ id: req.user.id });
-    user.balance += amount;
-    await user.save();
+    const wallet = await Wallet.findOne({ userId: user.id });
+    wallet.balance += amount;
+    await wallet.save();
     return 'Nạp tiền thành công';
   }
 
@@ -126,9 +128,9 @@ module.exports.recharge = async function (cardId, cardNumber, expiryDate, cvv, a
       return 'Không thể nạp quá 1 triệu';
     }
 
-    const user = await User.findOneAndUpdate({ id: req.user.id });
-    user.balance += amount;
-    await user.save();
+    const wallet = await Wallet.findOne({ userId: user.id });
+    wallet.balance += amount;
+    await wallet.save();
     return 'Nạp tiền thành công';
   }
 

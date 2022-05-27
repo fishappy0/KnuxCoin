@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const userSchema = new mongoose.Schema({
-    id: Number,
     full_name: String,
     email: String,
     address: String,
@@ -11,15 +10,13 @@ const userSchema = new mongoose.Schema({
     loginFail: Number,
     abnormalLogin: Number,
     status: String,
-    balance: Number,
 });
 var User = mongoose.model("User", userSchema); //Tạo collection
 module.exports = User;
 
-module.exports.createAccount = async function(id, full_name, email, address, dob, phone){
+module.exports.createAccount = async function(full_name, email, address, dob, phone){
     let current_time = new Date(Date.now())
     const oneData = await new userDB({
-        id: id,
         full_name: full_name,
         email: email,
         address: address,
@@ -30,7 +27,6 @@ module.exports.createAccount = async function(id, full_name, email, address, dob
         loginFail: 0,
         abnormalLogin: 0,
         status: "waiting",
-        balance: 0,
     })
     await oneData.save();
     console.log(`<KnuxCoin Web> Created user with phone number ${phone}`);
