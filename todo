@@ -14,9 +14,9 @@ Danh sách việc cần làm:
 -[X] Gửi thông tin vào database mongodb:
 --[X] Gửi String vào db
 - XXXXXXX Gửi file vào db -> Gửi file vào thư mục gốc rồi dùng sđt search ra id người dùng bên bảng Account
--[X] Tạo tài khoản cho người dùng gồm username (số ngẫu nhiên 10 số từ 0 tới 9 suggest: Math.round(Math.random() * 10000000000)) 
+-[X] Tạo tài khoản cho người dùng gồm username (số ngẫu nhiên 10 số từ 0 tới 9 suggest: Math.round(Math.random() * 10000000000))
      và pass ngẫu nhiên (6 ký tự bất kì (gọi random chữ suggest tính năng: Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5)))
--[?(mail bị lỗi)] Gửi email kèm thông tin tài khoản trên cho người dùng (suggest dùng nodemailer: https://nodemailer.com/smtp/oauth2/) 
+-[?(mail bị lỗi)] Gửi email kèm thông tin tài khoản trên cho người dùng (suggest dùng nodemailer: https://nodemailer.com/smtp/oauth2/)
 -[X] Thông báo lên màn hình bằng flash (req.session.flash('check email bla bla')) (https://stackoverflow.com/questions/25564123/express-handlebars-show-flash-messages)
 
 [ ] Buộc đổi mật khẩu:
@@ -34,7 +34,7 @@ Danh sách việc cần làm:
 -[X] Thêm check "đăng nhập nhiều lần" vào database
 -[X] Thêm check "đăng nhập bất thường" vào database
 -[X] Thêm tính năng reset "đăng nhập bất thường" khi đăng nhập thành công
--[X] Thêm check "user là admin" vào database để khi admin đăng nhập nhiều lần sẽ không bị khoá 
+-[X] Thêm check "user là admin" vào database để khi admin đăng nhập nhiều lần sẽ không bị khoá
 
 [ ] Xem thông tin cá nhân
 -[ ] Trang cá nhân html + css
@@ -44,12 +44,12 @@ Danh sách việc cần làm:
 -[ ] Trang đổi mk
 -[ ] gửi đường link tới người dùng (https://www.tutsmake.com/forgot-reset-password-in-node-js-express-mysql/)
 
-[ ] Chức năng nạp tiền vào tk
--[ ] thêm 3 "thẻ" vào database:
- "111111"| 10/10/2022 | 411 (nạp thoải mái)
-, "222222" | 11/11/2022 | 443 (nạp đc dúng 1tr)
-, "333333" | 12/12/2022 | 577 (báo hết tiền)
--[ ] Thêm form để "nạp" (aka nhập 1 đống số và save vào database) 
+[x] Chức năng nạp tiền vào tk
+-[x] thêm 3 "thẻ" vào database:
+ "111111"| 10/10/2022 | 411 (nạp thoải mái),
+ "222222" | 11/11/2022 | 443 (nạp đc dúng 1tr),
+ "333333" | 12/12/2022 | 577 (báo hết tiền)
+-[ ] Thêm form để "nạp" (aka nhập 1 đống số và save vào database)
 -[ ] Thêm check vào trang nạp (check coi trong 3 thẻ trên đúng số thẻ thì báo kiểu select from where coi có hay k á mà trong mongo là find)
 -[ ] Thêm vào lịch sử giao dịch ở database
 
@@ -60,7 +60,7 @@ Danh sách việc cần làm:
 +check xem cái key "số lần rút" của tk trong database coi bé hơn 2
 +số tiền rút là bội số của 50 000 VND (check if số % 50000 == 0)
 +tiền trên 5tr thì:
-     [ ] hiện flash msg chờ admin duyệt 
+     [ ] hiện flash msg chờ admin duyệt
      [ ] vẫn hiện lịch sử giao dịch bth vào database
      [ ] nhưng không trừ tiền
      [ ] admin bấm duyệt thì update tiền (maybe thêm key "chờ duyệt" vào database để show ra phía user rồi khi admin bấm duyệt thì update tiền + trạng thái ?)

@@ -19,23 +19,23 @@ const SMTPTransport = require('nodemailer/lib/smtp-transport');
 var parseBody = body_parser.urlencoded({ extended: false });
 
 function saveRegisteredPicture(id_sidea_file,
-                               id_sidea_path,
-                               id_sideb_file,
-                               id_sideb_path,
-                               user_id_dir,
-                               user_id){
-   if (!fs.existsSync(user_id_dir)) {       
-     fs.mkdirSync(user_id_dir);
-   }
+  id_sidea_path,
+  id_sideb_file,
+  id_sideb_path,
+  user_id_dir,
+  user_id) {
+  if (!fs.existsSync(user_id_dir)) {
+    fs.mkdirSync(user_id_dir);
+  }
 
-   fs.rename(id_sidea_path, user_id_dir + id_sidea_file, function (err) {
-     if (err) throw err;
-     console.log(`<KnuxCoin Account> User ${user_id} created account with id sideUpper file ${id_sidea_file}`);
-   });
-   fs.rename(id_sideb_path, user_id_dir + id_sideb_file, function (err) {
-     if (err) throw err;
-     console.log(`<KnuxCoin Account> User ${user_id} created account with id sideLower file ${id_sideb_file}`);
-   });
+  fs.rename(id_sidea_path, user_id_dir + id_sidea_file, function (err) {
+    if (err) throw err;
+    console.log(`<KnuxCoin Account> User ${user_id} created account with id sideUpper file ${id_sidea_file}`);
+  });
+  fs.rename(id_sideb_path, user_id_dir + id_sideb_file, function (err) {
+    if (err) throw err;
+    console.log(`<KnuxCoin Account> User ${user_id} created account with id sideLower file ${id_sideb_file}`);
+  });
 }
 
 //Trang landing
@@ -46,7 +46,7 @@ router.get('/', function (req, res, next) {
 
 //Trang đăng nhập
 router.get('/login', (req, res, next) => {
-  if(typeof(req.session.username) == "undefined"){ 
+  if (typeof (req.session.username) == "undefined") {
     res.render('account/login')
   } else {
     res.redirect('/dashboard')
@@ -66,14 +66,14 @@ router.post('/login', parseBody, async (received, res, next) => {
   if (queryResult != null) {
     sess = received.session;
     sess.username = username;
-    sess.isAdmin = queryResult['isAdmin']; 
+    sess.isAdmin = queryResult['isAdmin'];
     res.redirect('/dashboard');
   } else {
     res.redirect('/login');
   };
 })
 
-router.post('/logout', parseBody, async(received, res, next) =>{
+router.post('/logout', parseBody, async (received, res, next) => {
   received.session.destroy();
   res.redirect('/')
 })
@@ -81,7 +81,7 @@ router.post('/logout', parseBody, async(received, res, next) =>{
 
 //Trang đăng kí
 router.get('/register', (req, res, next) => {
-  if(typeof(req.session.username) == "undefined") res.render('account/register');
+  if (typeof (req.session.username) == "undefined") res.render('account/register');
   else res.redirect('/dashboard');
 });
 router.post('/register', async (req, res, next) => {
@@ -117,24 +117,24 @@ router.post('/register', async (req, res, next) => {
       subject: "KnuxCoin Service",
       text: `Greeting ${full_name}, \nThank you for registering with KnuxCoin, the credentials to access the service is as follows:\nUsername:${user_info_arr[1]}\nPassword:${user_info_arr[2]}`
     }
-    try {  
+    try {
       smtp_transport = node_mailer.createTransport({
         host: "mail.phongdaotao.com",
-        port:25,
+        port: 25,
         secure: false,
         auth: {
-            user: "sinhvien@phongdaotao.com", 
-            pass: "svtdtu"
+          user: "sinhvien@phongdaotao.com",
+          pass: "svtdtu"
         },
-        tls:{
-          rejectUnauthorized:false
+        tls: {
+          rejectUnauthorized: false
         }
       })
       await smtp_transport.sendMail(message)
-    } catch(err){
+    } catch (err) {
       alert(`There was a problem emailing, This is your created account \nUsername: ${user_info_arr[1]} \nPassword: ${user_info_arr[2]}`);
     }
-      res.redirect('/login');
+    res.redirect('/login');
   })
 })
 
