@@ -71,6 +71,7 @@ router.post("/password", parseBody, async function (req, res, next) {
     alert("The enetered password does not match");
   if (await accountModel.verifyAccount(req.session.username, old_pass) != null) {
     await accountModel.changePassword(username, new_pass);
+    req.session.first_time = false;
     alert('Password changed succesfully');
     res.redirect('/dashboard');
   } else{
@@ -101,6 +102,7 @@ router.post("/login", parseBody, async (received, res, next) => {
     sess = received.session;
     sess.username = username;
     sess.isAdmin = await queryResult["isAdmin"];
+    sess.first_time = await queryResult["first_time_login"];
     if (typeof queryResult["isAdmin"] != "undefined" && sess.isAdmin == true) {
       res.redirect("/admin");
     } else {

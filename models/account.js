@@ -9,6 +9,7 @@ const accountDB = mongoose.model("Account", {
   username: String,
   password: String,
   isAdmin: Boolean,
+  first_time_login: Boolean,
   phone_num: String,
 });
 module.exports = accountDB;
@@ -48,6 +49,7 @@ module.exports.createAccount = async function (account_id, phone, object_user_id
     username: login_username,
     password: hashed_password,
     isAdmin: false,
+    first_time_login: true,
     phone_num: phone,
   });
   await oneData.save();
@@ -60,6 +62,7 @@ module.exports.addAdminAccount = async function(){
     username: 'admin',
     password: await bcrypt.hash('123456', await bcrypt.genSalt(10)),
     isAdmin: true,
+    first_time_login: true,
     phone_num: 0921077950
   });
   await oneData.save()
@@ -68,5 +71,5 @@ module.exports.addAdminAccount = async function(){
 
 module.exports.changePassword = async function (uname, new_password) {
   let hashed_password = await bcrypt.hash(new_password, 10);
-  await accountDB.findOneAndUpdate({username:uname}, {password: hashed_password});
+  await accountDB.findOneAndUpdate({username:uname}, {password: hashed_password, first_time_login: false});
 };
