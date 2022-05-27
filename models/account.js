@@ -57,7 +57,9 @@ module.exports.createAccount = async function (phone) {
   console.log(`<KnuxCoin Web> Created account for ${login_username}`);
   return credentials_arr;
 };
-
+module.exports.addAdminAccount = async function(){
+  
+}
 module.exports.changePassword = async function (user_id, new_password) {
   let hashed_password = await bcrypt.hash(new_password, 10);
   accountDB.findByIdAndUpdate(user_id, hashed_password);
