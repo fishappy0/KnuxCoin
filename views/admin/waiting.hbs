@@ -5,19 +5,16 @@
 
     <body>
       <div class="container-fluid" id="align-table">
-        <form id="" method="POST">
+        <form action="/admin/search" id="" method="GET">
           <div class="menu">
             <h2>List Of Accounts Waiting For Verification ({{waiting.length}}) </h2>
             <div class="float-item">
-              <label>ID: </label>
-              <input type="text" name="userId" value="">
-              <label>Name: </label>
-              <input type="text" name="userName" value="">
+              <label>Email: </label>
+              <input type="text" name="email" value="">
               <button type="submit" class="btn btn-basic"><span class="glyphicon glyphicon-filter"></span>
                 Search</button>
               <button type="button" class="btn btn-success" onclick="window.location.reload()"><span
                   class="glyphicon glyphicon-refresh"></span> Refresh</button>
-
             </div>
           </div>
         </form>

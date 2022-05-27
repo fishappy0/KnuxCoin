@@ -497,4 +497,134 @@ router.post('/decline', (req, res, next) => {
         }
     })
 })
+
+//Chức năng tìm kiếm user
+router.get('/search', (req, res) => {
+    var email = req.query.email;
+    console.log(email)
+
+    const perUser = 10
+    const page = req.query.page
+
+    User.find({ email: email }).sort({ createdAt: -1 })
+        .skip((perUser * page) - perUser)
+        .limit(perUser)
+        .lean()
+        .exec(function (e, userList) {
+            User.countDocuments().exec(function (e, count) {
+                if (e) {
+                    console.log(e);
+                    return res.sendStatus(500)
+                }
+                res.render('admin/admin', {
+                    layout: 'admin/layout',
+                    pagination: {
+                        page: req.query.page || 1,
+                        pageCount: Math.ceil(count / perUser)
+                    },
+                    userList,
+                })
+            })
+        })
+})
+
+//Chức năng tìm kiếm user
+router.get('/active/search', (req, res) => {
+    var email = req.query.email;
+    console.log(email)
+
+    const perUser = 10
+    const page = req.query.page
+
+    User.find({ email: email, status:"approved" }).sort({ createdAt: -1 })
+        .skip((perUser * page) - perUser)
+        .limit(perUser)
+        .lean()
+        .exec(function (e, active) {
+            User.countDocuments().exec(function (e, count) {
+                if (e) {
+                    console.log(e);
+                    return res.sendStatus(500)
+                }
+                res.render('admin/active', {
+                    layout: 'admin/layout',
+                    pagination: {
+                        page: req.query.page || 1,
+                        pageCount: Math.ceil(count / perUser)
+                    },
+                    active,
+                })
+            })
+        })
+})
+//Chức năng tìm kiếm giao dịch
+router.get('/transaction/search', (req, res) => {
+    var from = req.query.from;
+    console.log(from)
+    var to = req.query.to;
+    console.log(to)
+    var type = req.query.type;
+    console.log(type)
+
+    const perUser = 10
+    const page = req.query.page
+
+    Transaction.find({ date: { $gte: from, $lt: to }, type: type, status: "pending" }).sort({ date: -1 })
+        .skip((perUser * page) - perUser)
+        .limit(perUser)
+        .lean()
+        .exec(function (e, pendlist) {
+            Transaction.countDocuments().exec(function (e, count) {
+                if (e) {
+                    console.log(e);
+                    return res.sendStatus(500)
+                }
+                //return res.redirect('/admin/withdraw')
+                res.render('admin/transpending', {
+                    layout: 'admin/layout',
+                    pagination: {
+                        page: req.query.page || 1,
+                        pageCount: Math.ceil(count / perUser)
+                    },
+                    pendlist,
+                })
+            })
+        })
+})
+
+
+//Chức năng tìm kiếm lịch sử giao dịch
+router.get('/history/search', (req, res) => {
+    var from = req.query.from;
+    console.log(from)
+    var to = req.query.to;
+    console.log(to)
+    var type = req.query.type;
+    console.log(type)
+
+    const perUser = 10
+    const page = req.query.page
+
+    Transaction.find({ $or: [{ date: { $gte: from, $lt: to } }, { type: type }] }).sort({ date: -1 })
+        .skip((perUser * page) - perUser)
+        .limit(perUser)
+        .lean()
+        .exec(function (e, pendlist) {
+            Transaction.countDocuments().exec(function (e, count) {
+                if (e) {
+                    console.log(e);
+                    return res.sendStatus(500)
+                }
+                //return res.redirect('/admin/withdraw')
+                res.render('admin/transpending', {
+                    layout: 'admin/layout',
+                    pagination: {
+                        page: req.query.page || 1,
+                        pageCount: Math.ceil(count / perUser)
+                    },
+                    pendlist,
+                })
+            })
+        })
+})
 module.exports = router;

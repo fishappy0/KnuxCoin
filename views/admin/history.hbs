@@ -4,14 +4,22 @@
 
         <body>
             <div class="container-fluid" id="align-table">
-                <form id="" method="POST">
+                <form action="/admin/history/search" id="" method="GET">
                     <div class="menu">
                         <h2>Transaction History ({{transaction.length}}) </h2>
                         <div class="float-item">
-                            <label>ID: </label>
-                            <input type="text" name="userId" value="">
-                            <label>Name: </label>
-                            <input type="text" name="userName" value="">
+                            <div>
+                                <label for="type">Choose type of transaction:</label>
+                                <select name="type">
+                                    <option value="">Option</option>
+                                    <option value="withdraw">Withdraw</option>
+                                    <option value="transfer">Transfer</option>
+                                </select>
+                            </div>
+                            <label>From: </label>
+                            <input type="date" name="from" value="">
+                            <label>To: </label>
+                            <input type="date" name="to" value="">
                             <button type="submit" class="btn btn-basic"><span class="glyphicon glyphicon-filter"></span>
                                 Search</button>
                             <button type="button" class="btn btn-success" onclick="window.location.reload()"><span
