@@ -1,0 +1,29 @@
+[{
+  "_id": {
+    "$oid": "628e1fa6cb804f55886ed94c"
+  },
+  "account_id": "22U737392",
+  "username": "4803033972",
+  "password": "$2b$10$T1BWNmJrKy2Gq4fgsNWl9.Bdj0p7UpMq0Tv8Jyn1jSpyCqwnwxQ7C",
+  "isAdmin": false,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "628e1fe5255a113b6cb6bb56"
+  },
+  "account_id": "22U1900683",
+  "username": "1589381652",
+  "password": "$2b$10$93OuAoLjlY.EEi0xtdaRS.9pRjIiq5DVNTaIfrqPFiEQYwjeXB54O",
+  "isAdmin": false,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "628e53e725c64becc468a96d"
+  },
+  "account_id": "22U7303280",
+  "username": "8433593889",
+  "password": "$2b$10$qgKbmd/pcA2vKslYjhnqN.JCNpJolM82LJeeoQKD0gIZ1ucoFMbgq",
+  "isAdmin": true,
+  "phone_num": "+84921077950",
+  "__v": 0
+}]

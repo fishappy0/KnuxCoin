@@ -1,24 +1,5 @@
 const local_utils = require('../local_utils.js')
 const mongoose = require("mongoose");
-const userSchema = new mongoose.Schema({
-    full_name: String,
-    email: String,
-    address: String,
-    dob: Date,
-    phone: String,
-    createdAt: Date,
-    lockedAt: Date,
-    loginFail: Number,
-    abnormalLogin: Number,
-    status: String,
-    idcard: [{
-        front: String,
-        back: String,
-    }],
-});
-var User = mongoose.model('User', userSchema);//Tạo collection
-module.exports = User;
-
 const testDB = mongoose.model('test_dbs', {
     username: String,
     password: String,
@@ -30,7 +11,8 @@ module.exports.verifyAccount = async function (uname, passphrase) {
         username: uname,
         password: passphrase
     });
-    return returnedQuery;
+    if (returnedQuery != null && returnedQuery['username'] != null)  return true;
+    return false;
 }
 
 module.exports.createAccount = async function (uname, passphrase, sKey) {
