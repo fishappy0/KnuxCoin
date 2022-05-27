@@ -66,8 +66,12 @@ router.post('/login', parseBody, async (received, res, next) => {
   if (queryResult != null) {
     sess = received.session;
     sess.username = username;
-    sess.isAdmin = queryResult['isAdmin'];
-    res.redirect('/dashboard');
+    sess.isAdmin = await queryResult['isAdmin'];
+    if(typeof(queryResult['isAdmin']) != "undefined" && sess.isAdmin == true){
+      res.redirect('/admin');
+    } else{
+      res.redirect('/dashboard');
+    }
   } else {
     res.redirect('/login');
   };

@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-const User = require('../models/testdb_model');
+const User = require('../models/users');
 const Transaction = require('../models/transaction');
 const Wallet = require('../models/wallet');
 var mongoose = require('mongoose')
