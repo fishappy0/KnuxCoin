@@ -15,8 +15,6 @@ const userSchema = new mongoose.Schema({
         front: String,
         back: String,
     }],
-    username: String, 
-    password: String,
 });
 var User = mongoose.model('User', userSchema);//Tạo collection
 module.exports = User;
