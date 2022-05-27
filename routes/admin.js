@@ -6,7 +6,7 @@ const Wallet = require('../models/wallet');
 var mongoose = require('mongoose')
 /* GET users listing. */
 router.get('/', function (req, res, next) {
-    if(typeof(req.session.isAdmin) == "undefined" || req.session.isAdmin == false) res.redirect('/');
+    if (typeof (req.session.isAdmin) == "undefined" || req.session.isAdmin == false) res.redirect('/');
     const perUser = 10
     const page = req.query.page
 
@@ -31,13 +31,14 @@ router.get('/', function (req, res, next) {
             })
         })
 });
-router.get('/logout', function(req,res){
-  req.session.destroy();
-  res.redirect('/');
+router.get('/logout', function (req, res) {
+    req.session.destroy();
+    res.redirect('/');
 })
 
 //Trang chi tiết account
 router.get('/detail/:id', (req, res, next) => {
+    if (typeof (req.session.isAdmin) == "undefined" || req.session.isAdmin == false) res.redirect('/');
     User.findOne({ _id: mongoose.Types.ObjectId(req.params.id) }, (e, user) => {
         if (e) {
             console.log(e);
@@ -51,6 +52,7 @@ router.get('/detail/:id', (req, res, next) => {
 
 //trang tài khoản chờ kích hoạt
 router.get('/unapproved', (req, res, next) => {
+    if (typeof (req.session.isAdmin) == "undefined" || req.session.isAdmin == false) res.redirect('/');
     const perUser = 10
     const page = req.query.page
 
@@ -78,6 +80,7 @@ router.get('/unapproved', (req, res, next) => {
 
 //trang tài khoản đã kích hoạt
 router.get('/approved', (req, res, next) => {
+    if (typeof (req.session.isAdmin) == "undefined" || req.session.isAdmin == false) res.redirect('/');
     const perUser = 10
     const page = req.query.page
     User.find({ status: "approved" }).sort({ createdAt: -1 })
@@ -104,6 +107,7 @@ router.get('/approved', (req, res, next) => {
 
 //trang tài khoản bị khóa
 router.get('/locked', (req, res, next) => {
+    if (typeof (req.session.isAdmin) == "undefined" || req.session.isAdmin == false) res.redirect('/');
     const perUser = 10
     const page = req.query.page
     User.find({ status: "locked", abnormalLogin: 1 }).sort({ createdAt: -1 })
@@ -130,6 +134,7 @@ router.get('/locked', (req, res, next) => {
 
 //trang tài khoản bị vô hiệu hóa
 router.get('/disabled', (req, res, next) => {
+    if (typeof (req.session.isAdmin) == "undefined" || req.session.isAdmin == false) res.redirect('/');
     const perUser = 10
     const page = req.query.page
     User.find({ status: "disabled" }).sort({ createdAt: -1 })
@@ -156,6 +161,7 @@ router.get('/disabled', (req, res, next) => {
 
 //xử lý xác minh tài khoản
 router.post('/approve', (req, res, next) => {
+    if (typeof (req.session.isAdmin) == "undefined" || req.session.isAdmin == false) res.redirect('/');
     console.log(req.body.userid)
     User.findOne({ _id: mongoose.Types.ObjectId(req.body.userid) }, (e, account) => {
         if (account && !e) {
@@ -180,6 +186,7 @@ router.post('/approve', (req, res, next) => {
 
 //xử lý hủy tài khoản
 router.post('/disable', (req, res, next) => {
+    if (typeof (req.session.isAdmin) == "undefined" || req.session.isAdmin == false) res.redirect('/');
     console.log(req.body.userid)
     User.findOne({ _id: mongoose.Types.ObjectId(req.body.userid) }, (e, account) => {
         if (account && !e) {
@@ -204,6 +211,7 @@ router.post('/disable', (req, res, next) => {
 
 //Xử lý gửi yêu cầu bổ sung hồ sơ
 router.post('/request', (req, res, next) => {
+    if (typeof (req.session.isAdmin) == "undefined" || req.session.isAdmin == false) res.redirect('/');
     console.log(req.body.userid)
     User.findOne({ _id: mongoose.Types.ObjectId(req.body.userid) }, (e, account) => {
         if (account && !e) {
@@ -228,6 +236,7 @@ router.post('/request', (req, res, next) => {
 
 //Xử lý mở khóa tài khoản
 router.post('/unlock', (req, res, next) => {
+    if (typeof (req.session.isAdmin) == "undefined" || req.session.isAdmin == false) res.redirect('/');
     console.log(req.body.userid)
     console.log(req.body.lockedDate)
     User.findOne({ _id: mongoose.Types.ObjectId(req.body.userid) }, (e, account) => {
@@ -253,6 +262,7 @@ router.post('/unlock', (req, res, next) => {
 
 //trang lịch sử giao dịch
 router.get('/history/:id', (req, res, next) => {
+    if (typeof (req.session.isAdmin) == "undefined" || req.session.isAdmin == false) res.redirect('/');
     console.log(req.params.id)
     //người chuyển
     const perUser = 10
@@ -281,6 +291,7 @@ router.get('/history/:id', (req, res, next) => {
 
 //trang chi tiết giao dịch
 router.get('/transdetail/:id', (req, res, next) => {
+    if (typeof (req.session.isAdmin) == "undefined" || req.session.isAdmin == false) res.redirect('/');
     console.log(req.params.id)
     Transaction.findOne({ _id: mongoose.Types.ObjectId(req.params.id) }, (e, trans) => {
         if (e) {
@@ -296,6 +307,7 @@ router.get('/transdetail/:id', (req, res, next) => {
 
 //trang giao dịch rút tiền trên 5 triệu
 router.get('/withdraw', (req, res, next) => {
+    if (typeof (req.session.isAdmin) == "undefined" || req.session.isAdmin == false) res.redirect('/');
     const perUser = 10
     const page = req.query.page
     Transaction.find({ amount: { $gte: 5000000 }, type: "withdraw", status: "pending" }).sort({ dated: -1 })
@@ -321,6 +333,7 @@ router.get('/withdraw', (req, res, next) => {
 })
 //trang giao dịch chuyển tiền trên 5 triệu
 router.get('/transfer', (req, res, next) => {
+    if (typeof (req.session.isAdmin) == "undefined" || req.session.isAdmin == false) res.redirect('/');
     const perUser = 10
     const page = req.query.page
     Transaction.find({ amount: { $gte: 5000000 }, type: "transfer", status: "pending" }).sort({ dated: -1 })
@@ -347,6 +360,7 @@ router.get('/transfer', (req, res, next) => {
 
 //xử lý đồng ý giao dịch
 router.post('/accept', (req, res, next) => {
+    if (typeof (req.session.isAdmin) == "undefined" || req.session.isAdmin == false) res.redirect('/');
     console.log(req.body.transid)
     const amount = req.body.amount;
     const fee = req.body.fee;
@@ -389,6 +403,7 @@ router.post('/accept', (req, res, next) => {
                     }
                 })
             } else if (trans.type == "transfer") {
+                if (typeof (req.session.isAdmin) == "undefined" || req.session.isAdmin == false) res.redirect('/');
                 Wallet.findOne({ userId: { $elemMatch: { id: mongoose.Types.ObjectId(req.body.sender) } } }, (e, walletSender) => {
                     console.log(walletSender)
                     if (walletSender.balance < 5000000) {
@@ -433,6 +448,7 @@ router.post('/accept', (req, res, next) => {
                                 )
 
                             } else if (trans.charge_party == "sender") {
+                                if (typeof (req.session.isAdmin) == "undefined" || req.session.isAdmin == false) res.redirect('/');
                                 Wallet.updateOne(
                                     { userId: { $elemMatch: { id: mongoose.Types.ObjectId(req.body.receiver) } } },
                                     { $set: { balance: (walletReceiver.balance) + (amount) } },
@@ -541,7 +557,7 @@ router.get('/active/search', (req, res) => {
     const perUser = 10
     const page = req.query.page
 
-    User.find({ email: email, status:"approved" }).sort({ createdAt: -1 })
+    User.find({ email: email, status: "approved" }).sort({ createdAt: -1 })
         .skip((perUser * page) - perUser)
         .limit(perUser)
         .lean()

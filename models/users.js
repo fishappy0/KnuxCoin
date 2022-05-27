@@ -37,7 +37,7 @@ module.exports.createAccount = async function (
     lockedAt: "",
     loginFail: 0,
     abnormalLogin: 0,
-    status: "waiting",
+    status: "unapproved",
     balance: 0,
     idfront: id_front_dir.replace('.','').replace('public','').substring(1),
     idback: id_back_dir.replace('.','').replace('public','').substring(1),

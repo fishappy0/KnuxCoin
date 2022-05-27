@@ -1,14 +1,5 @@
 [{
   "_id": {
-    "$oid": "628e1fa6cb804f55886ed94c"
-  },
-  "account_id": "22U737392",
-  "username": "4803033972",
-  "password": "$2b$10$T1BWNmJrKy2Gq4fgsNWl9.Bdj0p7UpMq0Tv8Jyn1jSpyCqwnwxQ7C",
-  "isAdmin": false,
-  "__v": 0
-},{
-  "_id": {
     "$oid": "628e1fe5255a113b6cb6bb56"
   },
   "account_id": "22U1900683",
@@ -22,7 +13,7 @@
   },
   "account_id": "22U7303280",
   "username": "8433593889",
-  "password": "$2b$10$qgKbmd/pcA2vKslYjhnqN.JCNpJolM82LJeeoQKD0gIZ1ucoFMbgq",
+  "password": "$2b$10$nrK04GFugYam02c4hAkG4OZ8Ao7NMqvtD3vsjQjCOoZXjV8QhJ4Mi",
   "isAdmin": true,
   "phone_num": "+84921077950",
   "__v": 0
@@ -35,5 +26,17 @@
   "password": "$2b$10$C3Bavo3AQF.wpx7VsXN0zu2fYLs3IJxHoogSGaCQk8cDdkhsC3sA.",
   "isAdmin": true,
   "phone_num": "921077950",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6290d2d6ba4bd42fd4ed9c29"
+  },
+  "user_id": "0921077950",
+  "account_id": "22U822504",
+  "username": "9480342591",
+  "password": "$2b$10$62QWu8Lrnl2UmblhYJEZcemaeN7La2aeiSI/fEJTs07IyDLKF5Bn.",
+  "isAdmin": false,
+  "first_time_login": false,
+  "phone_num": "6290d2d6ba4bd42fd4ed9c27",
   "__v": 0
 }]

@@ -66,16 +66,19 @@ router.post("/password", parseBody, async function (req, res, next) {
   let old_pass = body.old_password.toString();
   let new_pass = body.new_password.toString();
   let verify_new_pass = body.verify_new_password.toString();
-
-  if (verify_new_pass != new_pass)
-    alert("The enetered password does not match");
+  let error = undefined
+ 
   if (await accountModel.verifyAccount(req.session.username, old_pass) != null) {
     await accountModel.changePassword(username, new_pass);
     req.session.first_time = false;
-    alert('Password changed succesfully');
     res.redirect('/dashboard');
-  } else{
-    alert('The old password does not match!');
+  } else if (verify_new_pass != new_pass) {
+    error = "The enetered password does not match"
+  } else {
+    error = "The old password does not match!"
+  }
+  if (error) {
+    res.render("account/password", { error })
   }
 });
 
@@ -92,12 +95,7 @@ router.post("/login", parseBody, async (received, res, next) => {
   let username = req.username;
   let password = req.password;
 
-  // console.log(`Password is ${password} and username is ${username}`);
-  // let account_info = await accountModel.createAccount();
-  // dbg(account_info)
-
   queryResult = await accountModel.verifyAccount(username, password);
-
   if (queryResult != null) {
     sess = received.session;
     sess.username = username;
@@ -109,8 +107,7 @@ router.post("/login", parseBody, async (received, res, next) => {
       res.redirect("/dashboard");
     }
   } else {
-    alert('Username or password is incorrect');
-    res.redirect("/login");
+    res.render("account/login", { error: 'Username or password is incorrect' })
   }
 });
 
@@ -131,16 +128,16 @@ router.post("/register", async (req, res, next) => {
     if (err) return res.status(500).send(err.message);
     let birthday = fields.birthday.toString();
     let phone = fields.phone.toString();
-    let email = await fields.address.toString();
-    let address = fields.mail.toString();
+    let email = await fields.mail.toString();
+    let address = fields.address.toString();
     let full_name = fields.full_name.toString();
 
     // Month runs from 0 to 11. Full year %100 to get the last 2 digits;
-  let current_time = new Date(Date.now());
-  let account_id =
-    current_time.getFullYear().toString().slice(2) +
-    "U" +
-    Math.round(Math.random() * 10000000).toString();
+    let current_time = new Date(Date.now());
+    let account_id =
+      current_time.getFullYear().toString().slice(2) +
+      "U" +
+      Math.round(Math.random() * 10000000).toString();
     let date = new Date(Date.now());
     let date_string =
       date.getDate() +
