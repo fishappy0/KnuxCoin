@@ -203,5 +203,7 @@ router.post("/register", async (req, res, next) => {
     res.redirect("/login");
   });
 });
-
+router.get("/history", (req, res, next) => {
+  res.render("user/history", {  layout: 'user/dashboard', })
+})
 module.exports = router;
