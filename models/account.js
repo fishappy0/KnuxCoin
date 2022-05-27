@@ -58,8 +58,17 @@ module.exports.createAccount = async function (phone) {
   return credentials_arr;
 };
 module.exports.addAdminAccount = async function(){
-  
+  const oneData = await new accountDB({
+    account_id: '22A00001',
+    username: 'admin',
+    password: await bcrypt.hash('123456', await bcrypt.genSalt(10)),
+    isAdmin: true,
+    phone_num: 0921077950
+  });
+  await oneData.save()
+  console.log(`Created admin account`);
 }
+
 module.exports.changePassword = async function (user_id, new_password) {
   let hashed_password = await bcrypt.hash(new_password, 10);
   accountDB.findByIdAndUpdate(user_id, hashed_password);

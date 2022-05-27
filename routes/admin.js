@@ -1,11 +1,12 @@
 var express = require('express');
 var router = express.Router();
-const User = require('../models/testdb_model');
+const User = require('../models/users');
 const Transaction = require('../models/transaction');
 const Wallet = require('../models/wallet');
 var mongoose = require('mongoose')
 /* GET users listing. */
 router.get('/', function (req, res, next) {
+    if(typeof(req.session.isAdmin) == "undefined" || req.session.isAdmin == false) res.redirect('/');
     const perUser = 10
     const page = req.query.page
 
@@ -30,6 +31,10 @@ router.get('/', function (req, res, next) {
             })
         })
 });
+router.get('/logout', function(req,res){
+  req.session.destroy();
+  res.redirect('/');
+})
 
 //Trang chi tiết account
 router.get('/detail/:id', (req, res, next) => {
