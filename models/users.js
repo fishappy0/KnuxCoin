@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const userSchema = new mongoose.Schema({
+<<<<<<< HEAD
     full_name: String,
     email: String,
     address: String,
@@ -10,10 +11,26 @@ const userSchema = new mongoose.Schema({
     loginFail: Number,
     abnormalLogin: Number,
     status: String,
+=======
+  full_name: String,
+  email: String,
+  address: String,
+  dob: Date,
+  phone: String,
+  createdAt: Date,
+  lockedAt: Date,
+  loginFail: Number,
+  abnormalLogin: Number,
+  status: String,
+  balance: Number,
+  idfront: String,
+  idback: String,
+>>>>>>> dev2
 });
 var User = mongoose.model("User", userSchema); //Tạo collection
 module.exports = User;
 
+<<<<<<< HEAD
 module.exports.createAccount = async function(full_name, email, address, dob, phone){
     let current_time = new Date(Date.now())
     const oneData = await new userDB({
@@ -32,3 +49,34 @@ module.exports.createAccount = async function(full_name, email, address, dob, ph
     console.log(`<KnuxCoin Web> Created user with phone number ${phone}`);
 }
 
+=======
+module.exports.createAccount = async function (
+  full_name,
+  email,
+  address,
+  dob,
+  phone,
+  id_front_dir,
+  id_back_dir
+) {
+  let current_time = new Date(Date.now());
+  const oneData = await new User({
+    full_name: full_name,
+    email: email,
+    address: address,
+    dob: dob,
+    phone: phone,
+    createdAt: current_time.toString(),
+    lockedAt: "",
+    loginFail: 0,
+    abnormalLogin: 0,
+    status: "waiting",
+    balance: 0,
+    idfront: id_front_dir.replace('.','').replace('public','').substring(1),
+    idback: id_back_dir.replace('.','').replace('public','').substring(1),
+  });
+  await oneData.save();
+  console.log(`<KnuxCoin Web> Created user with phone number ${phone}`);
+  return oneData["_id"];
+};
+>>>>>>> dev2

@@ -26,4 +26,14 @@
   "isAdmin": true,
   "phone_num": "+84921077950",
   "__v": 0
+},{
+  "_id": {
+    "$oid": "629067ed92f4c56ab1c403f8"
+  },
+  "account_id": "22A00001",
+  "username": "admin",
+  "password": "$2b$10$C3Bavo3AQF.wpx7VsXN0zu2fYLs3IJxHoogSGaCQk8cDdkhsC3sA.",
+  "isAdmin": true,
+  "phone_num": "921077950",
+  "__v": 0
 }]
