@@ -23,7 +23,6 @@
   },
   "loginFail": 3,
   "abnormalLogin": 1,
-  "__v": 0,
   "status": "locked"
 },{
   "_id": {
@@ -50,7 +49,6 @@
   },
   "loginFail": 3,
   "abnormalLogin": 1,
-  "__v": 0,
   "status": "locked"
 },{
   "_id": {
@@ -73,7 +71,6 @@
   "lockedAt": null,
   "loginFail": 0,
   "abnormalLogin": 0,
-  "__v": 0,
   "status": "approved"
 },{
   "_id": {
@@ -96,7 +93,6 @@
   "lockedAt": null,
   "loginFail": 0,
   "abnormalLogin": 0,
-  "__v": 0,
   "status": "approved"
 },{
   "_id": {
@@ -118,6 +114,7 @@
   },
   "loginFail": 0,
   "abnormalLogin": 0,
+<<<<<<< HEAD
   "__v": 0,
   "status": "approved",
   "idcard": [
@@ -128,6 +125,9 @@
   ],
   "password": "123456",
   "username": "admin"
+=======
+  "status": "approved"
+>>>>>>> main
 },{
   "_id": {
     "$oid": "6289f5792faabf6d5a8e68aa"
@@ -148,7 +148,6 @@
   },
   "loginFail": 0,
   "abnormalLogin": 0,
-  "__v": 0,
   "status": "approved"
 },{
   "_id": {
@@ -170,7 +169,6 @@
   },
   "loginFail": 0,
   "abnormalLogin": 0,
-  "__v": 0,
   "status": "approved"
 },{
   "_id": {
@@ -190,11 +188,22 @@
       "$numberLong": "1652194363372"
     }
   },
+<<<<<<< HEAD
   "lockedAt": null,
   "loginFail": 0,
   "abnormalLogin": 0,
   "__v": 0,
   "status": "disabled"
+=======
+  "lockedAt": {
+    "$date": {
+      "$numberLong": "1652194363372"
+    }
+  },
+  "loginFail": 3,
+  "abnormalLogin": 1,
+  "status": "locked"
+>>>>>>> main
 },{
   "_id": {
     "$oid": "6289f62e2faabf6d5a8e68ad"
@@ -220,7 +229,6 @@
   },
   "loginFail": 3,
   "abnormalLogin": 1,
-  "__v": 0,
   "status": "locked"
 },{
   "_id": {
@@ -247,7 +255,6 @@
   },
   "loginFail": 3,
   "abnormalLogin": 1,
-  "__v": 0,
   "status": "locked"
 },{
   "_id": {
@@ -269,8 +276,12 @@
   },
   "loginFail": 0,
   "abnormalLogin": 0,
+<<<<<<< HEAD
   "__v": 0,
   "status": "unapproved"
+=======
+  "status": "disabled"
+>>>>>>> main
 },{
   "_id": {
     "$oid": "6289f69f2faabf6d5a8e68b0"
@@ -291,8 +302,12 @@
   },
   "loginFail": 0,
   "abnormalLogin": 0,
+<<<<<<< HEAD
   "__v": 0,
   "status": "waiting"
+=======
+  "status": "disabled"
+>>>>>>> main
 },{
   "_id": {
     "$oid": "6289f6b62faabf6d5a8e68b1"
@@ -313,7 +328,6 @@
   },
   "loginFail": 0,
   "abnormalLogin": 0,
-  "__v": 0,
   "status": "disabled"
 },{
   "_id": {
@@ -335,8 +349,12 @@
   },
   "loginFail": 0,
   "abnormalLogin": 0,
+<<<<<<< HEAD
   "__v": 0,
   "status": "approved"
+=======
+  "status": "waiting"
+>>>>>>> main
 },{
   "_id": {
     "$oid": "6289f6e12faabf6d5a8e68b3"
@@ -357,8 +375,12 @@
   },
   "loginFail": 0,
   "abnormalLogin": 0,
+<<<<<<< HEAD
   "__v": 0,
   "status": "approved"
+=======
+  "status": "waiting"
+>>>>>>> main
 },{
   "_id": {
     "$oid": "6289f6ef2faabf6d5a8e68b4"
@@ -379,8 +401,12 @@
   },
   "loginFail": 0,
   "abnormalLogin": 0,
+<<<<<<< HEAD
   "__v": 0,
   "status": "approved"
+=======
+  "status": "unapproved"
+>>>>>>> main
 },{
   "_id": {
     "$oid": "6289f6fe2faabf6d5a8e68b5"
@@ -401,6 +427,10 @@
   },
   "loginFail": 0,
   "abnormalLogin": 0,
+<<<<<<< HEAD
   "__v": 0,
   "status": "disabled"
+=======
+  "status": "unapproved"
+>>>>>>> main
 }]

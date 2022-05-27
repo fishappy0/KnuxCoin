@@ -4,11 +4,16 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+const crypto = require('crypto');
+const session = require('express-session');
+var dashboardRouter = require('./routes/dashboard');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var adminRouter = require('./routes/admin');
+var balanceRouter = require('./routes/balance');
 const mongoose = require('mongoose');
 const { handlebars } = require('hbs');
+const { env } = require('process');
 const mongoUrl = "mongodb://0.0.0.0:27017/test-db";
 mongoose.connect(mongoUrl).then(() => { console.log(`<KnuxCoin Web> Connected to the database at ${mongoUrl}`) });
 
@@ -44,6 +49,7 @@ handlebars.registerHelper('paginate', paginateHelper);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
+app.use(session({secret: crypto.randomBytes(4).toString('hex'), saveUninitialized: true, resave: true}))
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -53,6 +59,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/admin', adminRouter);
+app.use('/dashboard', dashboardRouter);
+// Nạp tiền, rút tiền, chuyển tiền,...
+app.use('/balance', balanceRouter);
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
@@ -68,5 +78,5 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
+console.log(`<KnuxCoin Web> Application started at localhost:${env.port || '8080'}`);
 module.exports = app;
