@@ -63,19 +63,22 @@ router.post("/password", parseBody, async function (req, res, next) {
   let old_pass = body.old_password.toString();
   let new_pass = body.new_password.toString();
   let verify_new_pass = body.verify_new_password.toString();
-  let error = undefined
+  let error = undefined;
 
-  if (await accountModel.verifyAccount(req.session.username, old_pass) != null) {
+  if (
+    (await accountModel.verifyAccount(req.session.username, old_pass)) != null
+  ) {
     await accountModel.changePassword(username, new_pass);
     req.session.first_time = false;
-    res.redirect('/dashboard');
+    res.redirect("/dashboard");
   } else if (verify_new_pass != new_pass) {
-    error = "The enetered password does not match"
+    error = "The enetered password does not match";
   } else {
-    error = "The old password does not match!"
+    error = "The old password does not match!";
   }
   if (error) {
-    res.render("account/password", { error })
+    res.render("account/password", { error });
+  }
   if (verify_new_pass != new_pass) {
     alert("The enetered password does not match");
     return;
@@ -112,32 +115,14 @@ router.post("/login", parseBody, async (req, res, next) => {
   let username = body.username;
   let password = body.password;
 
-  queryResult = await accountModel.verifyAccount(username, password);
-  if (queryResult != null) {
-    sess = received.session;
-    sess.username = username;
-    sess.isAdmin = await queryResult["isAdmin"];
-    sess.first_time = await queryResult["first_time_login"];
-    if (typeof queryResult["isAdmin"] != "undefined" && sess.isAdmin == true) {
-      res.redirect("/admin");
-    } else {
-      res.redirect("/dashboard");
-    }
-  } else {
-    res.render("account/login", { error: 'Username or password is incorrect' })
-  let login_attempts = 0;
-  let failedAttempts = await userModel.getLoginFailAttempts(username);
-  if (failedAttempts != null) {
-    login_attempts = failedAttempts;
-  }
-
   if (login_attempts == 3) {
-    alert("Out of login attempts");
-    res.redirect("/login");
+    res.render("account/login",{error:'Out of login attempts'});
   } else {
     // Checks if the username exists
     if ((await accountModel.getUserByUsername(username)) == null) {
-      alert("Username or password is incorrect!");
+      res.render("account/login", {
+        error: "Username or password is incorrect!",
+      });
       return res.redirect("/login");
     }
 
@@ -171,9 +156,9 @@ router.post("/login", parseBody, async (req, res, next) => {
     if (login_attempts < 4 && username != "admin") {
       await userModel.addLoginFailAttempts(username);
       login_attempts += 1;
-      alert(
-        `Password is incorrect, you used ${login_attempts} out of 3 allowed login attempts before the account is locked!`
-      );
+      res.render("account/login", {
+        error: `Password is incorrect, you used ${login_attempts} out of 3 allowed login attempts before the account is locked!`,
+      });
 
       if (login_attempts == 3) {
         await User.addAbnormalLogin(username);
@@ -181,7 +166,9 @@ router.post("/login", parseBody, async (req, res, next) => {
 
       return res.redirect("/login");
     } else {
-      alert("Username or password is incorrect!");
+      res.render("account/login", {
+        error: "Username or password is incorrect!",
+      });
       return res.redirect("/login");
     }
   }
@@ -242,6 +229,6 @@ router.post("/register", async (req, res, next) => {
   });
 });
 router.get("/history", (req, res, next) => {
-  res.render("user/history", {  layout: 'user/dashboard', })
-})
+  res.render("user/history", { layout: "user/dashboard" });
+});
 module.exports = router;
