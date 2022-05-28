@@ -14,7 +14,6 @@ const node_mailer = require("nodemailer");
 const body_parser = require("body-parser");
 const { connect } = require("http2");
 const { dbg } = require("../local_utils");
-const alert = require("alert");
 const SMTPTransport = require("nodemailer/lib/smtp-transport");
 const User = require("../models/users");
 var parseBody = body_parser.urlencoded({ extended: false });
@@ -41,9 +40,7 @@ async function sendAccountInfoToMail(email) {
     });
     await smtp_transport.sendMail(message);
   } catch (err) {
-    alert(
-      `There was a problem emailing, This is your created account \nUsername: ${user_info_arr[0]} \nPassword: ${user_info_arr[1]}`
-    );
+    `There was a problem emailing, This is your created account \nUsername: ${user_info_arr[0]} \nPassword: ${user_info_arr[1]}`;
   }
 }
 
@@ -59,46 +56,36 @@ router.get("/password", function (req, res, next) {
 });
 router.post("/password", parseBody, async function (req, res, next) {
   let body = req.body;
-  let username = req.session.username.toString();
+  let username = req.session.username;
+  if(typeof username == "undefined"){ return res.redirect("/");}
+  else {username = username.toString();}
   let old_pass = body.old_password.toString();
   let new_pass = body.new_password.toString();
   let verify_new_pass = body.verify_new_password.toString();
-  let error = undefined;
+  let error = null;
 
-  if (
-    (await accountModel.verifyAccount(req.session.username, old_pass)) != null
-  ) {
-    await accountModel.changePassword(username, new_pass);
-    req.session.first_time = false;
-    res.redirect("/dashboard");
-  } else if (verify_new_pass != new_pass) {
-    error = "The enetered password does not match";
-  } else {
-    error = "The old password does not match!";
+  // Initial check before accessing the database
+  if (verify_new_pass != new_pass) {
+    error = "The enetered password does not match with the verify password";
+  }
+  if (new_pass.length > 6) {
+    error = "The password length is larger than 6!";
   }
   if (error) {
-    res.render("account/password", { error });
-  }
-  if (verify_new_pass != new_pass) {
-    alert("The enetered password does not match");
-    return;
+    return res.render("account/password", { error });
   }
 
-  if (new_pass.length < 6) {
-    alert("The password length is larger than 6!");
-    return;
-  }
-
+  // checks after accessing the database
   if (
-    (await accountModel.verifyAccount(req.session.username, old_pass)) != null
+    (await accountModel.verifyPassword(req.session.username, old_pass)) != null
   ) {
     await accountModel.changePassword(username, new_pass);
     req.session.first_time = false;
-    alert("Password changed succesfully");
-    res.redirect("/dashboard");
+    return res.redirect("/dashboard");
   } else {
-    alert("The old password does not match!");
+    return res.render("account/password", {error: "The old password does not match!"});
   }
+  
 });
 
 //Trang đăng nhập
@@ -115,8 +102,14 @@ router.post("/login", parseBody, async (req, res, next) => {
   let username = body.username;
   let password = body.password;
 
+  let login_attempts = 0;
+  let failedAttempts = await userModel.getLoginFailAttempts(username);
+  if (failedAttempts != null) {
+    login_attempts = failedAttempts;
+  }
+
   if (login_attempts == 3) {
-    res.render("account/login",{error:'Out of login attempts'});
+    res.render("account/login", { error: "Out of login attempts" });
   } else {
     // Checks if the username exists
     if ((await accountModel.getUserByUsername(username)) == null) {
@@ -127,7 +120,7 @@ router.post("/login", parseBody, async (req, res, next) => {
     }
 
     // Tries to login with the username
-    queryResult = await accountModel.verifyAccount(username, password);
+    queryResult = await accountModel.verifyPassword(username, password);
     if (queryResult != null) {
       let userid = await queryResult["user_id"];
       let userModelResult = await userModel.findById(await userid);
@@ -141,30 +134,26 @@ router.post("/login", parseBody, async (req, res, next) => {
       }
 
       if (
-        typeof queryResult["isAdmin"] != "undefined" ||
+        typeof queryResult["isAdmin"] != "undefined" &&
         sess.isAdmin == true
       ) {
         return res.redirect("/admin");
-      } else {
-        // Reset the failed login attempt count after a succesful login
-        await userModel.resetLoginAttempts(username);
-        return res.redirect("/dashboard");
       }
+      // Reset the failed login attempt count after a succesful login
+      await userModel.resetLoginAttempts(username);
+      return res.redirect("/dashboard");
     }
 
     // Login failed
     if (login_attempts < 4 && username != "admin") {
       await userModel.addLoginFailAttempts(username);
       login_attempts += 1;
-      res.render("account/login", {
-        error: `Password is incorrect, you used ${login_attempts} out of 3 allowed login attempts before the account is locked!`,
-      });
-
       if (login_attempts == 3) {
         await User.addAbnormalLogin(username);
       }
-
-      return res.redirect("/login");
+      return res.render("account/login", {
+        error: `Password is incorrect, you used ${login_attempts} out of 3 allowed login attempts before the account is locked!`,
+      });
     } else {
       res.render("account/login", {
         error: "Username or password is incorrect!",

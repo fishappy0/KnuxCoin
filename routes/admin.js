@@ -21,15 +21,16 @@ router.get("/", function (req, res, next) {
         if (e) {
           console.log(e);
           return res.sendStatus(500);
+        } else {
+          return res.render("admin/admin", {
+            layout: "admin/layout",
+            pagination: {
+              page: req.query.page || 1,
+              pageCount: Math.ceil(count / perUser),
+            },
+            userList,
+          });
         }
-        res.render("admin/admin", {
-          layout: "admin/layout",
-          pagination: {
-            page: req.query.page || 1,
-            pageCount: Math.ceil(count / perUser),
-          },
-          userList,
-        });
       });
     });
 });
@@ -46,7 +47,7 @@ router.get("/detail/:id", (req, res, next) => {
       return res.sendStatus(500);
     }
     if (user) {
-      res.render("admin/accountdetail", {
+      return res.render("admin/accountdetail", {
         detail: user,
         full_name: req.session.full_name,
         email: req.session.email,
@@ -71,15 +72,16 @@ router.get("/unapproved", (req, res, next) => {
         if (e) {
           console.log(e);
           return res.sendStatus(500);
+        } else {
+          res.render("admin/waiting", {
+            layout: "admin/layout",
+            pagination: {
+              page: req.query.page || 1,
+              pageCount: Math.ceil(count / perUser),
+            },
+            waiting,
+          });
         }
-        res.render("admin/waiting", {
-          layout: "admin/layout",
-          pagination: {
-            page: req.query.page || 1,
-            pageCount: Math.ceil(count / perUser),
-          },
-          waiting,
-        });
       });
     });
 });
@@ -98,15 +100,16 @@ router.get("/approved", (req, res, next) => {
         if (e) {
           console.log(e);
           return res.sendStatus(500);
+        } else {
+          res.render("admin/active", {
+            layout: "admin/layout",
+            pagination: {
+              page: req.query.page || 1,
+              pageCount: Math.ceil(count / perUser),
+            },
+            active,
+          });
         }
-        res.render("admin/active", {
-          layout: "admin/layout",
-          pagination: {
-            page: req.query.page || 1,
-            pageCount: Math.ceil(count / perUser),
-          },
-          active,
-        });
       });
     });
 });
@@ -125,15 +128,16 @@ router.get("/locked", (req, res, next) => {
         if (e) {
           console.log(e);
           return res.sendStatus(500);
+        } else {
+          res.render("admin/locked", {
+            layout: "admin/layout",
+            pagination: {
+              page: req.query.page || 1,
+              pageCount: Math.ceil(count / perUser),
+            },
+            lock,
+          });
         }
-        res.render("admin/locked", {
-          layout: "admin/layout",
-          pagination: {
-            page: req.query.page || 1,
-            pageCount: Math.ceil(count / perUser),
-          },
-          lock,
-        });
       });
     });
 });
@@ -152,15 +156,16 @@ router.get("/disabled", (req, res, next) => {
         if (e) {
           console.log(e);
           return res.sendStatus(500);
+        } else {
+          res.render("admin/disabled", {
+            layout: "admin/layout",
+            pagination: {
+              page: req.query.page || 1,
+              pageCount: Math.ceil(count / perUser),
+            },
+            disable,
+          });
         }
-        res.render("admin/disabled", {
-          layout: "admin/layout",
-          pagination: {
-            page: req.query.page || 1,
-            pageCount: Math.ceil(count / perUser),
-          },
-          disable,
-        });
       });
     });
 });
@@ -309,15 +314,16 @@ router.get("/history/:id", (req, res, next) => {
         if (e) {
           console.log(e);
           return res.sendStatus(500);
+        } else {
+          res.render("admin/history", {
+            layout: "admin/layout",
+            pagination: {
+              page: req.query.page || 1,
+              pageCount: Math.ceil(count / perUser),
+            },
+            transaction,
+          });
         }
-        res.render("admin/history", {
-          layout: "admin/layout",
-          pagination: {
-            page: req.query.page || 1,
-            pageCount: Math.ceil(count / perUser),
-          },
-          transaction,
-        });
       });
     });
 });
@@ -361,15 +367,16 @@ router.get("/withdraw", (req, res, next) => {
         if (e) {
           console.log(e);
           return res.sendStatus(500);
+        } else {
+          res.render("admin/transpending", {
+            layout: "admin/layout",
+            pagination: {
+              page: req.query.page || 1,
+              pageCount: Math.ceil(count / perUser),
+            },
+            pendlist,
+          });
         }
-        res.render("admin/transpending", {
-          layout: "admin/layout",
-          pagination: {
-            page: req.query.page || 1,
-            pageCount: Math.ceil(count / perUser),
-          },
-          pendlist,
-        });
       });
     });
 });
@@ -391,15 +398,16 @@ router.get("/transfer", (req, res, next) => {
         if (e) {
           console.log(e);
           return res.sendStatus(500);
+        } else {
+          res.render("admin/transpending", {
+            layout: "admin/layout",
+            pagination: {
+              page: req.query.page || 1,
+              pageCount: Math.ceil(count / perUser),
+            },
+            pendlist,
+          });
         }
-        res.render("admin/transpending", {
-          layout: "admin/layout",
-          pagination: {
-            page: req.query.page || 1,
-            pageCount: Math.ceil(count / perUser),
-          },
-          pendlist,
-        });
       });
     });
 });
@@ -664,15 +672,16 @@ router.get("/search", (req, res) => {
         if (e) {
           console.log(e);
           return res.sendStatus(500);
+        } else {
+          res.render("admin/admin", {
+            layout: "admin/layout",
+            pagination: {
+              page: req.query.page || 1,
+              pageCount: Math.ceil(count / perUser),
+            },
+            userList,
+          });
         }
-        res.render("admin/admin", {
-          layout: "admin/layout",
-          pagination: {
-            page: req.query.page || 1,
-            pageCount: Math.ceil(count / perUser),
-          },
-          userList,
-        });
       });
     });
 });
@@ -695,15 +704,16 @@ router.get("/active/search", (req, res) => {
         if (e) {
           console.log(e);
           return res.sendStatus(500);
+        } else {
+          res.render("admin/active", {
+            layout: "admin/layout",
+            pagination: {
+              page: req.query.page || 1,
+              pageCount: Math.ceil(count / perUser),
+            },
+            active,
+          });
         }
-        res.render("admin/active", {
-          layout: "admin/layout",
-          pagination: {
-            page: req.query.page || 1,
-            pageCount: Math.ceil(count / perUser),
-          },
-          active,
-        });
       });
     });
 });
@@ -733,16 +743,17 @@ router.get("/transaction/search", (req, res) => {
         if (e) {
           console.log(e);
           return res.sendStatus(500);
+        } else {
+          //return res.redirect('/admin/withdraw')
+          res.render("admin/transpending", {
+            layout: "admin/layout",
+            pagination: {
+              page: req.query.page || 1,
+              pageCount: Math.ceil(count / perUser),
+            },
+            pendlist,
+          });
         }
-        //return res.redirect('/admin/withdraw')
-        res.render("admin/transpending", {
-          layout: "admin/layout",
-          pagination: {
-            page: req.query.page || 1,
-            pageCount: Math.ceil(count / perUser),
-          },
-          pendlist,
-        });
       });
     });
 });
@@ -769,16 +780,17 @@ router.get("/history/search", (req, res) => {
         if (e) {
           console.log(e);
           return res.sendStatus(500);
+        } else {
+          //return res.redirect('/admin/withdraw')
+          res.render("admin/transpending", {
+            layout: "admin/layout",
+            pagination: {
+              page: req.query.page || 1,
+              pageCount: Math.ceil(count / perUser),
+            },
+            pendlist,
+          });
         }
-        //return res.redirect('/admin/withdraw')
-        res.render("admin/transpending", {
-          layout: "admin/layout",
-          pagination: {
-            page: req.query.page || 1,
-            pageCount: Math.ceil(count / perUser),
-          },
-          pendlist,
-        });
       });
     });
 });

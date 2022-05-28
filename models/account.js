@@ -25,7 +25,7 @@ module.exports.getUserByUsername = async function (uname) {
   }
 };
 
-module.exports.verifyAccount = async function (uname, passphrase) {
+module.exports.verifyPassword = async function (uname, passphrase) {
   let userData = await accountDB.getUserByUsername(uname);
   if (typeof userData == "undefined" || userData == null) {
     return null;
