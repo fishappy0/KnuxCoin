@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const User = require('../models/users');
 const Transaction = require('../models/transaction');
 const Wallet = require('../models/wallet');
+const crypto = require('crypto');
 /**
   * Đọc tài liệu của thầy để biết tại sao có cái này.
   * CardId = STT
@@ -86,10 +87,10 @@ module.exports.cardThree = async function () {
 }
 
 // Chức năng nạp tiền.
-module.exports.recharge = async function (cardId, cardNumber, expiryDate, cvv, amount) {
-  var cardOneExpiryDate = new Date(2022, 10, 10);
-  var cardTwoExpiryDate = new Date(2022, 11, 11);
-  var cardThreeExpiryDate = new Date(2022, 12, 12);
+module.exports.recharge = async function (cardNumber, expiryDate, cvv, amount) {
+  let cardOneExpiryDate = new Date(2022, 10, 10);
+  let cardTwoExpiryDate = new Date(2022, 11, 11);
+  let cardThreeExpiryDate = new Date(2022, 12, 12);
 
   if (cardNumber.length != 6) {
     return 'Số thẻ không hợp lệ';
@@ -148,4 +149,44 @@ module.exports.recharge = async function (cardId, cardNumber, expiryDate, cvv, a
 
   // Nếu nhập cardNumber 6 chữ số nhưng không phải 3 cái trên thì hiện "thẻ này không được hỗ trợ".
   return 'Thẻ này không được hỗ trợ';
+}
+
+
+/**
+  * Chức năng rút tiền
+  * cardNumber = số thẻ (người dùng nhập)
+  * expiryDate = ngày hết hạn (người dùng nhập)
+  * cvv = Mã CVV (người dùng nhập)
+  * description = mô tả (người dùng nhập) nhưng phải ghi nhận vào lịch sử giao dịch
+  * amount = số tiền muốn rút (người dùng nhập)
+  * times = số lần rút (mỗi ngày chỉ được tối 2 lần rút) => Cần có chức năng lịch sử chăng?
+  * @todo: Nếu quá 5 triệu thì phải báo admin.
+  **/
+module.exports.withdraw = async function (cardNumber, expiryDate, cvv, description, amount, times) {
+  // Tính năng mô phỏng => chỉ cần rút từ thẻ đầu tiên nên set cứng luôn.
+  let defaultExpiryDate = new Date(2022, 10, 10);
+  if (cardNumber == 111111 && expiryDate == defaultExpiryDate && cvv == 411) {
+    const user = await User.findOne({ userId: user.id });
+    if (amount > 5000000) {
+      const transactionId = crypto.randomBytes(16).toString("hex");
+      // Chuyển status sang pending.
+      await Transaction.findOneAndUpdate({ transactionId: transactionId }, { status: 'pending' });
+      if (amount > user.balance) {
+        if (amount % 50000 == 0) {
+          // 5% phí rút tiền
+          user.balance -= amount * 0.95;
+          await user.save();
+          return 'Rút tiền thành công';
+        } else {
+          return 'Số tiền rút mỗi lần phải là bội số của 50,000 đồng.';
+        }
+      } else {
+        return 'Không đủ tiền rút';
+      }
+    }
+  } else if (cardNumber == 222222 || cardNumber == 333333) {
+    return 'Thẻ này không được hỗ trợ để rút tiền';
+  } else {
+    return 'Thông tin thẻ không hợp lệ';
+  }
 }

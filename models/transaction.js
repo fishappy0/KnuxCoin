@@ -9,6 +9,8 @@ const transactionSchema = new mongoose.Schema({
       name: String,
     },
   ],
+  // transactionId để hỗ trợ cho tính năng lịch sử giao dịch
+  transactionId: String,
   type: String,
   amount: Number,
   fee: Number,
