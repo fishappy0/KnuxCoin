@@ -41,6 +41,8 @@ router.get("/logout", function (req, res) {
 
 //Trang chi tiết account
 router.get("/detail/:id", (req, res, next) => {
+  if (typeof req.session.isAdmin == "undefined" || req.session.isAdmin == false)
+    res.redirect("/");
   User.findOne({ _id: mongoose.Types.ObjectId(req.params.id) }, (e, user) => {
     if (e) {
       console.log(e);
@@ -59,6 +61,8 @@ router.get("/detail/:id", (req, res, next) => {
 
 //trang tài khoản chờ kích hoạt
 router.get("/unapproved", (req, res, next) => {
+  if (typeof req.session.isAdmin == "undefined" || req.session.isAdmin == false)
+    res.redirect("/");
   const perUser = 10;
   const page = req.query.page;
 
@@ -88,6 +92,8 @@ router.get("/unapproved", (req, res, next) => {
 
 //trang tài khoản đã kích hoạt
 router.get("/approved", (req, res, next) => {
+  if (typeof req.session.isAdmin == "undefined" || req.session.isAdmin == false)
+    res.redirect("/");
   const perUser = 10;
   const page = req.query.page;
   User.find({ status: "approved" })
@@ -116,6 +122,8 @@ router.get("/approved", (req, res, next) => {
 
 //trang tài khoản bị khóa
 router.get("/locked", (req, res, next) => {
+  if (typeof req.session.isAdmin == "undefined" || req.session.isAdmin == false)
+    res.redirect("/");
   const perUser = 10;
   const page = req.query.page;
   User.find({ status: "locked", abnormalLogin: 1 })
@@ -144,6 +152,8 @@ router.get("/locked", (req, res, next) => {
 
 //trang tài khoản bị vô hiệu hóa
 router.get("/disabled", (req, res, next) => {
+  if (typeof req.session.isAdmin == "undefined" || req.session.isAdmin == false)
+    res.redirect("/");
   const perUser = 10;
   const page = req.query.page;
   User.find({ status: "disabled" })
@@ -172,6 +182,8 @@ router.get("/disabled", (req, res, next) => {
 
 //xử lý xác minh tài khoản
 router.post("/approve", (req, res, next) => {
+  if (typeof req.session.isAdmin == "undefined" || req.session.isAdmin == false)
+    res.redirect("/");
   console.log(req.body.userid);
   User.findOne(
     { _id: mongoose.Types.ObjectId(req.body.userid) },
@@ -199,6 +211,8 @@ router.post("/approve", (req, res, next) => {
 
 //xử lý hủy tài khoản
 router.post("/disable", (req, res, next) => {
+  if (typeof req.session.isAdmin == "undefined" || req.session.isAdmin == false)
+    res.redirect("/");
   console.log(req.body.userid);
   User.findOne(
     { _id: mongoose.Types.ObjectId(req.body.userid) },
@@ -226,6 +240,8 @@ router.post("/disable", (req, res, next) => {
 
 //Xử lý gửi yêu cầu bổ sung hồ sơ
 router.post("/request", (req, res, next) => {
+  if (typeof req.session.isAdmin == "undefined" || req.session.isAdmin == false)
+    res.redirect("/");
   console.log(req.body.userid);
   User.findOne(
     { _id: mongoose.Types.ObjectId(req.body.userid) },
@@ -253,6 +269,8 @@ router.post("/request", (req, res, next) => {
 
 //Xử lý mở khóa tài khoản
 router.post("/unlock", (req, res, next) => {
+  if (typeof req.session.isAdmin == "undefined" || req.session.isAdmin == false)
+    res.redirect("/");
   console.log(req.body.userid);
   console.log(req.body.lockedDate);
   User.findOne(
@@ -288,6 +306,8 @@ router.post("/unlock", (req, res, next) => {
 
 //trang lịch sử giao dịch
 router.get("/history/:id", (req, res, next) => {
+  if (typeof req.session.isAdmin == "undefined" || req.session.isAdmin == false)
+    res.redirect("/");
   console.log(req.params.id);
   //người chuyển
   const perUser = 10;
@@ -330,6 +350,8 @@ router.get("/history/:id", (req, res, next) => {
 
 //trang chi tiết giao dịch
 router.get("/transdetail/:id", (req, res, next) => {
+  if (typeof req.session.isAdmin == "undefined" || req.session.isAdmin == false)
+    res.redirect("/");
   console.log(req.params.id);
   Transaction.findOne(
     { _id: mongoose.Types.ObjectId(req.params.id) },
@@ -351,6 +373,8 @@ router.get("/transdetail/:id", (req, res, next) => {
 
 //trang giao dịch rút tiền trên 5 triệu
 router.get("/withdraw", (req, res, next) => {
+  if (typeof req.session.isAdmin == "undefined" || req.session.isAdmin == false)
+    res.redirect("/");
   const perUser = 10;
   const page = req.query.page;
   Transaction.find({
@@ -382,6 +406,8 @@ router.get("/withdraw", (req, res, next) => {
 });
 //trang giao dịch chuyển tiền trên 5 triệu
 router.get("/transfer", (req, res, next) => {
+  if (typeof req.session.isAdmin == "undefined" || req.session.isAdmin == false)
+    res.redirect("/");
   const perUser = 10;
   const page = req.query.page;
   Transaction.find({
@@ -413,222 +439,146 @@ router.get("/transfer", (req, res, next) => {
 });
 
 //xử lý đồng ý giao dịch
-router.post("/accept", (req, res, next) => {
-  console.log(req.body.transid);
+router.post('/accept', (req, res, next) => {
+  if (typeof req.session.isAdmin == "undefined" || req.session.isAdmin == false)
+    res.redirect("/");
+  console.log(req.body.transid)
   const amount = req.body.amount;
   const fee = req.body.fee;
-  console.log(req.body.receiver);
-  console.log(amount - fee);
-  let error = undefined;
-  Transaction.findOne(
-    { _id: mongoose.Types.ObjectId(req.body.transid) },
-    (e, trans) => {
-      if (trans && !e) {
-        if (trans.type == "withdraw") {
-          Wallet.findOne(
-            {
-              userId: {
-                $elemMatch: { id: mongoose.Types.ObjectId(req.body.sender) },
-              },
-            },
-            (e, wallet) => {
-              console.log({ wallet });
-              if (wallet.balance < 5000000) {
-                error =
-                  "User has insufficient balance\nPlease decline this transaction!";
-                return res.render("admin/transdetail", { error });
-                //console.log('User has insufficient balance\nPlease decline this transaction!')
-              } else {
-                Wallet.updateOne(
-                  {
-                    userId: {
-                      $elemMatch: {
-                        id: mongoose.Types.ObjectId(req.body.sender),
-                      },
-                    },
-                  },
-                  { $set: { balance: wallet.balance - (amount - fee) } },
+  console.log(req.body.receiver)
+  console.log(amount - fee)
+  let error = undefined
+  Transaction.findOne({ _id: mongoose.Types.ObjectId(req.body.transid) }, (e, trans) => {
+    if (trans && !e) {
+      if (trans.type == "withdraw") {
+        User.findOne({ _id: mongoose.Types.ObjectId(req.body.sender) }, (e, wallet) => {
+          console.log({ wallet })
+          if (wallet.balance < 5000000) {
+            error = 'User has insufficient balance\nPlease decline this transaction!'
+            return res.render('admin/transdetail', { error })
+            //console.log('User has insufficient balance\nPlease decline this transaction!')
+          } else {
+            User.updateOne(
+              { _id: mongoose.Types.ObjectId(req.body.sender) },
+              { $set: { balance: (wallet.balance) - (amount - fee) } },
+              function (err) {
+                if (err) {
+                  console.log(err);
+                  return res.sendStatus(500)
+                } else {
+                  Transaction.updateOne(
+                    { _id: mongoose.Types.ObjectId(req.body.transid) },
+                    { $set: { status: 'success' } },
+                    function (e) {
+                      if (e) {
+                        console.log(e);
+                        return res.sendStatus(500)
+                      } else {
+                        res.redirect('/')
+                      }
+                    }
+                  );
+                }
+              }
+            )
+          }
+        })
+      } else if (trans.type == "transfer") {
+        User.findOne({ _id: mongoose.Types.ObjectId(req.body.sender) }, (e, walletSender) => {
+          console.log(walletSender)
+          if (walletSender.balance < 5000000) {
+            error = 'User has insufficient balance\nPlease decline this transaction!'
+            return res.render('admin/transdetail', { error })
+          } else {
+            User.findOne({ _id: mongoose.Types.ObjectId(req.body.receiver) }, (e, walletReceiver) => {
+              if (trans.charge_party == "recipient") {
+                User.updateOne(
+                  { _id: mongoose.Types.ObjectId(req.body.receiver) },
+                  { $set: { balance: (walletReceiver.balance) + (amount - fee) } },
                   function (err) {
                     if (err) {
                       console.log(err);
-                      return res.sendStatus(500);
+                      return res.sendStatus(500)
                     } else {
-                      Transaction.updateOne(
-                        { _id: mongoose.Types.ObjectId(req.body.transid) },
-                        { $set: { status: "success" } },
-                        function (e) {
-                          if (e) {
-                            console.log(e);
-                            return res.sendStatus(500);
-                          } else {
-                            res.redirect("/");
-                          }
-                        }
-                      );
-                    }
-                  }
-                );
-              }
-            }
-          );
-        } else if (trans.type == "transfer") {
-          Wallet.findOne(
-            {
-              userId: {
-                $elemMatch: { id: mongoose.Types.ObjectId(req.body.sender) },
-              },
-            },
-            (e, walletSender) => {
-              console.log(walletSender);
-              if (walletSender.balance < 5000000) {
-                error =
-                  "User has insufficient balance\nPlease decline this transaction!";
-                return res.render("admin/transdetail", { error });
-              } else {
-                Wallet.findOne(
-                  {
-                    userId: {
-                      $elemMatch: {
-                        id: mongoose.Types.ObjectId(req.body.receiver),
-                      },
-                    },
-                  },
-                  (e, walletReceiver) => {
-                    if (trans.charge_party == "recipient") {
-                      Wallet.updateOne(
-                        {
-                          userId: {
-                            $elemMatch: {
-                              id: mongoose.Types.ObjectId(req.body.receiver),
-                            },
-                          },
-                        },
-                        {
-                          $set: {
-                            balance: walletReceiver.balance + (amount - fee),
-                          },
-                        },
+                      User.updateOne(
+                        { _id: mongoose.Types.ObjectId(req.body.sender) },
+                        { $set: { balance: (walletSender.balance) - (amount) } },
                         function (err) {
                           if (err) {
                             console.log(err);
-                            return res.sendStatus(500);
+                            return res.sendStatus(500)
                           } else {
-                            Wallet.updateOne(
-                              {
-                                userId: {
-                                  $elemMatch: {
-                                    id: mongoose.Types.ObjectId(
-                                      req.body.sender
-                                    ),
-                                  },
-                                },
-                              },
-                              {
-                                $set: {
-                                  balance: walletSender.balance - amount,
-                                },
-                              },
-                              function (err) {
-                                if (err) {
-                                  console.log(err);
-                                  return res.sendStatus(500);
+                            Transaction.updateOne(
+                              { _id: mongoose.Types.ObjectId(req.body.transid) },
+                              { $set: { status: 'success' } },
+                              function (e) {
+                                if (e) {
+                                  console.log(e);
+                                  return res.sendStatus(500)
                                 } else {
-                                  Transaction.updateOne(
-                                    {
-                                      _id: mongoose.Types.ObjectId(
-                                        req.body.transid
-                                      ),
-                                    },
-                                    { $set: { status: "success" } },
-                                    function (e) {
-                                      if (e) {
-                                        console.log(e);
-                                        return res.sendStatus(500);
-                                      } else {
-                                        res.redirect("/");
-                                      }
-                                    }
-                                  );
+                                  res.redirect('/')
                                 }
                               }
                             );
                           }
                         }
-                      );
-                    } else if (trans.charge_party == "sender") {
-                      Wallet.updateOne(
-                        {
-                          userId: {
-                            $elemMatch: {
-                              id: mongoose.Types.ObjectId(req.body.receiver),
-                            },
-                          },
-                        },
-                        { $set: { balance: walletReceiver.balance + amount } },
+                      )
+                    }
+                  }
+                )
+
+              } else if (trans.charge_party == "sender") {
+                User.updateOne(
+                  { _id: mongoose.Types.ObjectId(req.body.receiver) },
+                  { $set: { balance: (walletReceiver.balance) + (amount) } },
+                  function (err) {
+                    if (err) {
+                      console.log(err);
+                      return res.sendStatus(500)
+                    } else {
+                      User.updateOne(
+                        { _id: mongoose.Types.ObjectId(req.body.sender) },
+                        { $set: { balance: (walletSender.balance) - (amount) - (fee) } },
                         function (err) {
                           if (err) {
                             console.log(err);
-                            return res.sendStatus(500);
+                            return res.sendStatus(500)
                           } else {
-                            Wallet.updateOne(
-                              {
-                                userId: {
-                                  $elemMatch: {
-                                    id: mongoose.Types.ObjectId(
-                                      req.body.sender
-                                    ),
-                                  },
-                                },
-                              },
-                              {
-                                $set: {
-                                  balance: walletSender.balance - amount - fee,
-                                },
-                              },
-                              function (err) {
-                                if (err) {
-                                  console.log(err);
-                                  return res.sendStatus(500);
+                            Transaction.updateOne(
+                              { _id: mongoose.Types.ObjectId(req.body.transid) },
+                              { $set: { status: 'success' } },
+                              function (e) {
+                                if (e) {
+                                  console.log(e);
+                                  return res.sendStatus(500)
                                 } else {
-                                  Transaction.updateOne(
-                                    {
-                                      _id: mongoose.Types.ObjectId(
-                                        req.body.transid
-                                      ),
-                                    },
-                                    { $set: { status: "success" } },
-                                    function (e) {
-                                      if (e) {
-                                        console.log(e);
-                                        return res.sendStatus(500);
-                                      } else {
-                                        res.redirect("/");
-                                      }
-                                    }
-                                  );
+                                  res.redirect('/')
                                 }
                               }
                             );
                           }
                         }
-                      );
+                      )
                     }
                   }
-                );
+                )
               }
-            }
-          );
-        }
-      } else {
-        console.log(e);
-        return res.sendStatus(500);
+            })
+          }
+        })
       }
+    } else {
+      console.log(e);
+      return res.sendStatus(500)
     }
-  );
-});
+  })
+})
+
 
 //xử lý từ chối giao dịch
 router.post("/decline", (req, res, next) => {
+  if (typeof req.session.isAdmin == "undefined" || req.session.isAdmin == false)
+    res.redirect("/");
   console.log(req.body.transid);
   Transaction.findOne(
     { _id: mongoose.Types.ObjectId(req.body.transid) },
@@ -656,6 +606,8 @@ router.post("/decline", (req, res, next) => {
 
 //Chức năng tìm kiếm user
 router.get("/search", (req, res) => {
+  if (typeof req.session.isAdmin == "undefined" || req.session.isAdmin == false)
+    res.redirect("/");
   var email = req.query.email;
   console.log(email);
 
@@ -688,6 +640,8 @@ router.get("/search", (req, res) => {
 
 //Chức năng tìm kiếm user
 router.get("/active/search", (req, res) => {
+  if (typeof req.session.isAdmin == "undefined" || req.session.isAdmin == false)
+    res.redirect("/");
   var email = req.query.email;
   console.log(email);
 
@@ -719,6 +673,8 @@ router.get("/active/search", (req, res) => {
 });
 //Chức năng tìm kiếm giao dịch
 router.get("/transaction/search", (req, res) => {
+  if (typeof req.session.isAdmin == "undefined" || req.session.isAdmin == false)
+    res.redirect("/");
   var from = req.query.from;
   console.log(from);
   var to = req.query.to;
@@ -760,6 +716,8 @@ router.get("/transaction/search", (req, res) => {
 
 //Chức năng tìm kiếm lịch sử giao dịch
 router.get("/history/search", (req, res) => {
+  if (typeof req.session.isAdmin == "undefined" || req.session.isAdmin == false)
+    res.redirect("/");
   var from = req.query.from;
   console.log(from);
   var to = req.query.to;
