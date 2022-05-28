@@ -322,7 +322,7 @@ router.get("/history/:id", (req, res, next) => {
       },
     ],
   })
-    .sort({ dated: -1 })
+    .sort({ date: -1 })
     .skip(perUser * page - perUser)
     .limit(perUser)
     .lean()
@@ -379,7 +379,7 @@ router.get("/withdraw", (req, res, next) => {
     type: "withdraw",
     status: "pending",
   })
-    .sort({ dated: -1 })
+    .sort({ date: -1 })
     .skip(perUser * page - perUser)
     .limit(perUser)
     .lean()
@@ -412,7 +412,7 @@ router.get("/transfer", (req, res, next) => {
     type: "transfer",
     status: "pending",
   })
-    .sort({ dated: -1 })
+    .sort({ date: -1 })
     .skip(perUser * page - perUser)
     .limit(perUser)
     .lean()

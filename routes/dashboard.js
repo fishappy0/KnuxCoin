@@ -22,14 +22,14 @@ router.get("/", function (req, res, next) {
 router.post("/", (req, res, next) => { });
 
 router.get("/history", (req, res, next) => {
-  sess = req.session;
-  if (typeof sess.username == "undefined") { res.redirect("/"); }
+  // sess = req.session;
+  // if (typeof sess.username == "undefined") { res.redirect("/"); }
   res.render("user/history", { layout: "user/dashboard" });
 });
 
 router.get("/profile", (req, res, next) => {
-  sess = req.session;
-  if (typeof sess.username == "undefined") { res.redirect("/"); }
+  // sess = req.session;
+  // if (typeof sess.username == "undefined") { res.redirect("/"); }
   console.log(req.session.email)
   // User.findOne({ email: req.session.email }, (e, user) => {
   //   if (e) {
@@ -37,7 +37,7 @@ router.get("/profile", (req, res, next) => {
   //     return res.sendStatus(500)
   //   }
   //   if (user) {
-  return res.render("user/profile", { /*profile: user,*/ layout: "user/dashboard" })
+      return res.render("user/profile", { /*profile: user,*/ layout: "user/dashboard" })
   //   }
   // })
 })
