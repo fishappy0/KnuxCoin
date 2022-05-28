@@ -1,15 +1,15 @@
 // Model của thẻ (hõ trợ chức năng nạp tiền)
-const mongoose = require("mongoose");
-const User = require("../models/users");
-const Transaction = require("../models/transaction");
-const Wallet = require("../models/wallet");
+const mongoose = require('mongoose');
+const User = require('../models/users');
+const Transaction = require('../models/transaction');
+const Wallet = require('../models/wallet');
 /**
- * Đọc tài liệu của thầy để biết tại sao có cái này.
- * CardId = STT
- * CardNumber = Số
- * expiryDate = Ngày hết hạn
- * cvv = Mã CVV
- **/
+  * Đọc tài liệu của thầy để biết tại sao có cái này.
+  * CardId = STT
+  * CardNumber = Số
+  * expiryDate = Ngày hết hạn
+  * cvv = Mã CVV
+  **/
 const cardSchema = new mongoose.Schema({
   cardId: Number,
   cardNumber: Number,
@@ -18,7 +18,7 @@ const cardSchema = new mongoose.Schema({
 });
 
 // Tạo collection
-var Card = mongoose.model("Card", cardSchema);
+var Card = mongoose.model('Card', cardSchema);
 module.exports = Card;
 
 // thẻ đầu tiên. Không giới hạn số lần nạp và số tiền mỗi lần nạp.
@@ -39,9 +39,9 @@ module.exports.cardOne = async function () {
   });
 
   await cardOneData.save();
-  console.log("Đã tạo thẻ 1");
+  console.log('Đã tạo thẻ 1');
   return cardOneDataArray;
-};
+}
 
 // thể thứ hai. Không giới hạn số lần nạp nhưng chỉ được nạp tối đa 1 triệu/lần.
 module.exports.cardTwo = async function () {
@@ -60,9 +60,9 @@ module.exports.cardTwo = async function () {
   });
 
   await cardTwoData.save();
-  console.log("Đã tạo thẻ 2");
+  console.log('Đã tạo thẻ 2');
   return cardTwoDataArray;
-};
+}
 
 // thẻ thứ 3. Khi nạp bằng thẻ này thì luôn nhận được thông báo là “thẻ hết tiền”.
 module.exports.cardThree = async function () {
@@ -81,77 +81,71 @@ module.exports.cardThree = async function () {
   });
 
   await cardThreeData.save();
-  console.log("Đã tạo thẻ 3");
+  console.log('Đã tạo thẻ 3');
   return cardThreeDataArray;
-};
+}
 
 // Chức năng nạp tiền.
-module.exports.recharge = async function (
-  cardId,
-  cardNumber,
-  expiryDate,
-  cvv,
-  amount
-) {
+module.exports.recharge = async function (cardId, cardNumber, expiryDate, cvv, amount) {
   var cardOneExpiryDate = new Date(2022, 10, 10);
   var cardTwoExpiryDate = new Date(2022, 11, 11);
   var cardThreeExpiryDate = new Date(2022, 12, 12);
 
   if (cardNumber.length != 6) {
-    return "Số thẻ không hợp lệ";
+    return 'Số thẻ không hợp lệ';
   }
 
   if (cvv.length != 3) {
-    return "Mã CVV không hợp lệ";
+    return 'Mã CVV không hợp lệ';
   }
 
   // Thẻ 1 không giới hạn.
   if (cardNumber == 111111) {
     if (expiryDate.getTime() != cardOneExpiryDate.getTime()) {
-      return "Thời hạn thẻ không hợp lệ";
+      return 'Thời hạn thẻ không hợp lệ';
     }
 
     if (cvv != 411) {
-      return "Mã CVV không hợp lệ";
+      return 'Mã CVV không hợp lệ';
     }
 
-    const wallet = await Wallet.findOne({ userId: user.id });
-    wallet.balance += amount;
-    await wallet.save();
-    return "Nạp tiền thành công";
+    const user = await User.findOne({ userId: user.id });
+    user.balance += amount;
+    await user.save();
+    return 'Nạp tiền thành công';
   }
 
   // Thẻ 2 nạp tối đa 1 triệu/lần.
   if (cardNumber == 222222) {
     if (expiryDate.getTime() != cardTwoExpiryDate.getTime()) {
-      return "Thời hạn thẻ không hợp lệ";
+      return 'Thời hạn thẻ không hợp lệ';
     }
     if (cvv != 443) {
-      return "Mã CVV không hợp lệ";
+      return 'Mã CVV không hợp lệ';
     }
 
     if (amount > 1000000) {
-      return "Không thể nạp quá 1 triệu";
+      return 'Không thể nạp quá 1 triệu';
     }
 
-    const wallet = await Wallet.findOne({ userId: user.id });
-    wallet.balance += amount;
-    await wallet.save();
-    return "Nạp tiền thành công";
+    const user = await User.findOne({ userId: user.id });
+    user.balance += amount;
+    await user.save();
+    return 'Nạp tiền thành công';
   }
 
   // Thẻ 3 luôn hết tiền.
   if (cardNumber == 333333) {
     if (expiryDate.getTime() != cardThreeExpiryDate.getTime()) {
-      return "Thời hạn thẻ không hợp lệ";
+      return 'Thời hạn thẻ không hợp lệ';
     }
     if (cvv != 577) {
-      return "Mã CVV không hợp lệ";
+      return 'Mã CVV không hợp lệ';
     }
 
-    return "Thẻ hết tiền";
+    return 'Thẻ hết tiền';
   }
 
   // Nếu nhập cardNumber 6 chữ số nhưng không phải 3 cái trên thì hiện "thẻ này không được hỗ trợ".
-  return "Thẻ này không được hỗ trợ";
-};
+  return 'Thẻ này không được hỗ trợ';
+}

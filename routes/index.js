@@ -155,10 +155,9 @@ router.post("/login", parseBody, async (req, res, next) => {
         error: `Password is incorrect, you used ${login_attempts} out of 3 allowed login attempts before the account is locked!`,
       });
     } else {
-      res.render("account/login", {
-        error: "Username or password is incorrect!",
+      return res.render("account/login", {
+        error: `Username or password is incorrect!`
       });
-      return res.redirect("/login");
     }
   }
 });

@@ -15,6 +15,7 @@ const userSchema = new mongoose.Schema({
   balance: Number,
   idfront: String,
   idback: String,
+  balance: Number,
 });
 var User = mongoose.model("User", userSchema); //Tạo collection
 module.exports = User;
