@@ -29,14 +29,30 @@
   "__v": 0
 },{
   "_id": {
-    "$oid": "6290d2d6ba4bd42fd4ed9c29"
+    "$oid": "629189f41d3bc716b0ab5984"
   },
-  "user_id": "0921077950",
-  "account_id": "22U822504",
-  "username": "9480342591",
-  "password": "$2b$10$62QWu8Lrnl2UmblhYJEZcemaeN7La2aeiSI/fEJTs07IyDLKF5Bn.",
+  "user_id": {
+    "$oid": "629189f41d3bc716b0ab5982"
+  },
+  "account_id": "22U9708888",
+  "username": "885814087",
+  "password": "$2b$10$SCZJnuzzaLgSc91ccY/UlOchU54Z8fNaBN3YLbKrIeXykTbvonziK",
   "isAdmin": false,
   "first_time_login": false,
-  "phone_num": "6290d2d6ba4bd42fd4ed9c27",
+  "phone_num": "0921077950",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6291ab97127e7bc7b85234de"
+  },
+  "user_id": {
+    "$oid": "6291ab97127e7bc7b85234dc"
+  },
+  "account_id": "22U6836973",
+  "username": "828529238",
+  "password": "$2b$10$VFwDm.ljyIcJWfWZeOg/NO3oDi5F6JVmUsGD89PjQ1IXCy7/6vF1q",
+  "isAdmin": false,
+  "first_time_login": true,
+  "phone_num": "0921077950",
   "__v": 0
 }]

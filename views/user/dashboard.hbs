@@ -27,58 +27,43 @@
                     </a>
                 </div>
 
-                {{! Username text }}
-                <div class="user-text">
-                    <div class="username-text" name="username-text">Default</div>
-                </div>
-
-                {{! User Login Container }}
-                <div class="user_login_container">
-                    <div class="user_layout_login-box" role="button" tabindex="0" title="Account: Default Account "
-                        aria-expanded="false">
-                        <div class="user_layout_image_container">
-                            <img class="user_layout_user_image" src="/images/icon/default-person.png"
-                                srcset="/images/icon/default-person.png" alt="" aria-hidden="true" height="70"
-                                width="70" />
-                        </div>
-                        <div class="user_layout_login_options_window">
-                            {{! drop down profile menu }}
-                            <ul>
-                                <div class="user_layout_login_user_area">
-                                    <div class="user_layout_upper_user_information">
-                                        <ul>
-                                            <li><img class="user_layout_user_image_expanded"
-                                                    src="/images/icon/default-person.png"
-                                                    srcset="/images/icon/default-person.png" alt="" aria-hidden="true"
-                                                    data-noaft="" height="80" width="80" />
-                                            <li><a class="user_layout_username">
-                                                    Default user
-                                                    {{#if username}}
-
-                                                    {{/if}}
-                                                </a></li>
-                                            <li><a class="user_layout_email">Default@user.com
-                                                    {{#if username}}
-
-                                                    {{/if}}
-                                                </a></li>
-                                        </ul>
-                                    </div>
-                                    </li>
-                                    {{! if loged in then this will be log-out, if log out then it's sign in }}
-                                    <li><a href="" class="user_layout_login_box_button">Profile</a></li>
-                                    <li><a href="/password" class="user_layout_login_box_button">Change
-                                            Password</a></li>
-                                    <li><a href="" class="user_layout_login_box_button">Lock This
-                                            Account</a></li>
-                                    <li>
-                                        <form method="post" action="/logout">
-                                            <button type="submit" class="user_layout_login_box_button"> Log out</a>
-                                        </form>
-                                    </li>
-                                    {{! zero width space }}
-                            </ul>
-                        </div>
+            {{! User Login Container }}
+            <div class="user_login_container">
+                <div class="user_layout_login-box" role="button" tabindex="0" title="Account: Default Account "
+                    aria-expanded="false">
+                    <div class="user_layout_image_container">
+                        <img class="user_layout_user_image" src="/images/icon/default-person.png"
+                            srcset="/images/icon/default-person.png" alt="" aria-hidden="true" height="70" width="70" />
+                    </div>
+                    <div class="user_layout_login_options_window">
+                        {{! drop down profile menu }}
+                        <ul>
+                            <div class="user_layout_login_user_area">
+                                <div class="user_layout_upper_user_information">
+                                    <ul>
+                                        <li><img class="user_layout_user_image_expanded"
+                                                src="/images/icon/default-person.png"
+                                                srcset="/images/icon/default-person.png" alt="" aria-hidden="true"
+                                                data-noaft="" height="80" width="80" />
+                                        <li><a href="/dashboard" class="user_layout_username">
+                                                    {{full_name}}
+                                            </a></li>
+                                        <li><a href="/dashboard" class="user_layout_email">
+                                                    {{ email }}
+                                            </a></li>
+                                    </ul>
+                                </div>
+                                </li>
+                                {{! if loged in then this will be log-out, if log out then it's sign in }}
+                                <li><a href="" class="user_layout_login_box_button">Profile</a></li>
+                                <li><a href="/password" class="user_layout_login_box_button">Change
+                                        Password</a></li>
+                                <li><a href="" class="user_layout_login_box_button">Lock This
+                                        Account</a></li>
+                                <li><form method="post" action="/logout">
+                                    <button type="submit" class="user_layout_login_box_button"> Log out</a></form></li>
+                                {{! zero width space }}
+                        </ul>
                     </div>
                 </div>
             </div>
