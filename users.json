@@ -1,278 +1,131 @@
 [{
   "_id": {
-    "$oid": "627ac534c08345d18053419b"
+    "$oid": "6290bbf11b98a44d7ee7d6af"
   },
-  "email": "admin@gmail.com",
-  "full_name": "Admin 1",
-  "address": "123",
-  "phone": "0123456789",
+  "full_name": "Knuxie",
+  "email": "1 King Street",
+  "address": "knuxandco@gmail.com",
   "dob": {
     "$date": {
-      "$numberLong": "1652194363370"
+      "$numberLong": "1652227200000"
     }
   },
+  "phone": "19008008",
   "createdAt": {
     "$date": {
-      "$numberLong": "1652194363370"
+      "$numberLong": "1653652465000"
     }
   },
-  "lockedAt": {
-    "$date": {
-      "$numberLong": "1652194363370"
-    }
-  },
-  "loginFail": 3,
-  "abnormalLogin": 1,
-  "status": "locked"
-},{
-  "_id": {
-    "$oid": "627bbb42742494f14ef0a32f"
-  },
-  "email": "admin2@gmail.com",
-  "full_name": "Admin 2",
-  "address": "123",
-  "phone": "0123456789",
-  "dob": {
-    "$date": {
-      "$numberLong": "1652194363370"
-    }
-  },
-  "createdAt": {
-    "$date": {
-      "$numberLong": "1652194363370"
-    }
-  },
-  "lockedAt": {
-    "$date": {
-      "$numberLong": "1652194363370"
-    }
-  },
-  "loginFail": 3,
-  "abnormalLogin": 1,
-  "status": "locked"
-},{
-  "_id": {
-    "$oid": "6289f5e12faabf6d5a8e68ac"
-  },
-  "email": "admin8@gmail.com",
-  "full_name": "Admin 8",
-  "address": "123",
-  "phone": "0123456789",
-  "dob": {
-    "$date": {
-      "$numberLong": "1652194363371"
-    }
-  },
-  "createdAt": {
-    "$date": {
-      "$numberLong": "1652194363372"
-    }
-  },
-  "lockedAt": {
-    "$date": {
-      "$numberLong": "1652194363372"
-    }
-  },
-  "loginFail": 3,
-  "abnormalLogin": 1,
-  "status": "locked"
-},{
-  "_id": {
-    "$oid": "6289f62e2faabf6d5a8e68ad"
-  },
-  "email": "admin9@gmail.com",
-  "full_name": "Admin 9",
-  "address": "123",
-  "phone": "0123456789",
-  "dob": {
-    "$date": {
-      "$numberLong": "1652194363371"
-    }
-  },
-  "createdAt": {
-    "$date": {
-      "$numberLong": "1652194363372"
-    }
-  },
-  "lockedAt": {
-    "$date": {
-      "$numberLong": "1652194363372"
-    }
-  },
-  "loginFail": 3,
-  "abnormalLogin": 1,
-  "status": "locked"
-},{
-  "_id": {
-    "$oid": "6289f6582faabf6d5a8e68ae"
-  },
-  "email": "admin10@gmail.com",
-  "full_name": "Admin 10",
-  "address": "123",
-  "phone": "0123456789",
-  "dob": {
-    "$date": {
-      "$numberLong": "1652194363371"
-    }
-  },
-  "createdAt": {
-    "$date": {
-      "$numberLong": "1652194363372"
-    }
-  },
-  "lockedAt": {
-    "$date": {
-      "$numberLong": "1652194363372"
-    }
-  },
-  "loginFail": 3,
-  "abnormalLogin": 1,
-  "status": "locked"
-},{
-  "_id": {
-    "$oid": "6289f66f2faabf6d5a8e68af"
-  },
-  "email": "admin11@gmail.com",
-  "full_name": "Admin 11",
-  "address": "123",
-  "phone": "0123456789",
-  "dob": {
-    "$date": {
-      "$numberLong": "1652194363371"
-    }
-  },
-  "createdAt": {
-    "$date": {
-      "$numberLong": "1652194363372"
-    }
-  },
+  "lockedAt": null,
   "loginFail": 0,
   "abnormalLogin": 0,
-  "status": "disabled"
+  "status": "waiting",
+  "balance": 0,
+  "idfront": "/test_upload/22U1865721/sideA_27522_22U1865721.png",
+  "idback": "/test_upload/22U1865721/sideB_27522_22U1865721.png",
+  "__v": 0
 },{
   "_id": {
-    "$oid": "6289f69f2faabf6d5a8e68b0"
+    "$oid": "6290d2d6ba4bd42fd4ed9c27"
   },
-  "email": "admin12@gmail.com",
-  "full_name": "Admin 12",
-  "address": "123",
-  "phone": "0123456789",
+  "full_name": "Jack Feesh",
+  "email": "22, 19Street, Ward 4, District 4",
+  "address": "fisha",
   "dob": {
     "$date": {
-      "$numberLong": "1652194363371"
+      "$numberLong": "982713600000"
     }
   },
+  "phone": "0921077950",
   "createdAt": {
     "$date": {
-      "$numberLong": "1652194363372"
+      "$numberLong": "1653658326000"
     }
   },
+  "lockedAt": null,
   "loginFail": 0,
   "abnormalLogin": 0,
-  "status": "disabled"
+  "status": "waiting",
+  "balance": 0,
+  "idfront": "/test_upload/22U822504/sideA_27522_22U822504.png",
+  "idback": "/test_upload/22U822504/sideB_27522_22U822504.png",
+  "__v": 0
 },{
   "_id": {
-    "$oid": "6289f6b62faabf6d5a8e68b1"
+    "$oid": "629189c51d3bc716b0ab597e"
   },
-  "email": "admin13@gmail.com",
-  "full_name": "Admin 13",
-  "address": "123",
-  "phone": "0123456789",
+  "full_name": "Jack Fish",
+  "email": "fishappy0@gmail.com",
+  "address": "22, 19Street, Ward 4, District 4",
   "dob": {
     "$date": {
-      "$numberLong": "1652194363371"
+      "$numberLong": "982713600000"
     }
   },
+  "phone": "0921077950",
   "createdAt": {
     "$date": {
-      "$numberLong": "1652194363372"
+      "$numberLong": "1653705157000"
     }
   },
+  "lockedAt": null,
   "loginFail": 0,
   "abnormalLogin": 0,
-  "status": "disabled"
+  "status": "waiting",
+  "balance": 0,
+  "idfront": "/test_upload/22U9539981/sideA_28522_22U9539981.png",
+  "idback": "/test_upload/22U9539981/sideB_28522_22U9539981.png",
+  "__v": 0
 },{
   "_id": {
-    "$oid": "6289f6cb2faabf6d5a8e68b2"
+    "$oid": "629189f41d3bc716b0ab5982"
   },
-  "email": "admin13@gmail.com",
-  "full_name": "Admin 13",
-  "address": "123",
-  "phone": "0123456789",
+  "full_name": "Jack Fish",
+  "email": "fishappy0@gmail.com",
+  "address": "22, 19Street, Ward 4, District 4",
   "dob": {
     "$date": {
-      "$numberLong": "1652194363371"
+      "$numberLong": "981936000000"
     }
   },
+  "phone": "0921077950",
   "createdAt": {
     "$date": {
-      "$numberLong": "1652194363372"
+      "$numberLong": "1653705204000"
     }
   },
+  "lockedAt": null,
   "loginFail": 0,
   "abnormalLogin": 0,
-  "status": "waiting"
+  "status": "waiting",
+  "balance": 0,
+  "idfront": "/test_upload/22U9708888/sideA_28522_22U9708888.png",
+  "idback": "/test_upload/22U9708888/sideB_28522_22U9708888.png",
+  "__v": 0
 },{
   "_id": {
-    "$oid": "6289f6e12faabf6d5a8e68b3"
+    "$oid": "6291ab97127e7bc7b85234dc"
   },
-  "email": "admin14@gmail.com",
-  "full_name": "Admin 14",
-  "address": "123",
-  "phone": "0123456789",
+  "full_name": "Jack Fish",
+  "email": "fishappy01@gmail.com",
+  "address": "22, 19Street, Ward 4, District 4",
   "dob": {
     "$date": {
-      "$numberLong": "1652194363371"
+      "$numberLong": "1652140800000"
     }
   },
+  "phone": "0921077950",
   "createdAt": {
     "$date": {
-      "$numberLong": "1652194363372"
+      "$numberLong": "1653713815000"
     }
   },
+  "lockedAt": null,
   "loginFail": 0,
   "abnormalLogin": 0,
-  "status": "waiting"
-},{
-  "_id": {
-    "$oid": "6289f6ef2faabf6d5a8e68b4"
-  },
-  "email": "admin15@gmail.com",
-  "full_name": "Admin 15",
-  "address": "123",
-  "phone": "0123456789",
-  "dob": {
-    "$date": {
-      "$numberLong": "1652194363371"
-    }
-  },
-  "createdAt": {
-    "$date": {
-      "$numberLong": "1652194363372"
-    }
-  },
-  "loginFail": 0,
-  "abnormalLogin": 0,
-  "status": "unapproved"
-},{
-  "_id": {
-    "$oid": "6289f6fe2faabf6d5a8e68b5"
-  },
-  "email": "admin16@gmail.com",
-  "full_name": "Admin 16",
-  "address": "123",
-  "phone": "0123456789",
-  "dob": {
-    "$date": {
-      "$numberLong": "1652194363371"
-    }
-  },
-  "createdAt": {
-    "$date": {
-      "$numberLong": "1652194363372"
-    }
-  },
-  "loginFail": 0,
-  "abnormalLogin": 0,
-  "status": "unapproved"
+  "status": "waiting",
+  "balance": 0,
+  "idfront": "/test_upload/22U6836973/sideA_28522_22U6836973.png",
+  "idback": "/test_upload/22U6836973/sideB_28522_22U6836973.png",
+  "__v": 0
 }]

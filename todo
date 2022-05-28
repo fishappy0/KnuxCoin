@@ -19,10 +19,10 @@ Danh sách việc cần làm:
 -[?(mail bị lỗi)] Gửi email kèm thông tin tài khoản trên cho người dùng (suggest dùng nodemailer: https://nodemailer.com/smtp/oauth2/)
 -[X] Thông báo lên màn hình bằng flash (req.session.flash('check email bla bla')) (https://stackoverflow.com/questions/25564123/express-handlebars-show-flash-messages)
 
-[ ] Buộc đổi mật khẩu:
--[ ] Trang đổi mật khẩu html + css
--[ ] Check tk trong database + session bằng middleware xem coi key "đã đổi mk" có check hay chưa
--[ ] sau khi đổi mk thì check key "đã đổi mk" thành true
+[X] Buộc đổi mật khẩu:
+-[X] Trang đổi mật khẩu html + css
+-[X] Check tk trong database + session bằng middleware xem coi key "đã đổi mk" có check hay chưa
+-[X] sau khi đổi mk thì check key "đã đổi mk" thành true
 
 [X] Xác minh tài khoản
 -[X] Tương tự như đổi mk, thêm key "đã xác minh" vào database
@@ -40,9 +40,9 @@ Danh sách việc cần làm:
 -[ ] Trang cá nhân html + css
 -[ ] Rót data từ database vào trang cá nhân
 
-[ ] Đổi mk
--[ ] Trang đổi mk
--[ ] gửi đường link tới người dùng (https://www.tutsmake.com/forgot-reset-password-in-node-js-express-mysql/)
+[X] Đổi mk
+-[X] Trang đổi mk
+-[X] gửi đường link tới người dùng (https://www.tutsmake.com/forgot-reset-password-in-node-js-express-mysql/)
 
 [x] Chức năng nạp tiền vào tk
 -[x] thêm 3 "thẻ" vào database:
@@ -80,8 +80,8 @@ ta có 4 loại tk: tk đã bị vô hiệu hoá, tk bth, tk chưa duyệt và t
 [ ] Chức năng show full thông tin tài khoản
 -[ ] click vào tk bất kì thì hiển thị full thông tin của tk đó (aka rót từ database ra, show mọi thứ như username, tiền bla bla)
 
-[ ] Chức năng phê duyệt rút tiền
--[ ] thêm nút post (maybe dùng middleware)
+[X] Chức năng phê duyệt rút tiền
+-[X] thêm nút post (maybe dùng middleware)
 
 
 

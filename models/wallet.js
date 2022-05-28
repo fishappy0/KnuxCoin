@@ -5,6 +5,5 @@ const walletSchema = new mongoose.Schema({
         name: String,
     }],
 });
-var Wallet = mongoose.model('Wallet', walletSchema);//Tạo collection
+var Wallet = mongoose.model("Wallet", walletSchema); //Tạo collection
 module.exports = Wallet;
-
