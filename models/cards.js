@@ -168,7 +168,17 @@ module.exports.withdraw = async function (cardNumber, expiryDate, cvv, descripti
     }).count();
     if (count > 2) return 'Bạn đã rút quá 2 lần trong ngày';
     else {
-      if (amount > 5000000) return Transaction.findOneAndUpdate({ transactionId: transactionId }, { status: 'pending' });
+      if (amount > 5000000) {
+        await Transaction.create({
+          userId: user.id,
+          transactionId: transactionId,
+          amount: amount,
+          type: 'withdraw',
+          description: description,
+          status: 'pending',
+        });
+        return 'Đang chờ';
+      }
       if (amount > user.balance) return 'Không đủ tiền rút';
       else {
         if (amount % 50000 != 0) return 'Số tiền rút mỗi lần phải là bội số của 50,000 đồng.';
