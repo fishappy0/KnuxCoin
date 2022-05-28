@@ -4,7 +4,6 @@ const walletSchema = new mongoose.Schema({
         id: Object,
         name: String,
     }],
-    balance: Number,
 });
 var Wallet = mongoose.model('Wallet', walletSchema);//Tạo collection
 module.exports = Wallet;

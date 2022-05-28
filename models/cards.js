@@ -109,9 +109,9 @@ module.exports.recharge = async function (cardId, cardNumber, expiryDate, cvv, a
       return 'Mã CVV không hợp lệ';
     }
 
-    const wallet = await Wallet.findOne({ userId: user.id });
-    wallet.balance += amount;
-    await wallet.save();
+    const user = await User.findOne({ userId: user.id });
+    user.balance += amount;
+    await user.save();
     return 'Nạp tiền thành công';
   }
 
@@ -128,9 +128,9 @@ module.exports.recharge = async function (cardId, cardNumber, expiryDate, cvv, a
       return 'Không thể nạp quá 1 triệu';
     }
 
-    const wallet = await Wallet.findOne({ userId: user.id });
-    wallet.balance += amount;
-    await wallet.save();
+    const user = await User.findOne({ userId: user.id });
+    user.balance += amount;
+    await user.save();
     return 'Nạp tiền thành công';
   }
 
