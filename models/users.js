@@ -70,26 +70,6 @@ module.exports.createUser = async function (
   files
 ) {
   let current_time = new Date(Date.now());
-<<<<<<< HEAD
-  const oneData = await new User({
-    full_name: full_name,
-    email: email,
-    address: address,
-    dob: dob,
-    phone: phone,
-    createdAt: current_time.toString(),
-    lockedAt: "",
-    loginFail: 0,
-    abnormalLogin: 0,
-    status: "unapproved",
-    balance: 0,
-    idfront: id_front_dir.replace('.','').replace('public','').substring(1),
-    idback: id_back_dir.replace('.','').replace('public','').substring(1),
-  });
-  await oneData.save();
-  console.log(`<KnuxCoin Web> Created user with phone number ${phone}`);
-  return oneData["_id"];
-=======
   let isEmailExists = await User.exists({ email: email });
   let isPhoneExists = await User.exists({ phone: phone });
   if (isEmailExists || isPhoneExists) {
@@ -194,5 +174,4 @@ module.exports.addAbnormalLogin = async function (uname) {
 module.exports.resetLoginAttempts = async function (uname) {
   let obj_user_id = await getObjectUserID(uname);
   await User.findByIdAndUpdate(obj_user_id, { loginFail: (attempts = 0) });
->>>>>>> dev
 };
