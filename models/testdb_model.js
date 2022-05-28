@@ -1,30 +1,29 @@
-const local_utils = require('../local_utils.js')
+const local_utils = require("../local_utils.js");
 const mongoose = require("mongoose");
-const testDB = mongoose.model('test_dbs', {
-    username: String,
-    password: String,
-    serverKey: String
-})
+const testDB = mongoose.model("test_dbs", {
+  username: String,
+  password: String,
+  serverKey: String,
+});
 
 module.exports.verifyAccount = async function (uname, passphrase) {
-    let returnedQuery = await testDB.findOne({
-        username: uname,
-        password: passphrase
-    });
-    if (returnedQuery != null && returnedQuery['username'] != null)  return true;
-    return false;
-}
+  let returnedQuery = await testDB.findOne({
+    username: uname,
+    password: passphrase,
+  });
+  if (returnedQuery != null && returnedQuery["username"] != null) return true;
+  return false;
+};
 
 module.exports.createAccount = async function (uname, passphrase, sKey) {
-    const oneData = await new testDB({
-        username: uname,
-        password: passphrase,
-        serverKey: sKey
-    });
-    await oneData.save();
-    console.log(`<KnuxCoin Web> Created account for ${uname}`);
-}
-
+  const oneData = await new testDB({
+    username: uname,
+    password: passphrase,
+    serverKey: sKey,
+  });
+  await oneData.save();
+  console.log(`<KnuxCoin Web> Created account for ${uname}`);
+};
 
 // [=] connect to the db [=]
 // const mongoose = require('mongoose');

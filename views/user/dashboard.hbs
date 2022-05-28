@@ -38,16 +38,11 @@
                                                 src="/images/icon/default-person.png"
                                                 srcset="/images/icon/default-person.png" alt="" aria-hidden="true"
                                                 data-noaft="" height="80" width="80" />
-                                        <li><a class="user_layout_username">
-                                                Default user
-                                                {{#if username}}
-
-                                                {{/if}}
+                                        <li><a href="/dashboard" class="user_layout_username">
+                                                    {{full_name}}
                                             </a></li>
-                                        <li><a class="user_layout_email">Default@user.com
-                                                {{#if username}}
-
-                                                {{/if}}
+                                        <li><a href="/dashboard" class="user_layout_email">
+                                                    {{ email }}
                                             </a></li>
                                     </ul>
                                 </div>

@@ -47,14 +47,13 @@
                         srcset="/images/icon/default-person.png" alt="" aria-hidden="true" data-noaft="" height="80"
                         width="80" />
                     <li><a class="admin_layout_adminname">
-                        Default admin
-                        {{#if adminname}}
-
+                        {{#if full_name}}
+                          full_name
                         {{/if}}
                       </a></li>
-                    <li><a class="admin_layout_email">Default@admin.com
-                        {{#if adminname}}
-
+                    <li><a class="admin_layout_email">
+                        {{#if email}}
+                          email
                         {{/if}}
                       </a></li>
                   </ul>
