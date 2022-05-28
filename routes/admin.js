@@ -10,7 +10,6 @@ router.get("/", function (req, res, next) {
     res.redirect("/");
   const perUser = 10;
   const page = req.query.page;
-
   User.find({})
     .sort({ createdAt: -1 })
     .skip(perUser * page - perUser)
@@ -51,8 +50,6 @@ router.get("/detail/:id", (req, res, next) => {
     if (user) {
       return res.render("admin/accountdetail", {
         detail: user,
-        full_name: req.session.full_name,
-        email: req.session.email,
         layout: "admin/layout",
       });
     }

@@ -26,7 +26,7 @@
 
       <!-- {{! admin_name text }} -->
       <div class="admin-text">
-        <div class="adminname-text" name="adminname-text">Default</div>
+        <div class="adminname-text" name="adminname-text">ADMIN</div>
       </div>
 
       <!-- {{! admin Login Container }} -->
@@ -47,26 +47,24 @@
                         srcset="/images/icon/default-person.png" alt="" aria-hidden="true" data-noaft="" height="80"
                         width="80" />
                     <li><a class="admin_layout_adminname">
-                        {{#if full_name}}
-                          full_name
-                        {{/if}}
+                        ADMIN
                       </a></li>
                     <li><a class="admin_layout_email">
                         {{#if email}}
-                          email
+                        {{email}}
                         {{/if}}
                       </a></li>
                   </ul>
                 </div>
                 </li>
                 {{! if loged in then this will be log-out, if log out then it's sign in }}
-                <li><a href="" class="admin_layout_login_box_button">Profile</a></li>
+
                 <li><a href="/password" class="admin_layout_login_box_button">Change
                     Password</a></li>
-                <li><a href="" class="admin_layout_login_box_button">Lock This
-                    Account</a></li>
-                <li><form method="post" action="/logout">
-                    <button type="submit" class="user_layout_login_box_button"> Log out</a></form></li>
+                <form method="post" action="/logout">
+                  <button type="submit" class="user_layout_login_box_button"> Log out</a>
+                </form>
+                </li>
                 {{! zero width space }}
             </ul>
           </div>
