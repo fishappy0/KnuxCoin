@@ -45,13 +45,22 @@ router.get("/history", (req, res, next) => {
     } else {
       const perTran = 10;
       const page = req.query.page;
-      Transaction.find({
-        $or: [
-          {
-            userId: { $elemMatch: { id: mongoose.Types.ObjectId(req.session.userId) } },
-          }
-        ],
-      })
+      Transaction.find(
+        {
+          $or: [
+            {
+              userId: { $elemMatch: { id: mongoose.Types.ObjectId(req.session.userId) } },
+            },
+            {
+              recipient: {
+                $elemMatch: { id: mongoose.Types.ObjectId(req.session.userId) },
+              },
+              status: "success",
+            },
+          ],
+        }
+
+      )
         .sort({ date: -1 })
         .skip(perTran * page - perTran)
         .limit(perTran)
@@ -78,6 +87,36 @@ router.get("/history", (req, res, next) => {
     }
   })
 });
+//Trang chi tiết giao dịch
+router.get('/detail', (req, res, next) => {
+  sess = req.session;
+  if (typeof sess.username == "undefined") { res.redirect("/"); }
+  Transaction.findOne({
+    $or: [
+      {
+        userId: { $elemMatch: { id: mongoose.Types.ObjectId(req.session.userId) } },
+      },
+      {
+        recipient: {
+          $elemMatch: { id: mongoose.Types.ObjectId(req.session.userId) },
+        },
+        status: "success",
+      },
+    ],
+  }, (e, detail) => {
+    if (e) {
+      console.log(e);
+      return res.sendStatus(500);
+    } else {
+      res.render("user/transdetail", {
+        detail: detail,
+        full_name: req.session.full_name,
+        username: req.session.username,
+        email: req.session.email, layout: "user/dashboard"
+      })
+    }
+  })
+})
 //Trang thông tin User
 router.get("/profile", (req, res, next) => {
   sess = req.session;
@@ -97,7 +136,7 @@ router.get("/profile", (req, res, next) => {
   })
 })
 
-
+//Xử lý tìm kiếm lịch sử giao dịch
 router.get("/history/search", (req, res) => {
   sess = req.session;
   if (typeof sess.username == "undefined") { res.redirect("/"); }

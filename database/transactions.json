@@ -1,13 +1,13 @@
 [{
   "_id": {
-    "$oid": "628a03a02faabf6d5a8e68bc"
+    "$oid": "6293b86346980629695f4e25"
   },
   "userId": [
     {
       "id": {
-        "$oid": "6289f2762faabf6d5a8e68a8"
+        "$oid": "629331f315ee5c263732df3b"
       },
-      "name": "Admin 5"
+      "name": "User 1"
     }
   ],
   "type": "transfer",
@@ -20,118 +20,14 @@
   },
   "status": "pending",
   "note": "Chúc anh sức khỏe",
-  "recipient_phone": "0973313615",
   "recipient": [
     {
       "id": {
-        "$oid": "6289f6cb2faabf6d5a8e68b2"
+        "$oid": "6293341815ee5c263732df86"
       },
-      "phone": "0973313615",
-      "name": "Admin 13"
+      "phone": "3168411981",
+      "name": "User 5"
     }
   ],
   "charge_party": "recipient"
-},{
-  "_id": {
-    "$oid": "628a64142faabf6d5a8e68be"
-  },
-  "userId": [
-    {
-      "id": {
-        "$oid": "6289f2762faabf6d5a8e68a8"
-      },
-      "name": "Admin 5"
-    }
-  ],
-  "type": "withdraw",
-  "amount": 5000000,
-  "fee": 250000,
-  "date": {
-    "$date": {
-      "$numberLong": "1652194363370"
-    }
-  },
-  "status": "pending",
-  "note": "",
-  "card": "111253456"
-},{
-  "_id": {
-    "$oid": "628b49696ccc2ba67ab14d67"
-  },
-  "userId": [
-    {
-      "id": {
-        "$oid": "6289f2762faabf6d5a8e68a8"
-      },
-      "name": "Admin 5"
-    }
-  ],
-  "type": "recharge",
-  "amount": 5000000,
-  "fee": 250000,
-  "date": {
-    "$date": {
-      "$numberLong": "1652194363370"
-    }
-  },
-  "status": "success",
-  "note": "",
-  "card": "111253456"
-},{
-  "_id": {
-    "$oid": "628b9e566ccc2ba67ab14d82"
-  },
-  "userId": [
-    {
-      "id": {
-        "$oid": "6289f2762faabf6d5a8e68a8"
-      },
-      "name": "Admin 5"
-    }
-  ],
-  "type": "phonecard",
-  "amount": 10000,
-  "fee": 0,
-  "date": {
-    "$date": {
-      "$numberLong": "1652367163370"
-    }
-  },
-  "status": "success",
-  "note": "",
-  "phonecard": "111112345",
-  "operator": "Viettel"
-},{
-  "_id": {
-    "$oid": "628ba2af6ccc2ba67ab14d8f"
-  },
-  "userId": [
-    {
-      "id": {
-        "$oid": "6289f2762faabf6d5a8e68a8"
-      },
-      "name": "Admin 5"
-    }
-  ],
-  "type": "transfer",
-  "amount": 6000000,
-  "fee": 300000,
-  "date": {
-    "$date": {
-      "$numberLong": "1652194363370"
-    }
-  },
-  "status": "pending",
-  "note": "Chúc anh sức khỏe",
-  "recipient_phone": "0973313615",
-  "recipient": [
-    {
-      "id": {
-        "$oid": "6289f6cb2faabf6d5a8e68b2"
-      },
-      "phone": "0973313615",
-      "name": "Admin 13"
-    }
-  ],
-  "charge_party": "sender"
 }]

@@ -20,7 +20,7 @@
   "loginFail": 0,
   "abnormalLogin": 0,
   "status": "approved",
-  "balance": 0,
+  "balance": 10000000,
   "idfront": "/test_upload/22U364920/sideA_29522_22U364920.png",
   "idback": "/test_upload/22U364920/sideB_29522_22U364920.png",
   "__v": 0
