@@ -30,46 +30,50 @@ router.get("/history", (req, res, next) => {
   if (typeof sess.username == "undefined") { res.redirect("/"); }
   console.log(req.session.userId)
 
-  if (req.session.userstatus == "unapproved" || req.session.userstatus == "waiting") {
-    res.render("user/history", {
-      layout: "user/dashboard",
-      full_name: req.session.full_name,
-      email: req.session.email,
-      error: "This feature is only for verified accounts."
-    });
-  } else {
-    const perTran = 10;
-    const page = req.query.page;
-    Transaction.find({
-      $or: [
-        {
-          userId: { $elemMatch: { id: mongoose.Types.ObjectId(req.session.userId) } },
-        }
-      ],
-    })
-      .sort({ date: -1 })
-      .skip(perTran * page - perTran)
-      .limit(perTran)
-      .lean()
-      .exec(function (e, transaction) {
-        Transaction.countDocuments().exec(function (e, count) {
-          if (e) {
-            console.log(e);
-            return res.sendStatus(500);
-          } else {
-            res.render("user/history", {
-              layout: "user/dashboard", full_name: req.session.full_name,
-              email: req.session.email, userstatus: req.session.userstatus,
-              pagination: {
-                page: req.query.page || 1,
-                pageCount: Math.ceil(count / perTran),
-              },
-              transaction,
-            });
-          }
-        });
+
+  User.findOne({ _id: mongoose.Types.ObjectId(req.session.userId) }, (e, user) => {
+    if (user.status == "unapproved" || user.status == "waiting") {
+      res.render("user/history", {
+        layout: "user/dashboard",
+        full_name: req.session.full_name,
+        email: req.session.email,
+        error: "This feature is only for verified accounts."
       });
-  }
+    } else {
+      const perTran = 10;
+      const page = req.query.page;
+      Transaction.find({
+        $or: [
+          {
+            userId: { $elemMatch: { id: mongoose.Types.ObjectId(req.session.userId) } },
+          }
+        ],
+      })
+        .sort({ date: -1 })
+        .skip(perTran * page - perTran)
+        .limit(perTran)
+        .lean()
+        .exec(function (e, transaction) {
+          Transaction.countDocuments().exec(function (e, count) {
+            if (e) {
+              console.log(e);
+              return res.sendStatus(500);
+            } else {
+              res.render("user/history", {
+                layout: "user/dashboard", full_name: req.session.full_name,
+                email: req.session.email,
+                userstatus: user.status,
+                pagination: {
+                  page: req.query.page || 1,
+                  pageCount: Math.ceil(count / perTran),
+                },
+                transaction,
+              });
+            }
+          });
+        });
+    }
+  })
 });
 //Trang thông tin User
 router.get("/profile", (req, res, next) => {
@@ -100,34 +104,35 @@ router.get("/history/search", (req, res) => {
   console.log(to);
   var type = req.query.type;
   console.log(type);
+  User.findOne({ _id: mongoose.Types.ObjectId(req.session.userId) }, (e, user) => {
+    const perUser = 10;
+    const page = req.query.page;
 
-  const perUser = 10;
-  const page = req.query.page;
-
-  Transaction.find({ $or: [{ date: { $gte: from, $lt: to } }, { type: type }] })
-    .sort({ date: -1 })
-    .skip(perUser * page - perUser)
-    .limit(perUser)
-    .lean()
-    .exec(function (e, transaction) {
-      Transaction.countDocuments().exec(function (e, count) {
-        if (e) {
-          console.log(e);
-          return res.sendStatus(500);
-        } else {
-          res.render("user/history", {
-            full_name: req.session.full_name,
-            email: req.session.email,
-            layout: "user/dashboard",
-            userstatus: req.session.userstatus,
-            pagination: {
-              page: req.query.page || 1,
-              pageCount: Math.ceil(count / perUser),
-            },
-            transaction,
-          });
-        }
+    Transaction.find({ $or: [{ date: { $gte: from, $lt: to } }, { type: type }] })
+      .sort({ date: -1 })
+      .skip(perUser * page - perUser)
+      .limit(perUser)
+      .lean()
+      .exec(function (e, transaction) {
+        Transaction.countDocuments().exec(function (e, count) {
+          if (e) {
+            console.log(e);
+            return res.sendStatus(500);
+          } else {
+            res.render("user/history", {
+              full_name: req.session.full_name,
+              email: req.session.email,
+              layout: "user/dashboard",
+              userstatus: user.status,
+              pagination: {
+                page: req.query.page || 1,
+                pageCount: Math.ceil(count / perUser),
+              },
+              transaction,
+            });
+          }
+        });
       });
-    });
+  })
 });
 module.exports = router;
