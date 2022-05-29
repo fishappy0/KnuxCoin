@@ -74,10 +74,16 @@ module.exports.createUser = async function (
   let current_time = new Date(Date.now());
   let isEmailExists = await User.exists({ email: email });
   let isPhoneExists = await User.exists({ phone: phone });
-  if (isEmailExists || isPhoneExists) {
-    alert("Email or phone already existed!");
+  if (isEmailExists) {
+    alert("Email already existed!");
     return null;
-  } else {
+    // error = "Email already existed!"
+  } else if (isPhoneExists) {
+    // error = "Phone already existed!"
+    alert("Phone already existed!");
+    return null;
+  }
+  else {
     let id_dir_arr = await saveUserPictureID(account_id, files);
     const oneData = await new User({
       full_name: full_name,

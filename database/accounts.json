@@ -93,4 +93,18 @@
   "first_time_login": false,
   "phone_num": "635189113",
   "__v": 0
+},{
+  "_id": {
+    "$oid": "62939f7ec5d6942c7171546f"
+  },
+  "user_id": {
+    "$oid": "62939f7ec5d6942c7171546d"
+  },
+  "account_id": "22U7125484",
+  "username": "1644980793",
+  "password": "$2b$10$IRUShvrXxSywaqYqsywdNey2Bb2sun4rfsnZVcHazKJgsX3DAPxh6",
+  "isAdmin": false,
+  "first_time_login": false,
+  "phone_num": "54291916319",
+  "__v": 0
 }]

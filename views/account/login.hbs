@@ -33,6 +33,13 @@
             {{/if}}
             <div class="login_random_spacing_top"></div>
             <hr />
+            {{#if success}}
+            <div class="form-group">
+              <div class="alert alert-success " role="alert">
+                {{success}}
+              </div>
+            </div>
+            {{/if}}
             <div class="login_buttons">
               <!-- hai nút dưới -->
 

@@ -2,7 +2,6 @@ var express = require("express");
 var router = express.Router();
 
 const accountModel = require("../models/account");
-const testModel = require("../models/testdb_model");
 const userModel = require("../models/users");
 
 const fs = require("fs");
@@ -13,7 +12,6 @@ const xoauth2 = require("xoauth2");
 const node_mailer = require("nodemailer");
 const body_parser = require("body-parser");
 const { connect } = require("http2");
-const { dbg } = require("../local_utils");
 const alert = require("alert");
 const SMTPTransport = require("nodemailer/lib/smtp-transport");
 const User = require("../models/users");
@@ -251,7 +249,10 @@ router.post("/register", async (req, res, next) => {
       account_id,
       files
     );
-
+    let error = undefined
+    if (error) {
+      res.render('account/login', { error: error })
+    }
     //Create an account in the database
     if (obj_user_id == null) return;
     let user_info_arr = await accountModel.createAccount(
@@ -265,10 +266,9 @@ router.post("/register", async (req, res, next) => {
     let alert_message = `Account created successfully, however there was a problem with the mail service. Therefore, we deliver this message with your login credential as follows: \nUsername: ${user_info_arr[0]} \nPassword: ${user_info_arr[1]}`;
     //Send the account created to the user
     if (sendAccountInfoToMail(email, email_message) != "success") {
-      alert(alert_message);
+      res.render('account/login', { success: alert_message })
     }
-    alert('send the account to your email');
-    return res.redirect('/login')
+
   });
 });
 

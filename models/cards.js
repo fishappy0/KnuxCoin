@@ -2,7 +2,6 @@
 const mongoose = require('mongoose');
 const User = require('../models/users');
 const Transaction = require('../models/transaction');
-const Wallet = require('../models/wallet');
 /**
   * Đọc tài liệu của thầy để biết tại sao có cái này.
   * CardId = STT

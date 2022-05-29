@@ -1,8 +1,6 @@
-const local_utils = require("../local_utils.js");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
 const mongoose = require("mongoose");
-const { dbg } = require("../local_utils");
 const accountDB = mongoose.model("Account", {
   user_id: Object,
   account_id: String,
