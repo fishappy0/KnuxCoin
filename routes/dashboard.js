@@ -12,14 +12,15 @@ router.get("/", async function (req, res, next) {
   if (typeof sess.username != "undefined") {
     if (sess.first_time == true) {
       res.render("account/password", { error: "Please change your password before using the system!" })
-    } else{
+    } else {
       let userstatus = await User.getUserStatus(req.session.username);
-      if (userstatus == 'unapproved' || userstatus == "waiting") userstatus = "updateID";
+      if (userstatus == "waiting") userstatus = "updateID";
       console.log(userstatus);
-      res.render("user/dashboard", {
+      res.render("user/welcome", {
+        layout: 'user/dashboard',
         full_name: req.session.full_name,
         email: req.session.email,
-        accountStatus: (userstatus=="updateID")?"updateID":null,
+        accountStatus: (userstatus == "updateID") ? "updateID" : null,
       });
     }
   } else {
@@ -36,7 +37,7 @@ router.get("/history", (req, res, next) => {
 
 
   User.findOne({ _id: mongoose.Types.ObjectId(req.session.userId) }, (e, user) => {
-    if(user.status != null || user.status == "unapproved" || user.status == "waiting") {
+    if (user.status == "unapproved" || user.status == "waiting") {
       res.render("user/history", {
         layout: "user/dashboard",
         full_name: req.session.full_name,
@@ -91,7 +92,7 @@ router.get("/profile", (req, res, next) => {
     }
     if (user) {
       return res.render("user/profile", {
-        profile: user, full_name: req.session.full_name,
+        profile: user, full_name: req.session.full_name, username: req.session.username,
         email: req.session.email, layout: "user/dashboard"
       })
     }
@@ -139,4 +140,5 @@ router.get("/history/search", (req, res) => {
       });
   })
 });
+
 module.exports = router;

@@ -168,30 +168,32 @@ router.post("/login", parseBody, async (req, res, next) => {
     }
   }
 });
-
-router.get("/update_id", (req, res,next) =>{
+//Cập nhật cmnd
+router.get("/update_id", (req, res, next) => {
+  sess = req.session;
+  if (typeof sess.username == "undefined") { res.redirect("/"); }
   res.render("account/update_id");
 });
-router.post("/update_id",parseBody, async function(req, res, next) {
+router.post("/update_id", parseBody, async function (req, res, next) {
   sess = req.session;
-  if (typeof sess.username == "undefined") { return res.redirect("/"); }
+  if (typeof sess.username == "undefined") { res.redirect("/"); }
   let form = new multiparty.Form();
   form.parse(req, async (err, fields, files) => {
-    let userData = await accountModel.findOne({username: sess.username});
-    if(typeof userData == "undefined"){
-      return res.render("account/update_id", {error: "Unknown internal server error"});
+    let userData = await accountModel.findOne({ username: sess.username });
+    if (typeof userData == "undefined") {
+      return res.render("account/update_id", { error: "Unknown internal server error" });
     }
 
     let account_id = userData["account_id"];
     let id_sidea_path = files["id_photo_sidea"][0]["path"];
     let id_sideb_path = files["id_photo_sideb"][0]["path"];
-    
+
     let id_sidea_file = "sideA" + "_" + account_id + ".png";
     let id_sideb_file = "sideB" + "_" + account_id + ".png";
-    
+
     let user_id_dir = "./public/test_upload/" + account_id + "/";
     if (!fs.existsSync(user_id_dir)) {
-      return res.render("account/update_id", {error: "Internal server error: photo does not exist"});
+      return res.render("account/update_id", { error: "Internal server error: photo does not exist" });
     }
 
     fs.copyFile(id_sidea_path, user_id_dir + id_sidea_file, function (err) {
@@ -205,8 +207,8 @@ router.post("/update_id",parseBody, async function(req, res, next) {
       console.log(
         `<KnuxCoin Account> User ${account_id} replaced the old upper side ID with file ${id_sideb_file}`
       );
-    return res.redirect('/dashboard');
-  });
+      return res.redirect('/dashboard');
+    });
 
   });
 });
@@ -266,6 +268,7 @@ router.post("/register", async (req, res, next) => {
       alert(alert_message);
     }
     alert('send the account to your email');
+    return res.redirect('/login')
   });
 });
 
