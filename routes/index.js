@@ -14,16 +14,17 @@ const node_mailer = require("nodemailer");
 const body_parser = require("body-parser");
 const { connect } = require("http2");
 const { dbg } = require("../local_utils");
+const alert = require("alert");
 const SMTPTransport = require("nodemailer/lib/smtp-transport");
 const User = require("../models/users");
 var parseBody = body_parser.urlencoded({ extended: false });
 
-async function sendAccountInfoToMail(email) {
+async function sendAccountInfoToMail(email, email_message) {
   let message = {
     from: "sinhvien@phongdaotao.com",
     to: email,
     subject: "KnuxCoin Service",
-    text: `Greeting ${full_name}, \nThank you for registering with KnuxCoin, the credentials to access the service is as follows:\nUsername:${user_info_arr[1]}\nPassword:${user_info_arr[2]}`,
+    text: email_message,
   };
   try {
     smtp_transport = node_mailer.createTransport({
@@ -39,8 +40,9 @@ async function sendAccountInfoToMail(email) {
       },
     });
     await smtp_transport.sendMail(message);
+    return "success";
   } catch (err) {
-    `There was a problem emailing, This is your created account \nUsername: ${user_info_arr[0]} \nPassword: ${user_info_arr[1]}`;
+    return err;
   }
 }
 
@@ -108,15 +110,15 @@ router.post("/login", parseBody, async (req, res, next) => {
     login_attempts = failedAttempts;
   }
 
-  if (login_attempts == 3) {
-    res.render("account/login", { error: "Out of login attempts" });
+  let accountStatus = await accountModel.getUserStatus(username);
+  if (failedAttempts == 3 || accountStatus == 'locked' || accountStatus == 'disabled') {
+    res.render("account/login", { error: "The account is locked or disabled" });
   } else {
     // Checks if the username exists
     if ((await accountModel.getUserByUsername(username)) == null) {
-      res.render("account/login", {
+      return res.render("account/login", {
         error: "Username or password is incorrect!",
       });
-      return res.redirect("/login");
     }
 
     // Tries to login with the username
@@ -210,10 +212,14 @@ router.post("/register", async (req, res, next) => {
       obj_user_id
     );
     if (user_info_arr == null) return;
-
+    
+    let email_message = `Greeting ${full_name}, \nThank you for registering with KnuxCoin, the credentials to access the service is as follows:\nUsername:${user_info_arr[0]}\nPassword:${user_info_arr[1]}`;
+    let alert_message = `Account created successfully, however there was a problem with the mail service. Therefore, we deliver this message with your login credential as follows: \nUsername: ${user_info_arr[0]} \nPassword: ${user_info_arr[1]}`;
     //Send the account created to the user
-    sendAccountInfoToMail(email);
-    res.redirect("/login");
+    if(sendAccountInfoToMail(email, email_message) != "success"){
+      alert(alert_message);
+    }
+    alert('send the account to your email');
   });
 });
 

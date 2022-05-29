@@ -50,13 +50,13 @@ async function saveUserPictureID(account_id, files) {
   fs.copyFile(id_sidea_path, user_id_dir + id_sidea_file, function (err) {
     if (err) throw err;
     console.log(
-      `<KnuxCoin Account> User ${user_id} created account with id sideUpper file ${id_sidea_file}`
+      `<KnuxCoin Account> User ${account_id} created account with id sideUpper file ${id_sidea_file}`
     );
   });
   fs.copyFile(id_sideb_path, user_id_dir + id_sideb_file, function (err) {
     if (err) throw err;
     console.log(
-      `<KnuxCoin Account> User ${user_id} created account with id sideLower file ${id_sideb_file}`
+      `<KnuxCoin Account> User ${account_id} created account with id sideLower file ${id_sideb_file}`
     );
   });
   return [id_sidea_path, id_sideb_path];
@@ -78,7 +78,7 @@ module.exports.createUser = async function (
     alert("Email or phone already existed!");
     return null;
   } else {
-    let id_dir_arr = saveUserPictureID(account_id, files);
+    let id_dir_arr = await saveUserPictureID(account_id, files);
     const oneData = await new User({
       full_name: full_name,
       email: email,
@@ -154,12 +154,22 @@ module.exports.getAbnormalLogin = async function (uname) {
   }
 };
 
-module.exports.addAbnormalLogin = async function (uname) {
+module.exports.getUserStatus = async function (uname) {
+  let obj_user_id = await getObjectUserID(uname);
+  if (obj_user_id == null || typeof obj_user_id == "undefined") {
+    return 0;
+  } else {
+    let userdata = await User.findById(obj_user_id);
+    let status = userdata["status"];
+    return status;
+  }
+};
+module.exports.addAbnormalLoginAndLockAccount = async function (uname) {
   let obj_user_id = await getObjectUserID(uname);
   let attempts = await User.getAbnormalLogin(uname);
   if (attempts < 4) {
     attempts += 1;
-    await User.findByIdAndUpdate(obj_user_id, { abnormalLogin: attempts });
+    await User.findByIdAndUpdate(obj_user_id, { abnormalLogin: attempts , status: 'locked'});
   } else {
     let abnormalLoginAttempts = (await User.findById({ obj_user_id }))[
       "abnormalLogin"
