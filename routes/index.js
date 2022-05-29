@@ -57,8 +57,8 @@ router.get("/password", function (req, res, next) {
 router.post("/password", parseBody, async function (req, res, next) {
   let body = req.body;
   let username = req.session.username;
-  if(typeof username == "undefined"){ return res.redirect("/");}
-  else {username = username.toString();}
+  if (typeof username == "undefined") { return res.redirect("/"); }
+  else { username = username.toString(); }
   let old_pass = body.old_password.toString();
   let new_pass = body.new_password.toString();
   let verify_new_pass = body.verify_new_password.toString();
@@ -83,9 +83,9 @@ router.post("/password", parseBody, async function (req, res, next) {
     req.session.first_time = false;
     return res.redirect("/dashboard");
   } else {
-    return res.render("account/password", {error: "The old password does not match!"});
+    return res.render("account/password", { error: "The old password does not match!" });
   }
-  
+
 });
 
 //Trang đăng nhập
@@ -216,7 +216,5 @@ router.post("/register", async (req, res, next) => {
     res.redirect("/login");
   });
 });
-router.get("/history", (req, res, next) => {
-  res.render("user/history", { layout: "user/dashboard" });
-});
+
 module.exports = router;

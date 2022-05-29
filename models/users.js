@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const alert = require("alert");
 const accountModel = require("./account");
+const fs = require("fs");
 const userSchema = new mongoose.Schema({
   full_name: String,
   email: String,
@@ -21,6 +22,7 @@ module.exports = User;
 
 async function saveUserPictureID(account_id, files) {
   // Month runs from 0 to 11. Full year %100 to get the last 2 digits;
+  let date = new Date(Date.now());
   let date_string =
     date.getDate() +
     "" +
@@ -133,7 +135,7 @@ module.exports.addLoginFailAttempts = async function (uname) {
       "failedLogin"
     ];
     await User.findByIdAndUpdate(obj_user_id, {
-      failedLogin: failedLogin + 1,
+      failedLogin: failedLoginAttempt + 1,
     });
     console.log(
       `<KnuxCoin Web> User ${uname} tried to login with more than 3 wrong attempts`

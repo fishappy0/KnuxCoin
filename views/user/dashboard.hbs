@@ -52,11 +52,13 @@
                                             <li><a href="/dashboard" class="user_layout_email">
                                                     {{ email }}
                                                 </a></li>
+
                                         </ul>
                                     </div>
                                     </li>
                                     {{! if loged in then this will be log-out, if log out then it's sign in }}
-                                    <li><a href="" class="user_layout_login_box_button">Profile</a></li>
+                                    <li><a href="/dashboard/profile" class="user_layout_login_box_button">Profile</a>
+                                    </li>
                                     <li><a href="/password" class="user_layout_login_box_button">Change
                                             Password</a></li>
                                     <li><a href="" class="user_layout_login_box_button">Lock This
@@ -81,7 +83,7 @@
                 <a class="user_layout_lower_nav_bar_buttons" href="/transfer">Transfer</a>
                 <a class="user_layout_lower_nav_bar_buttons" href="/deposit">Deposit</a>
                 <a class="user_layout_lower_nav_bar_buttons" href="/withdraw">Withdraw</a>
-                <a class="user_layout_lower_nav_bar_buttons" href="/history">Transaction
+                <a class="user_layout_lower_nav_bar_buttons" href="/dashboard/history">Transaction
                     history</a>
                 <a class="user_layout_lower_nav_bar_buttons" href="/services">Other
                     services</a>
