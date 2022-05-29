@@ -10,7 +10,7 @@ var dashboardRouter = require("./routes/dashboard");
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var adminRouter = require("./routes/admin");
-var balanceRouter = require("./routes/balance");
+var transactionRouter = require("./routes/transaction");
 const mongoose = require("mongoose");
 const { handlebars } = require("hbs");
 const { env } = require("process");
@@ -70,7 +70,7 @@ app.use("/users", usersRouter);
 app.use("/admin", adminRouter);
 app.use("/dashboard", dashboardRouter);
 // Nạp tiền, rút tiền, chuyển tiền,...
-app.use("/balance", balanceRouter);
+app.use("/transaction", transactionRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -95,24 +95,23 @@ module.exports.cardThree = async function () {
  * @returns {string} Thông báo nạp thành công hoặc lỗi.
  */
 module.exports.recharge = async function (cardNumber, expiryDate, cvv, amount) {
-  let cardOneExpiryDate = new Date(2022, 10, 10);
-  let cardTwoExpiryDate = new Date(2022, 11, 11);
-  let cardThreeExpiryDate = new Date(2022, 12, 12);
+  // Tạo bằng new Date bị lỗi.
+  let cardOneExpiryDate = "2022-10-10";
+  let cardTwoExpiryDate = "2022-11-11";
+  let cardThreeExpiryDate = "2022-12-12";
   let transactionId = crypto.randomBytes(16).toString('hex');
 
-  if (cardNumber.length != 6) return 'Số thẻ không hợp lệ';
-  if (cvv.length != 3) return 'Mã CVV không hợp lệ';
+  expiryDate.toString();
+  if (cardNumber != null && cardNumber.length != 6) return 'Thẻ phải có 6 chữ số';
+  if (cvv != null && cvv.length != 3) return 'Mã CVV phải có 3 chữ số';
 
   // Thẻ 1 không giới hạn.
   if (cardNumber == 111111) {
-    if (expiryDate.getTime() != cardOneExpiryDate.getTime()) return 'Thời hạn thẻ không hợp lệ';
+    if (expiryDate != cardOneExpiryDate) return 'Thời hạn thẻ không hợp lệ';
     if (cvv != 411) return 'Mã CVV không hợp lệ';
 
-    const user = await User.findOne({ userId: user.id });
-    user.balance += amount;
-    await user.save();
+    await User.findOneAndUpdate({ $inc: { balance: amount } });
     await Transaction.create({
-      userId: user.id,
       transactionId: transactionId,
       amount: amount,
       type: 'recharge',
@@ -123,19 +122,23 @@ module.exports.recharge = async function (cardNumber, expiryDate, cvv, amount) {
 
   // Thẻ 2 nạp tối đa 1 triệu/lần.
   if (cardNumber == 222222) {
-    if (expiryDate.getTime() != cardTwoExpiryDate.getTime()) return 'Thời hạn thẻ không hợp lệ';
+    if (expiryDate != cardTwoExpiryDate) return 'Thời hạn thẻ không hợp lệ';
     if (cvv != 443) return 'Mã CVV không hợp lệ';
     if (amount > 1000000) return 'Không thể nạp quá 1 triệu';
 
-    const user = await User.findOne({ userId: user.id });
-    user.balance += amount;
-    await user.save();
+    await User.findOneAndUpdate({ $inc: { balance: amount } });
+    await Transaction.create({
+      transactionId: transactionId,
+      amount: amount,
+      type: 'recharge',
+      status: 'approved',
+    });
     return 'Nạp tiền thành công';
   }
 
   // Thẻ 3 luôn hết tiền.
   if (cardNumber == 333333) {
-    if (expiryDate.getTime() != cardThreeExpiryDate.getTime()) return 'Thời hạn thẻ không hợp lệ';
+    if (expiryDate != cardThreeExpiryDate) return 'Thời hạn thẻ không hợp lệ';
     if (cvv != 577) return 'Mã CVV không hợp lệ';
     return 'Thẻ hết tiền';
   }

@@ -49,9 +49,9 @@ Danh sách việc cần làm:
  "111111"| 10/10/2022 | 411 (nạp thoải mái),
  "222222" | 11/11/2022 | 443 (nạp đc dúng 1tr),
  "333333" | 12/12/2022 | 577 (báo hết tiền)
--[ ] Thêm form để "nạp" (aka nhập 1 đống số và save vào database)
--[ ] Thêm check vào trang nạp (check coi trong 3 thẻ trên đúng số thẻ thì báo kiểu select from where coi có hay k á mà trong mongo là find)
--[ ] Thêm vào lịch sử giao dịch ở database
+-[x] Thêm form để "nạp" (aka nhập 1 đống số và save vào database)
+-[x] Thêm check vào trang nạp (check coi trong 3 thẻ trên đúng số thẻ thì báo kiểu select from where coi có hay k á mà trong mongo là find)
+-[?] Thêm vào lịch sử giao dịch ở database
 
 
 [ ] Chức năng rút tiền
