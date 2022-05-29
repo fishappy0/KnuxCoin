@@ -103,6 +103,17 @@
                                         {{/eq }}
                                     </label>
                                 </div>
+                                <div class="form-group">
+                                    <div class="container text-center">
+                                        <td>
+                                            {{#eq profile.status "waiting"}}
+                                            <a><button data-id="{{profile._id}}" type="button"
+                                                    class="btn btn-primary btn-send"
+                                                    name="complementary">Update</button></a>
+                                            {{/eq }}
+                                        </td>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

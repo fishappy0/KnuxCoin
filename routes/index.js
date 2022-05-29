@@ -110,10 +110,13 @@ router.post("/login", parseBody, async (req, res, next) => {
     login_attempts = failedAttempts;
   }
 
-  let accountStatus = await accountModel.getUserStatus(username);
-  if (failedAttempts == 3 || accountStatus == 'locked' || accountStatus == 'disabled') {
-    res.render("account/login", { error: "The account is locked or disabled" });
-  } else {
+  let accountStatus = await userModel.getUserStatus(username);
+  if (failedAttempts == 3 || accountStatus == 'locked') {
+    res.render("account/login", { error: "The account has been locked due to incorrect password input many times.\nPlease contact the administrator for assistance." });
+  } else if (accountStatus == 'disabled') {
+    res.render("account/login", { error: "This account has been disabled.\nPlease contact 18001008" });
+  }
+  else {
     // Checks if the username exists
     if ((await accountModel.getUserByUsername(username)) == null) {
       return res.render("account/login", {
@@ -133,6 +136,7 @@ router.post("/login", parseBody, async (req, res, next) => {
         sess.first_time = await queryResult["first_time_login"];
         sess.full_name = await userModelResult["full_name"].toString();
         sess.email = await userModelResult["email"].toString();
+        sess.userId = await userModelResult["_id"].toString();
       }
 
       if (
@@ -151,7 +155,7 @@ router.post("/login", parseBody, async (req, res, next) => {
       await userModel.addLoginFailAttempts(username);
       login_attempts += 1;
       if (login_attempts == 3) {
-        await User.addAbnormalLogin(username);
+        await userModel.addAbnormalLoginAndLockAccount(username);
       }
       return res.render("account/login", {
         error: `Password is incorrect, you used ${login_attempts} out of 3 allowed login attempts before the account is locked!`,
@@ -212,11 +216,11 @@ router.post("/register", async (req, res, next) => {
       obj_user_id
     );
     if (user_info_arr == null) return;
-    
+
     let email_message = `Greeting ${full_name}, \nThank you for registering with KnuxCoin, the credentials to access the service is as follows:\nUsername:${user_info_arr[0]}\nPassword:${user_info_arr[1]}`;
     let alert_message = `Account created successfully, however there was a problem with the mail service. Therefore, we deliver this message with your login credential as follows: \nUsername: ${user_info_arr[0]} \nPassword: ${user_info_arr[1]}`;
     //Send the account created to the user
-    if(sendAccountInfoToMail(email, email_message) != "success"){
+    if (sendAccountInfoToMail(email, email_message) != "success") {
       alert(alert_message);
     }
     alert('send the account to your email');

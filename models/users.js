@@ -59,7 +59,7 @@ async function saveUserPictureID(account_id, files) {
       `<KnuxCoin Account> User ${account_id} created account with id sideLower file ${id_sideb_file}`
     );
   });
-  return [id_sidea_path, id_sideb_path];
+  return [user_id_dir + id_sidea_file, user_id_dir + id_sideb_file];
 }
 
 module.exports.createUser = async function (
@@ -169,7 +169,7 @@ module.exports.addAbnormalLoginAndLockAccount = async function (uname) {
   let attempts = await User.getAbnormalLogin(uname);
   if (attempts < 4) {
     attempts += 1;
-    await User.findByIdAndUpdate(obj_user_id, { abnormalLogin: attempts , status: 'locked'});
+    await User.findByIdAndUpdate(obj_user_id, { abnormalLogin: attempts, status: 'locked', lockedAt: new Date(Date.now()) });
   } else {
     let abnormalLoginAttempts = (await User.findById({ obj_user_id }))[
       "abnormalLogin"
