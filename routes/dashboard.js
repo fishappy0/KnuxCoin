@@ -7,17 +7,21 @@ const Transaction = require("../models/transaction.js");
 const mongoose = require("mongoose")
 
 /* GET users listing. */
-router.get("/", function (req, res, next) {
+router.get("/", async function (req, res, next) {
   sess = req.session;
   if (typeof sess.username != "undefined") {
     if (sess.first_time == true) {
       res.render("account/password", { error: "Please change your password before using the system!" })
-    } else
+    } else{
+      let userstatus = await User.getUserStatus(req.session.username);
+      if (userstatus == 'unapproved' || userstatus == "waiting") userstatus = "updateID";
+      console.log(userstatus);
       res.render("user/dashboard", {
         full_name: req.session.full_name,
         email: req.session.email,
-
+        accountStatus: (userstatus=="updateID")?"updateID":null,
       });
+    }
   } else {
     res.redirect("/");
   }
@@ -32,7 +36,7 @@ router.get("/history", (req, res, next) => {
 
 
   User.findOne({ _id: mongoose.Types.ObjectId(req.session.userId) }, (e, user) => {
-    if (user.status == "unapproved" || user.status == "waiting") {
+    if(user.status != null || user.status == "unapproved" || user.status == "waiting") {
       res.render("user/history", {
         layout: "user/dashboard",
         full_name: req.session.full_name,

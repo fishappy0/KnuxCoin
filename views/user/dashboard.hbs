@@ -60,7 +60,10 @@
 
                                     <li><a href="/dashboard/profile" class="user_layout_login_box_button">Profile</a>
                                     </li>
-
+                                    {{#if accountStatus}}
+                                    <li><a href="/update_id" class="user_layout_login_box_button">Change
+                                            Edit ID Picture</a></li>
+                                    {{/if}}
                                     <li><a href="/password" class="user_layout_login_box_button">Change
                                             Password</a></li>
                                     <form method="post" action="/logout">

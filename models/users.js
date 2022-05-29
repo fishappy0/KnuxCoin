@@ -33,8 +33,8 @@ async function saveUserPictureID(account_id, files) {
   let id_sidea_path = files["id_photo_sidea"][0]["path"];
   let id_sideb_path = files["id_photo_sideb"][0]["path"];
 
-  let id_sidea_file = "sideA" + "_" + date_string + "_" + account_id + ".png";
-  let id_sideb_file = "sideB" + "_" + date_string + "_" + account_id + ".png";
+  let id_sidea_file = "sideA" + "_" + account_id + ".png";
+  let id_sideb_file = "sideB" + "_" + account_id + ".png";
 
   let user_id_dir = "./public/test_upload/" + account_id + "/";
 
