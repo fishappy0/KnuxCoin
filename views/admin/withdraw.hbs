@@ -1,0 +1,32 @@
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+<title>Recharge</title>
+<div id="snippetContent">
+    <form class="recharge" action="/transaction/withdraw" method="POST">
+        <div class="container">
+            <div class="form-group">
+                <label for="transId">Card Number
+                <span style="color: red;">*</span></label>
+                <input type="number" class="form-control" name="cardNumber" required /><br>
+            <div class="form-group">
+                <label for="date">Expiry Date</label>
+                <span style="color: red;">*</span></label>
+                <input type="date" class="form-control" name="expiryDate" required /><br>
+            <div class="form-group">
+                <label for="account">CVV</label>
+                <span style="color: red;">*</span></label>
+                <input type="number" class="form-control" name="cvv" required /><br>
+            <div class="form-group">
+                <label for="amount">Amount</label>
+                <span style="color: red;">*</span></label>
+                <input type="number" class="form-control" name="amount" required /><br>
+            <div class="form-group">
+                <label for="description">Descprition</label>
+                <input type="text" class="form-control" name="description" /><br><br>
+            <button type="submit" class="btn btn-primary">Recharge</button><br>
+            <p> {{ result }} </p>
+        </div>
+    </form>
+</div>

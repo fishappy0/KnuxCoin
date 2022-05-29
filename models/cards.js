@@ -102,29 +102,30 @@ module.exports.recharge = async function (cardNumber, expiryDate, cvv, amount) {
   let transactionId = crypto.randomBytes(16).toString('hex');
 
   expiryDate.toString();
-  if (cardNumber != null && cardNumber.length != 6) return 'Thẻ phải có 6 chữ số';
-  if (cvv != null && cvv.length != 3) return 'Mã CVV phải có 3 chữ số';
+  if (cardNumber != null && cardNumber.length != 6) return 'Card Number must be 6 digits';
+  if (cvv != null && cvv.length != 3) return 'CVV must be 3 digits';
 
   // Thẻ 1 không giới hạn.
   if (cardNumber == 111111) {
-    if (expiryDate != cardOneExpiryDate) return 'Thời hạn thẻ không hợp lệ';
-    if (cvv != 411) return 'Mã CVV không hợp lệ';
+    if (expiryDate != cardOneExpiryDate) return 'Invalid date';
+    if (cvv != 411) return 'Invalid CVV';
 
     await User.findOneAndUpdate({ $inc: { balance: amount } });
     await Transaction.create({
+      // userId:
       transactionId: transactionId,
       amount: amount,
       type: 'recharge',
       status: 'approved',
     });
-    return 'Nạp tiền thành công';
+    return 'Success';
   }
 
   // Thẻ 2 nạp tối đa 1 triệu/lần.
   if (cardNumber == 222222) {
-    if (expiryDate != cardTwoExpiryDate) return 'Thời hạn thẻ không hợp lệ';
-    if (cvv != 443) return 'Mã CVV không hợp lệ';
-    if (amount > 1000000) return 'Không thể nạp quá 1 triệu';
+    if (expiryDate != cardTwoExpiryDate) return 'Invalid date';
+    if (cvv != 443) return 'CVV must be 3 digits';
+    if (amount > 1000000) return 'Amount must be less than 1 million';
 
     await User.findOneAndUpdate({ $inc: { balance: amount } });
     await Transaction.create({
@@ -133,18 +134,18 @@ module.exports.recharge = async function (cardNumber, expiryDate, cvv, amount) {
       type: 'recharge',
       status: 'approved',
     });
-    return 'Nạp tiền thành công';
+    return 'Success';
   }
 
   // Thẻ 3 luôn hết tiền.
   if (cardNumber == 333333) {
-    if (expiryDate != cardThreeExpiryDate) return 'Thời hạn thẻ không hợp lệ';
-    if (cvv != 577) return 'Mã CVV không hợp lệ';
-    return 'Thẻ hết tiền';
+    if (expiryDate != cardThreeExpiryDate) return 'Invalid date';
+    if (cvv != 577) return 'Invalid CVV';
+    return 'This card is out of money';
   }
 
   // Nếu nhập cardNumber 6 chữ số nhưng không phải 3 cái trên thì hiện "thẻ này không được hỗ trợ".
-  return 'Thẻ này không được hỗ trợ';
+  return 'This card is not supported';
 }
 
 
@@ -152,56 +153,59 @@ module.exports.recharge = async function (cardNumber, expiryDate, cvv, amount) {
  * Chức năng rút tiền
  * @param {int} cardNumber Số thẻ cào
  * @param {date} expiryDate Ngày hết hạn
- * @param {int} cvv Mã CVV
- * @param {string} description Ghi chú
+ * @param {int} cvv Mã
  * @param {int} amount Số tiền rút
+ * @param {string} description Ghi chú
  * @returns {string} Thông báo rút tiền thành công hoặc lỗi.
  */
-module.exports.withdraw = async function (cardNumber, expiryDate, cvv, description, amount) {
+module.exports.withdraw = async function (cardNumber, expiryDate, cvv, amount, description) {
   // Tính năng mô phỏng => chỉ cần rút từ thẻ đầu tiên nên set cứng luôn.
-  let defaultExpiryDate = new Date(2022, 10, 10);
+  // Tạo ngày bằng new Date bị lỗi.
+  let defaultExpiryDate = "2022-10-10";
   let transactionId = crypto.randomBytes(16).toString("hex");
+
   if (cardNumber == 111111 && expiryDate == defaultExpiryDate && cvv == 411) {
-    const user = await User.findOne({ userId: user.id });
+    //************ const user = await User.findOne({ userId: user.id });
     // Đếm số lần rút tiền của hôm nay.
     const count = await Transaction.countDocuments({
-      userId: user.id,
-      date: new Date().getDate(),
+      //********* userId: user.id,
+      // Lấy ngày hôm nay.
+      date: new Date(new Date().toDateString()),
       type: 'withdraw',
     }).count();
-    if (count > 2) return 'Bạn đã rút quá 2 lần trong ngày';
+    if (count > 2) return 'You have reached the limit of withdrawals today';
+    // Nếu chưa đến giới hạn rút tiền thì tiến hành rút tiền.
     else {
+      //**********************************if (amount > user.balance) return 'Insufficient balance';
       if (amount > 5000000) {
         await Transaction.create({
-          userId: user.id,
+          //***********************userId: user.id,
           transactionId: transactionId,
           amount: amount,
           type: 'withdraw',
           description: description,
           status: 'pending',
         });
-        return 'Đang chờ';
+        return 'Pending request';
       }
-      if (amount > user.balance) return 'Không đủ tiền rút';
+      // Không thể bỏ vòng else này vì nó sẽ bị lỗi khi số tiền vừa > 5,000,000 mà còn không chia hết cho 50,000.
       else {
-        if (amount % 50000 != 0) return 'Số tiền rút mỗi lần phải là bội số của 50,000 đồng.';
-        else {
-          // 5% phí rút tiền
-          user.balance -= amount * 0.95;
-          await user.save();
-          // Ghi nhận vào lịch sử giao dịch
-          await Transaction.create({
-            userId: user.id,
-            transactionId: transactionId,
-            type: 'withdraw',
-            amount: amount,
-            description: description,
-            status: 'approved',
-          });
-          return 'Rút tiền thành công';
-        }
+        if (amount % 50000 != 0) return 'The amount must be a multiple of 50,000';
+        // 5% phí rút tiền
+        /**********************user.balance -= amount * 0.95;
+        await user.save();*************************/
+        // Ghi nhận vào lịch sử giao dịch
+        await Transaction.create({
+          //*********************************userId: user.id,
+          transactionId: transactionId,
+          type: 'withdraw',
+          amount: amount,
+          description: description,
+          status: 'approved',
+        });
+        return 'Success';
       }
     }
-  } else if (cardNumber == 222222 || cardNumber == 333333) return 'Thẻ này không được hỗ trợ để rút tiền';
-  else return 'Thông tin thẻ không hợp lệ';
+  } else if (cardNumber == 222222 || cardNumber == 333333) return 'This card is not supported';
+  else return 'Invalid card';
 }
