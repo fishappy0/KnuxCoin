@@ -137,6 +137,7 @@ router.post("/login", parseBody, async (req, res, next) => {
         sess.full_name = await userModelResult["full_name"].toString();
         sess.email = await userModelResult["email"].toString();
         sess.userId = await userModelResult["_id"].toString();
+        sess.userstatus = await userModelResult["status"].toString();
       }
 
       if (
