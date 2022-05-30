@@ -1,4 +1,12 @@
 <body>
+    {{#if error}}
+    <div class="form-group">
+        <div class="alert alert-warning " role="alert">
+            {{error}}
+        </div>
+    </div>
+    {{/if}}
+    {{#eq userstatus "approved"}}
     <div id="snippetContent">
         <form class="recharge" action="/dashboard/phonecard" method="POST">
             <div class="container"><br>
@@ -68,4 +76,5 @@
             </div>
         </form>
     </div>
+    {{/eq}}
 </body>

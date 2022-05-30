@@ -9,7 +9,7 @@ var cardModel = require("../models/cards");
 const bodyparser = require("body-parser");
 const parseBody = bodyparser.urlencoded({ extended: false });
 
-/* GET users listing. */
+/* Trang home page. */
 router.get("/", async function (req, res, next) {
   sess = req.session;
   if (typeof sess.username != "undefined") {
@@ -177,10 +177,22 @@ router.get("/history/search", (req, res) => {
 router.get("/recharge", function (req, res) {
   sess = req.session;
   if (typeof sess.username == "undefined") { res.redirect("/"); }
-  res.render("user/recharge", {
-    layout: "user/dashboard", full_name: req.session.full_name, username: req.session.username,
-    email: req.session.email
-  });
+  User.findOne({ _id: mongoose.Types.ObjectId(req.session.userId) }, (e, user) => {
+    if (user.status == "unapproved" || user.status == "waiting") {
+      res.render("user/recharge", {
+        layout: "user/dashboard",
+        full_name: req.session.full_name,
+        email: req.session.email,
+        error: "This feature is only for verified accounts."
+      });
+    } else {
+      res.render("user/recharge", {
+        layout: "user/dashboard", userstatus: user.status, full_name: req.session.full_name, username: req.session.username,
+        email: req.session.email
+      });
+    }
+  })
+
 });
 
 router.post("/recharge", parseBody, async function (req, res) {
@@ -196,7 +208,7 @@ router.post("/recharge", parseBody, async function (req, res) {
   let result = await cardModel.recharge(cardNumber, expiryDate, cvv, amount, userid, name);
   res.render("user/recharge", {
     full_name: req.session.full_name, username: req.session.username,
-    email: req.session.email,
+    email: req.session.email, userstatus: req.session.userstatus,
     layout: "user/dashboard", result: result
   });
 });
@@ -205,11 +217,22 @@ router.post("/recharge", parseBody, async function (req, res) {
 router.get("/withdraw", function (req, res) {
   sess = req.session;
   if (typeof sess.username == "undefined") { res.redirect("/"); }
-  console.log(req.session.userId)
-  res.render("user/withdraw", {
-    layout: "user/dashboard", full_name: req.session.full_name, username: req.session.username,
-    email: req.session.email
-  });
+  User.findOne({ _id: mongoose.Types.ObjectId(req.session.userId) }, (e, user) => {
+    if (user.status == "unapproved" || user.status == "waiting") {
+      res.render("user/withdraw", {
+        layout: "user/dashboard",
+        full_name: req.session.full_name,
+        email: req.session.email,
+        error: "This feature is only for verified accounts."
+      });
+    } else {
+      res.render("user/withdraw", {
+        layout: "user/dashboard", full_name: req.session.full_name, username: req.session.username,
+        email: req.session.email, userstatus: user.status
+      });
+    }
+  })
+
 });
 
 router.post("/withdraw", async function (req, res) {
@@ -227,7 +250,7 @@ router.post("/withdraw", async function (req, res) {
   let result = await cardModel.withdraw(cardNumber, expiryDate, cvv, amount, description, userid, name);
   res.render("user/withdraw", {
     full_name: req.session.full_name, username: req.session.username,
-    email: req.session.email,
+    email: req.session.email, userstatus: req.session.userstatus,
     layout: "user/dashboard", result: result
   });
 });
@@ -236,11 +259,22 @@ router.post("/withdraw", async function (req, res) {
 router.get("/transfer", function (req, res) {
   sess = req.session;
   if (typeof sess.username == "undefined") { res.redirect("/"); }
-  console.log(req.session.userId)
-  res.render("user/transfer", {
-    layout: "user/dashboard", full_name: req.session.full_name, username: req.session.username,
-    email: req.session.email
-  });
+  User.findOne({ _id: mongoose.Types.ObjectId(req.session.userId) }, (e, user) => {
+    if (user.status == "unapproved" || user.status == "waiting") {
+      res.render("user/transfer", {
+        layout: "user/dashboard",
+        full_name: req.session.full_name,
+        email: req.session.email,
+        error: "This feature is only for verified accounts."
+      });
+    } else {
+      res.render("user/transfer", {
+        layout: "user/dashboard", full_name: req.session.full_name, userstatus: user.status, username: req.session.username,
+        email: req.session.email
+      });
+    }
+  })
+
 });
 
 router.post("/transfer", async function (req, res) {
@@ -257,18 +291,30 @@ router.post("/transfer", async function (req, res) {
   let result = await cardModel.transfer(phone, rename, party, amount, note, userid, name);
   res.render("user/transfer", {
     full_name: req.session.full_name, username: req.session.username,
-    email: req.session.email,
+    email: req.session.email, userstatus: req.session.userstatus,
     layout: "user/dashboard", result: result
   });
 });
-
+//Mua thẻ điện thoại
 router.get("/phonecard", function (req, res) {
   sess = req.session;
   if (typeof sess.username == "undefined") { res.redirect("/"); }
-  res.render("user/phonecard", {
-    layout: "user/dashboard", full_name: req.session.full_name, username: req.session.username,
-    email: req.session.email
-  });
+  User.findOne({ _id: mongoose.Types.ObjectId(req.session.userId) }, (e, user) => {
+    if (user.status == "unapproved" || user.status == "waiting") {
+      res.render("user/phonecard", {
+        layout: "user/dashboard",
+        full_name: req.session.full_name,
+        email: req.session.email,
+        error: "This feature is only for verified accounts."
+      });
+    } else {
+      res.render("user/phonecard", {
+        layout: "user/dashboard", full_name: req.session.full_name, userstatus: user.status, username: req.session.username,
+        email: req.session.email
+      });
+    }
+  })
+
 });
 
 router.post("/phonecard", async function (req, res) {
@@ -285,7 +331,7 @@ router.post("/phonecard", async function (req, res) {
   let result = await cardModel.buyPhoneCards(userId, serviceProvider, value1, value2, value3, value4, value5);
   res.render("user/phonecard", {
     full_name: req.session.full_name, username: req.session.username,
-    email: req.session.email,
+    email: req.session.email, userstatus: req.session.userstatus,
     layout: "user/dashboard", result: result
   });
 });

@@ -439,17 +439,19 @@ router.post('/accept', (req, res, next) => {
   if (typeof req.session.isAdmin == "undefined" || req.session.isAdmin == false)
     res.redirect("/");
   console.log(req.body.transid)
-  const amount = req.body.amount;
-  const fee = req.body.fee;
+  const amount = parseInt(req.body.amount);
+  const fee = parseInt(req.body.fee);
   console.log(req.body.receiver)
   console.log(amount - fee)
   let error = undefined
+  let total = amount + fee
+  console.log(total)
   Transaction.findOne({ _id: mongoose.Types.ObjectId(req.body.transid) }, (e, trans) => {
     if (trans && !e) {
       if (trans.type == "withdraw") {
         User.findOne({ _id: mongoose.Types.ObjectId(req.body.sender) }, (e, wallet) => {
           console.log({ wallet })
-          if (wallet.balance < 5000000) {
+          if (wallet.balance < total) {
             error = 'User has insufficient balance\nPlease decline this transaction!'
             return res.render('admin/transdetail', { error })
             //console.log('User has insufficient balance\nPlease decline this transaction!')
@@ -482,7 +484,7 @@ router.post('/accept', (req, res, next) => {
       } else if (trans.type == "transfer") {
         User.findOne({ _id: mongoose.Types.ObjectId(req.body.sender) }, (e, walletSender) => {
           console.log(walletSender)
-          if (walletSender.balance < 5000000) {
+          if (walletSender.balance < total) {
             error = 'User has insufficient balance\nPlease decline this transaction!'
             return res.render('admin/transdetail', { error })
           } else {

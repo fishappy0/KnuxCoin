@@ -65,7 +65,7 @@ router.post("/password", parseBody, async function (req, res, next) {
   let verify_new_pass = body.verify_new_password.toString();
   let error = null;
 
-  // Initial check before accessing the database
+  // Kiểm tra db
   if (verify_new_pass != new_pass) {
     error = "The enetered password does not match with the verify password";
   }
@@ -76,13 +76,14 @@ router.post("/password", parseBody, async function (req, res, next) {
     return res.render("account/password", { error });
   }
 
-  // checks after accessing the database
+  
   if (
     (await accountModel.verifyPassword(req.session.username, old_pass)) != null
   ) {
     await accountModel.changePassword(username, new_pass);
     req.session.first_time = false;
-    return res.redirect("/dashboard");
+    req.session.destroy();
+    return res.render("account/login", {success: "Password changed successfully"});
   } else {
     return res.render("account/password", { error: "The old password does not match!" });
   }
@@ -90,7 +91,7 @@ router.post("/password", parseBody, async function (req, res, next) {
 });
 // Trang khôi phục mật khẩu
 router.get("/changepassword", function (req, res, next) {
-   res.render("account/changepassword");
+  res.render("account/changepassword");
 });
 router.post("/changepassword", parseBody, async function (req, res, next) {
   let body = req.body;
@@ -107,12 +108,12 @@ router.get("/otp", function (req, res, next) {
   res.render("account/otp");
 });
 router.post("/otp", parseBody, async function (req, res, next) {
- let body = req.body;
- let otp = body.otp.toString();
+  let body = req.body;
+  let otp = body.otp.toString();
 
- let error = null;
+  let error = null;
 
- res.render("account/password")
+  res.render("account/password")
 
 });
 //Trang đăng nhập
@@ -142,14 +143,14 @@ router.post("/login", parseBody, async (req, res, next) => {
     res.render("account/login", { error: "This account has been disabled.\nPlease contact 18001008" });
   }
   else {
-    // Checks if the username exists
+    // Kiểm tra username tồn tại
     if ((await accountModel.getUserByUsername(username)) == null) {
       return res.render("account/login", {
         error: "Username or password is incorrect!",
       });
     }
 
-    // Tries to login with the username
+    // Đăng nhập với username
     queryResult = await accountModel.verifyPassword(username, password);
     if (queryResult != null) {
       let userid = await queryResult["user_id"];
@@ -171,12 +172,12 @@ router.post("/login", parseBody, async (req, res, next) => {
       ) {
         return res.redirect("/admin");
       }
-      // Reset the failed login attempt count after a succesful login
+      // Reset lại số lần đăng nhập thất bại nếu đăng nhập đúng
       await userModel.resetLoginAttempts(username);
       return res.redirect("/dashboard");
     }
 
-    // Login failed
+    // Đăng nhập thất bại
     if (login_attempts < 4 && username != "admin") {
       await userModel.addLoginFailAttempts(username);
       login_attempts += 1;
@@ -238,7 +239,7 @@ router.post("/update_id", parseBody, async function (req, res, next) {
 
   });
 });
-//Logout
+//Đăng xuất
 router.post("/logout", parseBody, async (received, res, next) => {
   received.session.destroy();
   res.redirect("/");
@@ -260,14 +261,14 @@ router.post("/register", async (req, res, next) => {
     let address = fields.address.toString();
     let full_name = fields.full_name.toString();
 
-    //Generate files and account_id
+    //Sinh file và account_id
     let date = new Date(Date.now());
     let account_id =
       date.getFullYear().toString().slice(2) +
       "U" +
       Math.round(Math.random() * 10000000).toString();
 
-    //Create a user in the database and save the profile picture
+    //Khởi tạo user và lưu hình ảnh
     let obj_user_id = await userModel.createUser(
       full_name,
       email,
@@ -281,7 +282,7 @@ router.post("/register", async (req, res, next) => {
     if (error) {
       res.render('account/login', { error: error })
     }
-    //Create an account in the database
+    //Khởi tạo account trong db
     if (obj_user_id == null) return;
     let user_info_arr = await accountModel.createAccount(
       account_id,
@@ -292,9 +293,9 @@ router.post("/register", async (req, res, next) => {
 
     let email_message = `Greeting ${full_name}, \nThank you for registering with KnuxCoin, the credentials to access the service is as follows:\nUsername:${user_info_arr[0]}\nPassword:${user_info_arr[1]}`;
     let alert_message = `Account created successfully, however there was a problem with the mail service. Therefore, we deliver this message with your login credential as follows: \nUsername: ${user_info_arr[0]} \nPassword: ${user_info_arr[1]}`;
-    //Send the account created to the user
+    //Gửi tài khoản cho user qua email
     if (sendAccountInfoToMail(email, email_message) != "success") {
-      res.render('account/login', { success: "We send an account via your email.\nPlease check"  })
+      res.render('account/login', { success: "We send an account via your email.\nPlease check" })
     }
 
   });

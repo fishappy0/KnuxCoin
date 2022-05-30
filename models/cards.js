@@ -249,7 +249,7 @@ module.exports.withdraw = async function (cardNumber, expiryDate, cvv, amount, d
 module.exports.transfer = async function (phone, rename, party, amount, note, userid, name) {
 
   //**********************************if (amount > user.balance) return 'Insufficient balance';
-  if (await User.findOne({ phone: phone, full_name: rename }) == null) {
+  if (await User.findOne({ phone: phone, full_name: rename, status: "approved" }) == null) {
     return 'Invalid Recipient'
   } else {
     if (amount > 5000000) {

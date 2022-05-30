@@ -2,7 +2,7 @@ function goBack() {
     window.history.back();
 }
 $(document).ready(function () {
-    //active account
+    //Xác minh tài khoản
     $('.btn-approve').click(e => {
         const btn = e.target
         const userid = btn.dataset.id
@@ -27,7 +27,7 @@ $(document).ready(function () {
         })
     })
 
-    //disable account
+    //Vô hiệu hóa tài khoản
     $('.btn-disable').click(e => {
         const btn = e.target
         const userid = btn.dataset.id
@@ -52,7 +52,7 @@ $(document).ready(function () {
         })
     })
 
-    //send request to account
+    //Gửi yêu cầu cập nhật cmnd
     $('.btn-send').click(e => {
         const btn = e.target
         const userid = btn.dataset.id
@@ -77,7 +77,7 @@ $(document).ready(function () {
         })
     })
 
-    //unlock account
+    //Mở khóa tài khoản bị lock
     $('.btn-unlock').click(e => {
         const btn = e.target
         const userid = btn.dataset.id
@@ -115,7 +115,7 @@ $(document).ready(function () {
         })
     })
 
-    //accept transaction
+    //Xác nhận giao dịch
     $('.btn-accept').click(e => {
         const btn = e.target
         const transid = btn.dataset.id
@@ -164,7 +164,7 @@ $(document).ready(function () {
         })
     })
 
-    //decline transaction
+    //Từ chối giao dịch
     $('.btn-decline').click(e => {
         const btn = e.target
         const transid = btn.dataset.id
