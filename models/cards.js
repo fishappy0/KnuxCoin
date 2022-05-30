@@ -119,7 +119,7 @@ module.exports.recharge = async function (cardNumber, expiryDate, cvv, amount, u
       type: 'recharge',
       status: 'success',
     });
-    return 'Success';
+    return 'Success. Please check your balance in your profile';
   }
 
   // Thẻ 2 nạp tối đa 1 triệu/lần.
@@ -137,7 +137,7 @@ module.exports.recharge = async function (cardNumber, expiryDate, cvv, amount, u
       type: 'recharge',
       status: 'success',
     });
-    return 'Success';
+    return 'Success. Please check your balance in your profile';
   }
 
   // Thẻ 3 luôn hết tiền.
