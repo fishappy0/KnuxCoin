@@ -19,21 +19,22 @@ var parseBody = body_parser.urlencoded({ extended: false });
 
 async function sendAccountInfoToMail(email, email_message) {
   let message = {
-    from: "sinhvien@phongdaotao.com",
+    from: "knuxcoin@outlook.com.vn",
     to: email,
     subject: "KnuxCoin Service",
     text: email_message,
   };
   try {
     smtp_transport = node_mailer.createTransport({
-      host: "mail.phongdaotao.com",
-      port: 25,
+      host: "smtp.office365.com",
+      port: 587,
       secure: false,
       auth: {
-        user: "sinhvien@phongdaotao.com",
-        pass: "svtdtu",
+        user: "knuxcoin@outlook.com.vn",
+        pass: "Finalweb123",
       },
       tls: {
+        requireTLS: true,
         rejectUnauthorized: false,
       },
     });
@@ -87,7 +88,33 @@ router.post("/password", parseBody, async function (req, res, next) {
   }
 
 });
+// Trang khôi phục mật khẩu
+router.get("/changepassword", function (req, res, next) {
+   res.render("account/changepassword");
+});
+router.post("/changepassword", parseBody, async function (req, res, next) {
+  let body = req.body;
+  let phone_number = body.phone_number.toString();
+  let email = body.email.toString();
+  let error = null;
 
+  res.render("account/otp")
+
+});
+
+// Trang OTP
+router.get("/otp", function (req, res, next) {
+  res.render("account/otp");
+});
+router.post("/otp", parseBody, async function (req, res, next) {
+ let body = req.body;
+ let otp = body.otp.toString();
+
+ let error = null;
+
+ res.render("account/password")
+
+});
 //Trang đăng nhập
 router.get("/login", (req, res, next) => {
   if (typeof req.session.username == "undefined") {
@@ -166,6 +193,7 @@ router.post("/login", parseBody, async (req, res, next) => {
     }
   }
 });
+
 //Cập nhật cmnd
 router.get("/update_id", (req, res, next) => {
   sess = req.session;
