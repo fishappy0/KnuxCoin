@@ -311,11 +311,11 @@ router.get("/history/:id", (req, res, next) => {
   Transaction.find({
     $or: [
       {
-        userId: { $elemMatch: { id: mongoose.Types.ObjectId(req.params.id) } },
+        userId: { $elemMatch: { userid: req.params.id } },
       },
       {
         recipient: {
-          $elemMatch: { id: mongoose.Types.ObjectId(req.params.id) },
+          $elemMatch: { reid: req.params.id },
         },
         status: "success",
       },
@@ -486,10 +486,10 @@ router.post('/accept', (req, res, next) => {
             error = 'User has insufficient balance\nPlease decline this transaction!'
             return res.render('admin/transdetail', { error })
           } else {
-            User.findOne({ _id: mongoose.Types.ObjectId(req.body.receiver) }, (e, walletReceiver) => {
+            User.findOne({ phone: req.body.receiver }, (e, walletReceiver) => {
               if (trans.charge_party == "recipient") {
                 User.updateOne(
-                  { _id: mongoose.Types.ObjectId(req.body.receiver) },
+                  { phone: req.body.receiver },
                   { $set: { balance: (walletReceiver.balance) + (amount - fee) } },
                   function (err) {
                     if (err) {
@@ -525,7 +525,7 @@ router.post('/accept', (req, res, next) => {
 
               } else if (trans.charge_party == "sender") {
                 User.updateOne(
-                  { _id: mongoose.Types.ObjectId(req.body.receiver) },
+                  { phone: req.body.receiver },
                   { $set: { balance: (walletReceiver.balance) + (amount) } },
                   function (err) {
                     if (err) {

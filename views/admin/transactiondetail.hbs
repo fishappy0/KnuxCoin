@@ -145,17 +145,17 @@
                                         <div class="form-group">
                                             <label>Recipient's Name</label>
                                             <input type="text" class="form-control"
-                                                value="{{detail.recipient.[0].name}}" name="card" readonly="">
+                                                value="{{detail.recipient.[0].rename}}" name="rename" readonly="">
                                         </div>
                                         <div class="form-group">
                                             <label>Recipient's Phone Number</label>
                                             <input type="text" class="form-control"
-                                                value="{{detail.recipient.[0].phone}}" name="card" readonly="">
+                                                value="{{detail.recipient.[0].phone}}" name="phone" readonly="">
                                         </div>
                                         <div class="form-group">
                                             <label>Charge Party</label>
                                             <input type="text" class="form-control" value="{{detail.charge_party}}"
-                                                name="card" readonly="">
+                                                name="party" readonly="">
                                         </div>
                                         {{/eq}}
                                     </div>
@@ -166,8 +166,8 @@
                                     <td>
                                         {{#eq detail.status "pending"}}
                                         <a><button data-id="{{detail._id}}" data-amount="{{detail.amount}}"
-                                                data-fee="{{detail.fee}}" data-sender="{{detail.userId.[0].id}}"
-                                                data-receiver="{{detail.recipient.[0].id}}" type="button"
+                                                data-fee="{{detail.fee}}" data-sender="{{detail.userId.[0].userid}}"
+                                                data-receiver="{{detail.recipient.[0].phone}}" type="button"
                                                 class="btn btn-success btn-accept" name="accept">Accept</button></a>
                                         <a><button data-id="{{detail._id}}" type="button"
                                                 class="btn btn-danger btn-decline" name="decline">Decline</button></a>
@@ -220,7 +220,7 @@
                     Do you want to decline this withdrawal transaction?
                 </div>
                 <div class="modal-footer">
-                    <button data-id="id" id="declined" type="button" class="btn btn-danger">Confirm</button>
+                    <button id="declined" type="button" class="btn btn-danger">Confirm</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>

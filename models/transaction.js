@@ -5,7 +5,7 @@ const userDB = require("../models/users");
 const transactionSchema = new mongoose.Schema({
   userId: [
     {
-      id: Object,
+      userid: String,
       name: String,
     },
   ],
@@ -19,9 +19,8 @@ const transactionSchema = new mongoose.Schema({
   charge_party: String,
   recipient: [
     {
-      id: Object,
       phone: String,
-      name: String,
+      rename: String,
     },
   ],
   phonecard: String,

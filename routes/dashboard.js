@@ -3,6 +3,11 @@ var router = express.Router();
 const User = require("../models/users");
 const Transaction = require("../models/transaction.js");
 const mongoose = require("mongoose")
+var express = require("express");
+var router = express.Router();
+var cardModel = require("../models/cards");
+const bodyparser = require("body-parser");
+const parseBody = bodyparser.urlencoded({ extended: false });
 
 /* GET users listing. */
 router.get("/", async function (req, res, next) {
@@ -49,11 +54,11 @@ router.get("/history", (req, res, next) => {
         {
           $or: [
             {
-              userId: { $elemMatch: { id: mongoose.Types.ObjectId(req.session.userId) } },
+              userId: { $elemMatch: { userid: req.session.userId } },
             },
             {
               recipient: {
-                $elemMatch: { id: mongoose.Types.ObjectId(req.session.userId) },
+                $elemMatch: { reid: req.session.userId },
               },
               status: "success",
             },
@@ -88,28 +93,18 @@ router.get("/history", (req, res, next) => {
   })
 });
 //Trang chi tiết giao dịch
-router.get('/detail', (req, res, next) => {
+router.get('/detail/:id', (req, res, next) => {
   sess = req.session;
   if (typeof sess.username == "undefined") { res.redirect("/"); }
   Transaction.findOne({
-    $or: [
-      {
-        userId: { $elemMatch: { id: mongoose.Types.ObjectId(req.session.userId) } },
-      },
-      {
-        recipient: {
-          $elemMatch: { id: mongoose.Types.ObjectId(req.session.userId) },
-        },
-        status: "success",
-      },
-    ],
-  }, (e, detail) => {
+    _id: mongoose.Types.ObjectId(req.params.id)
+  }, (e, trans) => {
     if (e) {
       console.log(e);
       return res.sendStatus(500);
     } else {
       res.render("user/transdetail", {
-        detail: detail,
+        detail: trans,
         full_name: req.session.full_name,
         username: req.session.username,
         email: req.session.email, layout: "user/dashboard"
@@ -176,6 +171,122 @@ router.get("/history/search", (req, res) => {
         });
       });
   })
+});
+
+// Nạp tiền vào tài khoản
+router.get("/recharge", function (req, res) {
+  sess = req.session;
+  if (typeof sess.username == "undefined") { res.redirect("/"); }
+  res.render("user/recharge", {
+    layout: "user/dashboard", full_name: req.session.full_name, username: req.session.username,
+    email: req.session.email
+  });
+});
+
+router.post("/recharge", parseBody, async function (req, res) {
+  sess = req.session;
+  if (typeof sess.username == "undefined") { res.redirect("/"); }
+  let body = req.body;
+  let userId = req.session.userId;
+  let cardNumber = body.cardNumber;
+  let expiryDate = body.expiryDate;
+  let cvv = body.cvv;
+  let amount = body.amount;
+  let result = await cardModel.recharge(cardNumber, expiryDate, cvv, amount);
+  res.render("user/recharge", {
+    full_name: req.session.full_name, username: req.session.username,
+    email: req.session.email,
+    layout: "user/dashboard", result: result
+  });
+});
+
+// Rút tiền từ tài khoản
+router.get("/withdraw", function (req, res) {
+  sess = req.session;
+  if (typeof sess.username == "undefined") { res.redirect("/"); }
+  console.log(req.session.userId)
+  res.render("user/withdraw", {
+    layout: "user/dashboard", full_name: req.session.full_name, username: req.session.username,
+    email: req.session.email
+  });
+});
+
+router.post("/withdraw", async function (req, res) {
+  sess = req.session;
+  if (typeof sess.username == "undefined") { res.redirect("/"); }
+  let body = req.body;
+  let userid = req.session.userId;
+  let name = req.session.full_name;
+  let cardNumber = body.cardNumber;
+  let expiryDate = body.expiryDate;
+  let cvv = body.cvv;
+  let amount = body.amount;
+  let description = body.description;
+  console.log({ userid, name })
+  let result = await cardModel.withdraw(cardNumber, expiryDate, cvv, amount, description, userid, name);
+  res.render("user/withdraw", {
+    full_name: req.session.full_name, username: req.session.username,
+    email: req.session.email,
+    layout: "user/dashboard", result: result
+  });
+});
+
+// Chuyển khoản
+router.get("/transfer", function (req, res) {
+  sess = req.session;
+  if (typeof sess.username == "undefined") { res.redirect("/"); }
+  console.log(req.session.userId)
+  res.render("user/transfer", {
+    layout: "user/dashboard", full_name: req.session.full_name, username: req.session.username,
+    email: req.session.email
+  });
+});
+
+router.post("/transfer", async function (req, res) {
+  sess = req.session;
+  if (typeof sess.username == "undefined") { res.redirect("/"); }
+  let body = req.body;
+  let userid = req.session.userId;
+  let name = req.session.full_name;
+  let rename = body.name;
+  let phone = body.phoneNumber;
+  let party = body.party;
+  let amount = body.amount;
+  let note = body.note;
+  let result = await cardModel.transfer(phone, rename, party, amount, note, userid, name);
+  res.render("user/transfer", {
+    full_name: req.session.full_name, username: req.session.username,
+    email: req.session.email,
+    layout: "user/dashboard", result: result
+  });
+});
+
+router.get("/phonecard", function (req, res) {
+  sess = req.session;
+  if (typeof sess.username == "undefined") { res.redirect("/"); }
+  res.render("user/phonecard", {
+    layout: "user/dashboard", full_name: req.session.full_name, username: req.session.username,
+    email: req.session.email
+  });
+});
+
+router.post("/phonecard", async function (req, res) {
+  sess = req.session;
+  if (typeof sess.username == "undefined") { res.redirect("/"); }
+  let body = req.body;
+  let userId = req.session.userId;
+  let serviceProvider = body.serviceProvider;
+  let value1 = body.value1;
+  let value2 = body.value2;
+  let value3 = body.value3;
+  let value4 = body.value4;
+  let value5 = body.value5;
+  let result = await cardModel.buyPhoneCards(userId, serviceProvider, value1, value2, value3, value4, value5);
+  res.render("user/phonecard", {
+    full_name: req.session.full_name, username: req.session.username,
+    email: req.session.email,
+    layout: "user/dashboard", result: result
+  });
 });
 
 module.exports = router;
