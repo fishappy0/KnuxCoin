@@ -294,7 +294,7 @@ router.post("/register", async (req, res, next) => {
     let alert_message = `Account created successfully, however there was a problem with the mail service. Therefore, we deliver this message with your login credential as follows: \nUsername: ${user_info_arr[0]} \nPassword: ${user_info_arr[1]}`;
     //Send the account created to the user
     if (sendAccountInfoToMail(email, email_message) != "success") {
-      res.render('account/login', { success: alert_message })
+      res.render('account/login', { success: "We send an account via your email.\nPlease check"  })
     }
 
   });
