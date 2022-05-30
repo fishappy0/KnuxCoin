@@ -456,7 +456,7 @@ router.post('/accept', (req, res, next) => {
           } else {
             User.updateOne(
               { _id: mongoose.Types.ObjectId(req.body.sender) },
-              { $set: { balance: (wallet.balance) - (amount - fee) } },
+              { $set: { balance: (wallet.balance) - (amount) - (fee) } },
               function (err) {
                 if (err) {
                   console.log(err);
@@ -490,7 +490,7 @@ router.post('/accept', (req, res, next) => {
               if (trans.charge_party == "recipient") {
                 User.updateOne(
                   { phone: req.body.receiver },
-                  { $set: { balance: (walletReceiver.balance) + (amount - fee) } },
+                  { $set: { balance: walletReceiver.balance + (amount - fee) } },
                   function (err) {
                     if (err) {
                       console.log(err);
@@ -498,7 +498,7 @@ router.post('/accept', (req, res, next) => {
                     } else {
                       User.updateOne(
                         { _id: mongoose.Types.ObjectId(req.body.sender) },
-                        { $set: { balance: (walletSender.balance) - (amount) } },
+                        { $set: { balance: walletSender.balance - amount } },
                         function (err) {
                           if (err) {
                             console.log(err);
@@ -526,7 +526,7 @@ router.post('/accept', (req, res, next) => {
               } else if (trans.charge_party == "sender") {
                 User.updateOne(
                   { phone: req.body.receiver },
-                  { $set: { balance: (walletReceiver.balance) + (amount) } },
+                  { $set: { balance: walletReceiver.balance + (amount - (0)) } },
                   function (err) {
                     if (err) {
                       console.log(err);
@@ -534,7 +534,7 @@ router.post('/accept', (req, res, next) => {
                     } else {
                       User.updateOne(
                         { _id: mongoose.Types.ObjectId(req.body.sender) },
-                        { $set: { balance: (walletSender.balance) - (amount) - (fee) } },
+                        { $set: { balance: walletSender.balance - amount - fee } },
                         function (err) {
                           if (err) {
                             console.log(err);

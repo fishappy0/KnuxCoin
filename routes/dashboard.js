@@ -187,12 +187,13 @@ router.post("/recharge", parseBody, async function (req, res) {
   sess = req.session;
   if (typeof sess.username == "undefined") { res.redirect("/"); }
   let body = req.body;
-  let userId = req.session.userId;
+  let userid = req.session.userId;
+  let name = req.session.full_name;
   let cardNumber = body.cardNumber;
   let expiryDate = body.expiryDate;
   let cvv = body.cvv;
   let amount = body.amount;
-  let result = await cardModel.recharge(cardNumber, expiryDate, cvv, amount);
+  let result = await cardModel.recharge(cardNumber, expiryDate, cvv, amount, userid, name);
   res.render("user/recharge", {
     full_name: req.session.full_name, username: req.session.username,
     email: req.session.email,

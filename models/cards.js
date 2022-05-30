@@ -90,15 +90,16 @@ module.exports.cardThree = async function () {
  * @param {int} cardNumber Số thẻ cào
  * @param {date} expiryDate Ngày hết hạn
  * @param {int} cvv Mã CVV
- * @param {int} amount Số tiền nạp
+ * @param {number} amount Số tiền nạp
+ * @param {string} userid userId
+ * @param {string} name full_name
  * @returns {string} Thông báo nạp thành công hoặc lỗi.
  */
-module.exports.recharge = async function (cardNumber, expiryDate, cvv, amount) {
+module.exports.recharge = async function (cardNumber, expiryDate, cvv, amount, userid, name) {
   // Tạo bằng new Date bị lỗi.
   let cardOneExpiryDate = "2022-10-10";
   let cardTwoExpiryDate = "2022-11-11";
   let cardThreeExpiryDate = "2022-12-12";
-  let transactionId = crypto.randomBytes(16).toString('hex');
 
   expiryDate.toString();
   if (cardNumber != null && cardNumber.length != 6) return 'Card Number must be 6 digits';
@@ -109,14 +110,14 @@ module.exports.recharge = async function (cardNumber, expiryDate, cvv, amount) {
     if (expiryDate != cardOneExpiryDate) return 'Invalid date';
     if (cvv != 411) return 'Invalid CVV';
 
-    await User.findOneAndUpdate({ $inc: { balance: amount } });
+    await User.findByIdAndUpdate({ _id: mongoose.Types.ObjectId(userid) }, { $inc: { balance: amount } });
     await Transaction.create({
-      // userId:
-      transactionId: transactionId,
-
+      userId: [{ userid, name }],
+      date: new Date(Date.now()),
       amount: amount,
+      card: cardNumber,
       type: 'recharge',
-      status: 'approved',
+      status: 'success',
     });
     return 'Success';
   }
@@ -124,15 +125,17 @@ module.exports.recharge = async function (cardNumber, expiryDate, cvv, amount) {
   // Thẻ 2 nạp tối đa 1 triệu/lần.
   if (cardNumber == 222222) {
     if (expiryDate != cardTwoExpiryDate) return 'Invalid date';
-    if (cvv != 443) return 'CVV must be 3 digits';
+    if (cvv != 443) return 'Invalid CVV';
     if (amount > 1000000) return 'Amount must be less than 1 million';
 
-    await User.findOneAndUpdate({ $inc: { balance: amount } });
+    await User.findByIdAndUpdate({ _id: mongoose.Types.ObjectId(userid) }, { $inc: { balance: amount } });
     await Transaction.create({
-      transactionId: transactionId,
+      userId: [{ userid, name }],
+      date: new Date(Date.now()),
       amount: amount,
+      card: cardNumber,
       type: 'recharge',
-      status: 'approved',
+      status: 'success',
     });
     return 'Success';
   }
@@ -154,9 +157,9 @@ module.exports.recharge = async function (cardNumber, expiryDate, cvv, amount) {
  * @param {int} cardNumber Số thẻ cào
  * @param {date} expiryDate Ngày hết hạn
  * @param {int} cvv Mã
- * @param {int} amount Số tiền rút
+ * @param {number} amount Số tiền rút
  * @param {string} description Ghi chú
- * @param {string} name Ghi chú
+ * @param {string} name full_name
  * @param {string} userid userId
  * @returns {string} Thông báo rút tiền thành công hoặc lỗi.
  */
@@ -221,7 +224,7 @@ module.exports.withdraw = async function (cardNumber, expiryDate, cvv, amount, d
             status: 'success',
           });
           await User.findByIdAndUpdate({ _id: mongoose.Types.ObjectId(userid) }, {
-            balance: balance - (amount - (amount * 0.05)),
+            balance: balance - (amount) - (amount * 0.05),
           });
           return "Success. Please check your balance in your profile"
         }
@@ -238,7 +241,7 @@ module.exports.withdraw = async function (cardNumber, expiryDate, cvv, amount, d
  * @param {string} rename tên người nhận
  * @param {string} name tên người nhận
  * @param {string} party bên chị phí
- * @param {int} amount Số tiền rút
+ * @param {number} amount Số tiền chuyển
  * @param {string} note Ghi chú
  * @param {string} userid userId
  * @returns {string} Thông báo rút tiền thành công hoặc lỗi.
@@ -246,55 +249,90 @@ module.exports.withdraw = async function (cardNumber, expiryDate, cvv, amount, d
 module.exports.transfer = async function (phone, rename, party, amount, note, userid, name) {
 
   //**********************************if (amount > user.balance) return 'Insufficient balance';
-
-  if (amount > 5000000) {
-    await Transaction.create({
-      //***********************userId: user.id,
-      userId: [{ userid, name }],
-      date: new Date(Date.now()),
-      fee: amount * 0.05,
-      charge_party: party,
-      amount: amount,
-      type: 'transfer',
-      note: note,
-      status: 'pending',
-      recipient: [{ phone, rename }]
-    });
-    return 'Pending request';
-  }
-  // Không thể bỏ vòng else này vì nó sẽ bị lỗi khi số tiền vừa > 5,000,000 mà còn không chia hết cho 50,000.
-  else {
-    if (amount % 50000 != 0) return 'The amount must be a multiple of 50,000';
-    // 5% phí rút tiền
-    /**********************user.balance -= amount * 0.95;
-    await user.save();*************************/
-    // Ghi nhận vào lịch sử giao dịch
-
-    let balance = (await User.findById({ _id: mongoose.Types.ObjectId(userid) }))[
-      "balance"
-    ];
-    if (balance < amount) {
-      return 'Your wallet has insufficient balance';
-
-    } else {
+  if (await User.findOne({ phone: phone, full_name: rename }) == null) {
+    return 'Invalid Recipient'
+  } else {
+    if (amount > 5000000) {
       await Transaction.create({
-        //*********************************userId: user.id,
+        //***********************userId: user.id,
         userId: [{ userid, name }],
         date: new Date(Date.now()),
         fee: amount * 0.05,
-        card: cardNumber,
+        charge_party: party,
         amount: amount,
-        type: 'withdraw',
-        note: description,
-        status: 'success',
+        type: 'transfer',
+        note: note,
+        status: 'pending',
+        recipient: [{ phone, rename }]
       });
-      await User.findByIdAndUpdate({ _id: mongoose.Types.ObjectId(userid) }, {
-        balance: balance - (amount - (amount * 0.05)),
-      });
-      return "Success. Please check your balance in your profile"
+      return 'Pending request';
     }
+    // Không thể bỏ vòng else này vì nó sẽ bị lỗi khi số tiền vừa > 5,000,000 mà còn không chia hết cho 50,000.
+    else {
+      if (amount % 50000 != 0) return 'The amount must be a multiple of 50,000';
+      // 5% phí rút tiền
+      /**********************user.balance -= amount * 0.95;
+      await user.save();*************************/
+      // Ghi nhận vào lịch sử giao dịch
 
+      let balanceSender = (await User.findById({ _id: mongoose.Types.ObjectId(userid) }))[
+        "balance"
+      ];
+      let balanceRecipient = (await User.findOne({ phone: phone }))[
+        "balance"
+      ];
+      if (balanceSender < amount) {
+        return 'Your wallet has insufficient balance';
+      } else {
+        if (party == "sender") {
+          await Transaction.create({
+            //*********************************userId: user.id,
+            userId: [{ userid, name }],
+            date: new Date(Date.now()),
+            fee: amount * 0.05,
+            charge_party: party,
+            amount: amount,
+            type: 'transfer',
+            note: note,
+            status: 'success',
+            recipient: [{ phone, rename }]
+          });
+          //nguời gửi
+          await User.findByIdAndUpdate({ _id: mongoose.Types.ObjectId(userid) }, {
+            balance: balanceSender - amount - (amount * 0.05),
+          });
+          //người nhận
+          await User.findOneAndUpdate({ phone: phone }, {
+            balance: balanceRecipient + (amount - (0)),
+          });
+          return "Success. Please check your balance in your profile"
+        } else if (party == "recipient") {
+          await Transaction.create({
+            //*********************************userId: user.id,
+            userId: [{ userid, name }],
+            date: new Date(Date.now()),
+            fee: amount * 0.05,
+            charge_party: party,
+            amount: amount,
+            type: 'transfer',
+            note: note,
+            status: 'success',
+            recipient: [{ phone, rename }]
+          });
+          //nguời gửi
+          await User.findByIdAndUpdate({ _id: mongoose.Types.ObjectId(userid) }, {
+            balance: (balanceSender - amount),
+          });
+          //người nhận 
+          await User.findOneAndUpdate({ phone: phone }, {
+            balance: balanceRecipient + (amount - (amount * 0.05)),
+          });
+          return "Success. Please check your balance in your profile"
+        }
+      }
+    }
   }
+
 }
 
 
