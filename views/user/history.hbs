@@ -1,10 +1,18 @@
-<div class="admin_layout_container">
-    <div class="admin_layout_body">
+<div class="dashboard_layout_container">
+    <div class="dashboard_layout_body">
         <!-- {{{content}}} -->
 
         <body>
+            {{#if error}}
+            <div class="form-group">
+                <div class="alert alert-warning " role="alert">
+                    {{error}}
+                </div>
+            </div>
+            {{/if}}
+            {{#eq userstatus "approved"}}
             <div class="container-fluid" id="align-table">
-                <form action="/admin/history/search" id="" method="GET">
+                <form action="/dashboard/history/search" id="" method="GET">
                     <div class="menu">
                         <h2>Transaction History ({{transaction.length}}) </h2>
                         <div class="float-item">
@@ -77,15 +85,15 @@
                                 {{/eq}}
                             </td>
                             <td>
-                                <a href="/admin/transdetail/{{_id}}"><button type="button" class="btn btn-info"
-                                        name="details">Details</button></a>
+                                <a href="/dashboard/detail"><button type="button" class="btn btn-info"
+                                        name="detail">Detail</button></a>
                             </td>
                         <tr>
                     </tbody>
                     {{/each}}
                 </table>
                 <p>Total number of transaction: <strong class="text-danger">{{transaction.length}}</strong></p>
-                {{!-- <nav aria-label="Page navigation example">
+                <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-center">
                         {{#paginate pagination type="first"}}
                         <li {{#if disabled}} class="disabled" {{/if}}><a href="?page={{n}}">First</a></li>
@@ -106,8 +114,9 @@
                         <li {{#if disabled}}class="disabled" {{/if}}><a href="?page={{n}}">Last</a></li>
                         {{/paginate}}
                     </ul>
-                </nav> --}}
+                </nav>
             </div>
+            {{/eq}}
         </body>
     </div>
 </div>

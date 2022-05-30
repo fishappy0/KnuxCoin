@@ -2,7 +2,6 @@ var express = require("express");
 var router = express.Router();
 
 const accountModel = require("../models/account");
-const testModel = require("../models/testdb_model");
 const userModel = require("../models/users");
 
 const fs = require("fs");
@@ -13,17 +12,17 @@ const xoauth2 = require("xoauth2");
 const node_mailer = require("nodemailer");
 const body_parser = require("body-parser");
 const { connect } = require("http2");
-const { dbg } = require("../local_utils");
+const alert = require("alert");
 const SMTPTransport = require("nodemailer/lib/smtp-transport");
 const User = require("../models/users");
 var parseBody = body_parser.urlencoded({ extended: false });
 
-async function sendAccountInfoToMail(email) {
+async function sendAccountInfoToMail(email, email_message) {
   let message = {
     from: "sinhvien@phongdaotao.com",
     to: email,
     subject: "KnuxCoin Service",
-    text: `Greeting ${full_name}, \nThank you for registering with KnuxCoin, the credentials to access the service is as follows:\nUsername:${user_info_arr[1]}\nPassword:${user_info_arr[2]}`,
+    text: email_message,
   };
   try {
     smtp_transport = node_mailer.createTransport({
@@ -39,8 +38,9 @@ async function sendAccountInfoToMail(email) {
       },
     });
     await smtp_transport.sendMail(message);
+    return "success";
   } catch (err) {
-    `There was a problem emailing, This is your created account \nUsername: ${user_info_arr[0]} \nPassword: ${user_info_arr[1]}`;
+    return err;
   }
 }
 
@@ -108,15 +108,18 @@ router.post("/login", parseBody, async (req, res, next) => {
     login_attempts = failedAttempts;
   }
 
-  if (login_attempts == 3) {
-    res.render("account/login", { error: "Out of login attempts" });
-  } else {
+  let accountStatus = await userModel.getUserStatus(username);
+  if (failedAttempts == 3 || accountStatus == 'locked') {
+    res.render("account/login", { error: "The account has been locked due to incorrect password input many times.\nPlease contact the administrator for assistance." });
+  } else if (accountStatus == 'disabled') {
+    res.render("account/login", { error: "This account has been disabled.\nPlease contact 18001008" });
+  }
+  else {
     // Checks if the username exists
     if ((await accountModel.getUserByUsername(username)) == null) {
-      res.render("account/login", {
+      return res.render("account/login", {
         error: "Username or password is incorrect!",
       });
-      return res.redirect("/login");
     }
 
     // Tries to login with the username
@@ -131,6 +134,8 @@ router.post("/login", parseBody, async (req, res, next) => {
         sess.first_time = await queryResult["first_time_login"];
         sess.full_name = await userModelResult["full_name"].toString();
         sess.email = await userModelResult["email"].toString();
+        sess.userId = await userModelResult["_id"].toString();
+        sess.userstatus = await userModelResult["status"].toString();
       }
 
       if (
@@ -149,7 +154,7 @@ router.post("/login", parseBody, async (req, res, next) => {
       await userModel.addLoginFailAttempts(username);
       login_attempts += 1;
       if (login_attempts == 3) {
-        await User.addAbnormalLogin(username);
+        await userModel.addAbnormalLoginAndLockAccount(username);
       }
       return res.render("account/login", {
         error: `Password is incorrect, you used ${login_attempts} out of 3 allowed login attempts before the account is locked!`,
@@ -161,7 +166,50 @@ router.post("/login", parseBody, async (req, res, next) => {
     }
   }
 });
+//Cập nhật cmnd
+router.get("/update_id", (req, res, next) => {
+  sess = req.session;
+  if (typeof sess.username == "undefined") { res.redirect("/"); }
+  res.render("account/update_id");
+});
+router.post("/update_id", parseBody, async function (req, res, next) {
+  sess = req.session;
+  if (typeof sess.username == "undefined") { res.redirect("/"); }
+  let form = new multiparty.Form();
+  form.parse(req, async (err, fields, files) => {
+    let userData = await accountModel.findOne({ username: sess.username });
+    if (typeof userData == "undefined") {
+      return res.render("account/update_id", { error: "Unknown internal server error" });
+    }
 
+    let account_id = userData["account_id"];
+    let id_sidea_path = files["id_photo_sidea"][0]["path"];
+    let id_sideb_path = files["id_photo_sideb"][0]["path"];
+
+    let id_sidea_file = "sideA" + "_" + account_id + ".png";
+    let id_sideb_file = "sideB" + "_" + account_id + ".png";
+
+    let user_id_dir = "./public/test_upload/" + account_id + "/";
+    if (!fs.existsSync(user_id_dir)) {
+      return res.render("account/update_id", { error: "Internal server error: photo does not exist" });
+    }
+
+    fs.copyFile(id_sidea_path, user_id_dir + id_sidea_file, function (err) {
+      if (err) throw err;
+      console.log(
+        `<KnuxCoin Account> User ${account_id} replaced the old upper side ID with file ${id_sidea_file}`
+      );
+    });
+    fs.copyFile(id_sideb_path, user_id_dir + id_sideb_file, function (err) {
+      if (err) throw err;
+      console.log(
+        `<KnuxCoin Account> User ${account_id} replaced the old upper side ID with file ${id_sideb_file}`
+      );
+      return res.redirect('/dashboard');
+    });
+
+  });
+});
 //Logout
 router.post("/logout", parseBody, async (received, res, next) => {
   received.session.destroy();
@@ -201,7 +249,10 @@ router.post("/register", async (req, res, next) => {
       account_id,
       files
     );
-
+    let error = undefined
+    if (error) {
+      res.render('account/login', { error: error })
+    }
     //Create an account in the database
     if (obj_user_id == null) return;
     let user_info_arr = await accountModel.createAccount(
@@ -211,9 +262,13 @@ router.post("/register", async (req, res, next) => {
     );
     if (user_info_arr == null) return;
 
+    let email_message = `Greeting ${full_name}, \nThank you for registering with KnuxCoin, the credentials to access the service is as follows:\nUsername:${user_info_arr[0]}\nPassword:${user_info_arr[1]}`;
+    let alert_message = `Account created successfully, however there was a problem with the mail service. Therefore, we deliver this message with your login credential as follows: \nUsername: ${user_info_arr[0]} \nPassword: ${user_info_arr[1]}`;
     //Send the account created to the user
-    sendAccountInfoToMail(email);
-    res.redirect("/login");
+    if (sendAccountInfoToMail(email, email_message) != "success") {
+      res.render('account/login', { success: alert_message })
+    }
+
   });
 });
 

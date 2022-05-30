@@ -1,0 +1,110 @@
+[{
+  "_id": {
+    "$oid": "629067ed92f4c56ab1c403f8"
+  },
+  "account_id": "22A00001",
+  "username": "admin",
+  "password": "$2b$10$q5.c/NDz8jTJ5dQ912cV4.0EhPnZ/aUPspAqpP94qXHwGf4HWlahW",
+  "isAdmin": true,
+  "phone_num": "921077950",
+  "__v": 0,
+  "first_time_login": false
+},{
+  "_id": {
+    "$oid": "629331f315ee5c263732df3d"
+  },
+  "user_id": {
+    "$oid": "629331f315ee5c263732df3b"
+  },
+  "account_id": "22U364920",
+  "username": "1645164248",
+  "password": "$2b$10$sLFzNW7KUg.BBQcigH6SruGAvYXRgi4F0Hq05LMJRQpdw4KC2/1KO",
+  "isAdmin": false,
+  "first_time_login": false,
+  "phone_num": "0123498794",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6293328015ee5c263732df4e"
+  },
+  "user_id": {
+    "$oid": "6293328015ee5c263732df4c"
+  },
+  "account_id": "22U9680120",
+  "username": "6544558237",
+  "password": "$2b$10$WPKOVkqqzJ0v.HGCIXg1P.uoORNtV43dztDBqYe5Ywv0O43.wC5Ea",
+  "isAdmin": false,
+  "first_time_login": false,
+  "phone_num": "16504119132",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "629332e315ee5c263732df5f"
+  },
+  "user_id": {
+    "$oid": "629332e215ee5c263732df5d"
+  },
+  "account_id": "22U8339079",
+  "username": "2059673201",
+  "password": "$2b$10$z4MZrA3WpDCfLfRs5IBeg.zJwNq1NL4jZdIW2iasmcI/JSRxHc90a",
+  "isAdmin": false,
+  "first_time_login": false,
+  "phone_num": "654986191",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6293338d15ee5c263732df73"
+  },
+  "user_id": {
+    "$oid": "6293338d15ee5c263732df71"
+  },
+  "account_id": "22U4629973",
+  "username": "2166342553",
+  "password": "$2b$10$iGosnT1VdPkmrZxnmku/N.1i5q8oldLi0Cv30gp4XOpfAdQK22dme",
+  "isAdmin": false,
+  "first_time_login": false,
+  "phone_num": "165165191",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6293341815ee5c263732df88"
+  },
+  "user_id": {
+    "$oid": "6293341815ee5c263732df86"
+  },
+  "account_id": "22U1212788",
+  "username": "102957585",
+  "password": "$2b$10$y5V0IdYu9/VULG8hBH4nVO9d/meeNEJzrYit42FbHNbhFZtxQIcDm",
+  "isAdmin": false,
+  "first_time_login": false,
+  "phone_num": "3168411981",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "629334ee15ee5c263732df99"
+  },
+  "user_id": {
+    "$oid": "629334ee15ee5c263732df97"
+  },
+  "account_id": "22U4015990",
+  "username": "1538643355",
+  "password": "$2b$10$HisC3.Osdrap9NoiyfevmuTMM1cWHprdWq5A2xrC/fgySSYR8OX4u",
+  "isAdmin": false,
+  "first_time_login": false,
+  "phone_num": "635189113",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "62939f7ec5d6942c7171546f"
+  },
+  "user_id": {
+    "$oid": "62939f7ec5d6942c7171546d"
+  },
+  "account_id": "22U7125484",
+  "username": "1644980793",
+  "password": "$2b$10$IRUShvrXxSywaqYqsywdNey2Bb2sun4rfsnZVcHazKJgsX3DAPxh6",
+  "isAdmin": false,
+  "first_time_login": false,
+  "phone_num": "54291916319",
+  "__v": 0
+}]

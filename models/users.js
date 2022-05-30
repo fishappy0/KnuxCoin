@@ -33,8 +33,8 @@ async function saveUserPictureID(account_id, files) {
   let id_sidea_path = files["id_photo_sidea"][0]["path"];
   let id_sideb_path = files["id_photo_sideb"][0]["path"];
 
-  let id_sidea_file = "sideA" + "_" + date_string + "_" + account_id + ".png";
-  let id_sideb_file = "sideB" + "_" + date_string + "_" + account_id + ".png";
+  let id_sidea_file = "sideA" + "_" + account_id + ".png";
+  let id_sideb_file = "sideB" + "_" + account_id + ".png";
 
   let user_id_dir = "./public/test_upload/" + account_id + "/";
 
@@ -50,16 +50,16 @@ async function saveUserPictureID(account_id, files) {
   fs.copyFile(id_sidea_path, user_id_dir + id_sidea_file, function (err) {
     if (err) throw err;
     console.log(
-      `<KnuxCoin Account> User ${user_id} created account with id sideUpper file ${id_sidea_file}`
+      `<KnuxCoin Account> User ${account_id} created account with id sideUpper file ${id_sidea_file}`
     );
   });
   fs.copyFile(id_sideb_path, user_id_dir + id_sideb_file, function (err) {
     if (err) throw err;
     console.log(
-      `<KnuxCoin Account> User ${user_id} created account with id sideLower file ${id_sideb_file}`
+      `<KnuxCoin Account> User ${account_id} created account with id sideLower file ${id_sideb_file}`
     );
   });
-  return [id_sidea_path, id_sideb_path];
+  return [user_id_dir + id_sidea_file, user_id_dir + id_sideb_file];
 }
 
 module.exports.createUser = async function (
@@ -74,11 +74,17 @@ module.exports.createUser = async function (
   let current_time = new Date(Date.now());
   let isEmailExists = await User.exists({ email: email });
   let isPhoneExists = await User.exists({ phone: phone });
-  if (isEmailExists || isPhoneExists) {
-    alert("Email or phone already existed!");
+  if (isEmailExists) {
+    alert("Email already existed!");
     return null;
-  } else {
-    let id_dir_arr = saveUserPictureID(account_id, files);
+    // error = "Email already existed!"
+  } else if (isPhoneExists) {
+    // error = "Phone already existed!"
+    alert("Phone already existed!");
+    return null;
+  }
+  else {
+    let id_dir_arr = await saveUserPictureID(account_id, files);
     const oneData = await new User({
       full_name: full_name,
       email: email,
@@ -154,12 +160,22 @@ module.exports.getAbnormalLogin = async function (uname) {
   }
 };
 
-module.exports.addAbnormalLogin = async function (uname) {
+module.exports.getUserStatus = async function (uname) {
+  let obj_user_id = await getObjectUserID(uname);
+  if (obj_user_id == null || typeof obj_user_id == "undefined") {
+    return 0;
+  } else {
+    let userdata = await User.findById(obj_user_id);
+    let status = userdata["status"];
+    return status;
+  }
+};
+module.exports.addAbnormalLoginAndLockAccount = async function (uname) {
   let obj_user_id = await getObjectUserID(uname);
   let attempts = await User.getAbnormalLogin(uname);
   if (attempts < 4) {
     attempts += 1;
-    await User.findByIdAndUpdate(obj_user_id, { abnormalLogin: attempts });
+    await User.findByIdAndUpdate(obj_user_id, { abnormalLogin: attempts, status: 'locked', lockedAt: new Date(Date.now()) });
   } else {
     let abnormalLoginAttempts = (await User.findById({ obj_user_id }))[
       "abnormalLogin"

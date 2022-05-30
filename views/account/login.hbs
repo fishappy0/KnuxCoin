@@ -33,10 +33,19 @@
             {{/if}}
             <div class="login_random_spacing_top"></div>
             <hr />
+            {{#if success}}
+            <div class="form-group">
+              <div class="alert alert-success " role="alert">
+                {{success}}
+              </div>
+            </div>
+            {{/if}}
             <div class="login_buttons">
               <!-- hai nút dưới -->
-              <a href="/register" class="login_register">Register</a>
-              <button type="submit" value="login" class="login_login">Login</button>
+
+              <button type="submit" value="login" class="btn btn-warning">Login</button>
+              <br>
+              <span>Don't have an account?<a href="/register" class="btn btn-secondary">Register</a></span>
             </div>
         </form>
       </div>

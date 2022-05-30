@@ -161,69 +161,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <div class="container text-center">
-                                    <td>
-                                        {{#eq detail.status "pending"}}
-                                        <a><button data-id="{{detail._id}}" data-amount="{{detail.amount}}"
-                                                data-fee="{{detail.fee}}" data-sender="{{detail.userId.[0].id}}"
-                                                data-receiver="{{detail.recipient.[0].id}}" type="button"
-                                                class="btn btn-success btn-accept" name="accept">Accept</button></a>
-                                        <a><button data-id="{{detail._id}}" type="button"
-                                                class="btn btn-danger btn-decline" name="decline">Decline</button></a>
-                                        {{/eq }}
-
-                                    </td>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </form>
-    </div>
-    <!-- Accept Modal -->
-    <div class="modal fade" id="accept-confirm" tabindex="-1" role="dialog" aria-labelledby="acceptLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Transfer Transaction</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    Do you want to accept this transfer transaction?
-                </div>
-                <div class="modal-footer">
-                    <button data-id="id" data-amount="" data-fee="" data-sender="" data-receiver="" id="accepted"
-                        type="button" class="btn btn-success">Confirm</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Decline Modal -->
-    <div class="modal fade" id="decline-confirm" tabindex="-1" role="dialog" aria-labelledby="decline"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Withdrawal Transaction</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    Do you want to decline this withdrawal transaction?
-                </div>
-                <div class="modal-footer">
-                    <button data-id="id" id="declined" type="button" class="btn btn-danger">Confirm</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
     </div>
 </body>

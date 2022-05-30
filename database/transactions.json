@@ -1,0 +1,33 @@
+[{
+  "_id": {
+    "$oid": "6293b86346980629695f4e25"
+  },
+  "userId": [
+    {
+      "id": {
+        "$oid": "629331f315ee5c263732df3b"
+      },
+      "name": "User 1"
+    }
+  ],
+  "type": "transfer",
+  "amount": 6000000,
+  "fee": 300000,
+  "date": {
+    "$date": {
+      "$numberLong": "1652194363370"
+    }
+  },
+  "status": "pending",
+  "note": "Chúc anh sức khỏe",
+  "recipient": [
+    {
+      "id": {
+        "$oid": "6293341815ee5c263732df86"
+      },
+      "phone": "3168411981",
+      "name": "User 5"
+    }
+  ],
+  "charge_party": "recipient"
+}]

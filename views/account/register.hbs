@@ -21,12 +21,12 @@
             <div class="register_text_box_container">
               <div class="register_text_box_label">E-mail</div>
               <div class="register_text_box_label_spacing_a"></div>
-              <input type="text" name="email" class="register_upper_boxes" required />
+              <input type="email" name="email" class="register_upper_boxes" required />
             </div>
             <div class="register_text_box_container">
               <div class="register_text_box_label">Phone</div>
               <div class="register_text_box_label_spacing_a"></div>
-              <input type="text" name="phone" class="register_upper_boxes" required />
+              <input type="number" name="phone" class="register_upper_boxes" required />
             </div>
             <div class="register_text_box_container">
               <div class="register_text_box_label">Address</div>
@@ -58,8 +58,10 @@
           <hr />
           <div class="register_buttons">
             <!-- hai nút dưới -->
-            <a href="/login" class="register_login">Login</a>
-            <button type="submit" class="register_register">Register</button>
+            <button type="submit" value="login" class="btn btn-warning">Submit</button>
+            <br>
+            <a href="/login" class="btn btn-secondary">Login</a>
+
           </div>
         </form>
       </div>
