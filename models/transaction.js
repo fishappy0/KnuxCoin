@@ -23,7 +23,20 @@ const transactionSchema = new mongoose.Schema({
       rename: String,
     },
   ],
-  phonecard: String,
+  phonecard: [
+    {
+      phoneCard1: String,
+      price1: Number,
+      phoneCard2: String,
+      price2: Number,
+      phoneCard3: String,
+      price3: Number,
+      phoneCard4: String,
+      price4: Number,
+      phoneCard5: String,
+      price5: Number,
+    }
+  ],
   operator: String,
 });
 var Transaction = mongoose.model("Transaction", transactionSchema); //Tạo collection

@@ -295,6 +295,7 @@ router.post("/transfer", async function (req, res) {
     layout: "user/dashboard", result: result
   });
 });
+
 //Mua thẻ điện thoại
 router.get("/phonecard", function (req, res) {
   sess = req.session;
@@ -321,14 +322,15 @@ router.post("/phonecard", async function (req, res) {
   sess = req.session;
   if (typeof sess.username == "undefined") { res.redirect("/"); }
   let body = req.body;
-  let userId = req.session.userId;
+  let userid = req.session.userId;
   let serviceProvider = body.serviceProvider;
-  let value1 = body.value1;
-  let value2 = body.value2;
-  let value3 = body.value3;
-  let value4 = body.value4;
-  let value5 = body.value5;
-  let result = await cardModel.buyPhoneCards(userId, serviceProvider, value1, value2, value3, value4, value5);
+  let name = req.session.full_name;
+  let phoneCard1 = body.value1;
+  let phoneCard2 = body.value2;
+  let phoneCard3 = body.value3;
+  let phoneCard4 = body.value4;
+  let phoneCard5 = body.value5;
+  let result = await cardModel.buyPhoneCards(userid, serviceProvider, phoneCard1, phoneCard2, phoneCard3, phoneCard4, phoneCard5, name);
   res.render("user/phonecard", {
     full_name: req.session.full_name, username: req.session.username,
     email: req.session.email, userstatus: req.session.userstatus,

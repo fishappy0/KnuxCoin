@@ -92,7 +92,7 @@ module.exports.cardThree = async function () {
  * @param {int} cvv Mã CVV
  * @param {number} amount Số tiền nạp
  * @param {string} userid userId
- * @param {string} name full_name
+ * @param {string} name Tên người dùng
  * @returns {string} Thông báo nạp thành công hoặc lỗi.
  */
 module.exports.recharge = async function (cardNumber, expiryDate, cvv, amount, userid, name) {
@@ -156,10 +156,10 @@ module.exports.recharge = async function (cardNumber, expiryDate, cvv, amount, u
  * Chức năng rút tiền
  * @param {int} cardNumber Số thẻ cào
  * @param {date} expiryDate Ngày hết hạn
- * @param {int} cvv Mã
+ * @param {int} cvv Mã CVV
  * @param {number} amount Số tiền rút
  * @param {string} description Ghi chú
- * @param {string} name full_name
+ * @param {string} name Tên người dùng
  * @param {string} userid userId
  * @returns {string} Thông báo rút tiền thành công hoặc lỗi.
  */
@@ -169,23 +169,21 @@ module.exports.withdraw = async function (cardNumber, expiryDate, cvv, amount, d
   let defaultExpiryDate = "2022-10-10";
 
   if (cardNumber == 111111 && expiryDate == defaultExpiryDate && cvv == 411) {
-    //************ const user = await User.findOne({ userId: user.id });
-    // Đếm số lần rút tiền của hôm nay.
-    const count = await Transaction.find({
-      //********* userId: user.id,
-      // Lấy ngày hôm nay.
-      userId: [{ userid, name }],
-      date: { $lt: new Date(Date.now()) },
-      type: 'withdraw'
-    }).count();
+    // Đếm số lần rút tiền của hôm nay. Nếu quá 2 thì không cho rút.
+      let count = await Transaction.find({userId: {$elemMatch: {userid: userid}}}).countDocuments({
+        // userId sai gì đó nên count = 0.
+        // userId: [{ user, full_name }],
+        date: { $gte: new Date(Date.now() - 86400000) },
+        type: 'withdraw',
+        status: 'success',
+      });
+      console.log(count);
+
     if (count > 2) return 'You have reached the limit of withdrawals today';
     // Nếu chưa đến giới hạn rút tiền thì tiến hành rút tiền.
     else {
-      //**********************************if (amount > user.balance) return 'Insufficient balance';
-
       if (amount > 5000000) {
         await Transaction.create({
-          //***********************userId: user.id,
           userId: [{ userid, name }],
           date: new Date(Date.now()),
           fee: amount * 0.05,
@@ -200,9 +198,6 @@ module.exports.withdraw = async function (cardNumber, expiryDate, cvv, amount, d
       // Không thể bỏ vòng else này vì nó sẽ bị lỗi khi số tiền vừa > 5,000,000 mà còn không chia hết cho 50,000.
       else {
         if (amount % 50000 != 0) return 'The amount must be a multiple of 50,000';
-        // 5% phí rút tiền
-        /**********************user.balance -= amount * 0.95;
-        await user.save();*************************/
         // Ghi nhận vào lịch sử giao dịch
 
         let balance = (await User.findById({ _id: mongoose.Types.ObjectId(userid) }))[
@@ -212,8 +207,8 @@ module.exports.withdraw = async function (cardNumber, expiryDate, cvv, amount, d
           return 'Your wallet has insufficient balance';
 
         } else {
+          // 5% phí rút tiền
           await Transaction.create({
-            //*********************************userId: user.id,
             userId: [{ userid, name }],
             date: new Date(Date.now()),
             fee: amount * 0.05,
@@ -240,7 +235,7 @@ module.exports.withdraw = async function (cardNumber, expiryDate, cvv, amount, d
  * @param {int} phone số điện thoại người nhận
  * @param {string} rename tên người nhận
  * @param {string} name tên người nhận
- * @param {string} party bên chị phí
+ * @param {string} party bên chịu phí
  * @param {number} amount Số tiền chuyển
  * @param {string} note Ghi chú
  * @param {string} userid userId
@@ -248,13 +243,11 @@ module.exports.withdraw = async function (cardNumber, expiryDate, cvv, amount, d
  */
 module.exports.transfer = async function (phone, rename, party, amount, note, userid, name) {
 
-  //**********************************if (amount > user.balance) return 'Insufficient balance';
   if (await User.findOne({ phone: phone, full_name: rename, status: "approved" }) == null) {
     return 'Invalid Recipient'
   } else {
     if (amount > 5000000) {
       await Transaction.create({
-        //***********************userId: user.id,
         userId: [{ userid, name }],
         date: new Date(Date.now()),
         fee: amount * 0.05,
@@ -269,12 +262,6 @@ module.exports.transfer = async function (phone, rename, party, amount, note, us
     }
     // Không thể bỏ vòng else này vì nó sẽ bị lỗi khi số tiền vừa > 5,000,000 mà còn không chia hết cho 50,000.
     else {
-      if (amount % 50000 != 0) return 'The amount must be a multiple of 50,000';
-      // 5% phí rút tiền
-      /**********************user.balance -= amount * 0.95;
-      await user.save();*************************/
-      // Ghi nhận vào lịch sử giao dịch
-
       let balanceSender = (await User.findById({ _id: mongoose.Types.ObjectId(userid) }))[
         "balance"
       ];
@@ -286,7 +273,6 @@ module.exports.transfer = async function (phone, rename, party, amount, note, us
       } else {
         if (party == "sender") {
           await Transaction.create({
-            //*********************************userId: user.id,
             userId: [{ userid, name }],
             date: new Date(Date.now()),
             fee: amount * 0.05,
@@ -308,7 +294,6 @@ module.exports.transfer = async function (phone, rename, party, amount, note, us
           return "Success. Please check your balance in your profile"
         } else if (party == "recipient") {
           await Transaction.create({
-            //*********************************userId: user.id,
             userId: [{ userid, name }],
             date: new Date(Date.now()),
             fee: amount * 0.05,
@@ -323,7 +308,7 @@ module.exports.transfer = async function (phone, rename, party, amount, note, us
           await User.findByIdAndUpdate({ _id: mongoose.Types.ObjectId(userid) }, {
             balance: (balanceSender - amount),
           });
-          //người nhận 
+          //người nhận
           await User.findOneAndUpdate({ phone: phone }, {
             balance: balanceRecipient + (amount - (amount * 0.05)),
           });
@@ -339,12 +324,12 @@ module.exports.transfer = async function (phone, rename, party, amount, note, us
 
 /**
  * Mã thẻ cào gồm 10 chữ số. 5 chữ số đầu theo nhà mạng, 5 chữ sau thì random.
- * @param {string} serviceProvider Người dùng chọn nhà mạng để tạo thẻ.
+ * @param {string} operator Người dùng chọn nhà mạng để tạo thẻ.
  * @return {string} Thẻ cào hoàn chỉnh.
  */
-module.exports.generatePhoneCard = async function (serviceProvider) {
+module.exports.generatePhoneCard = async function (operator) {
   let phoneCard = '';
-  switch (serviceProvider) {
+  switch (operator) {
     case 'Viettel':
       phoneCard = '11111' + Math.floor(Math.random() * 100000);
       break;
@@ -355,7 +340,7 @@ module.exports.generatePhoneCard = async function (serviceProvider) {
       phoneCard = '33333' + Math.floor(Math.random() * 100000);
       break;
     default:
-      return 'Invalid serviceProvider';
+      return 'Invalid operator';
   }
 
   return phoneCard;
@@ -364,7 +349,7 @@ module.exports.generatePhoneCard = async function (serviceProvider) {
 /**
  * Hàm kiểm tra, xử lý thông tin để bán thẻ cào.
  * @param {*} userId Id người dùng.
- * @param {*} serviceProvider Người dùng chọn nhà mạng.
+ * @param {*} operator Người dùng chọn nhà mạng.
  * @param {*} value1 Giá trị của thẻ cào 1.
  * @param {*} value2 Giá trị của thẻ cào 2.
  * @param {*} value3 Giá trị của thẻ cào 3.
@@ -372,7 +357,7 @@ module.exports.generatePhoneCard = async function (serviceProvider) {
  * @param {*} value5 Giá trị của thẻ cào 5.
  * @return {String} Hiển thị (các) thẻ cào người dùng đã mua hoặc lỗi.
  */
-module.exports.buyPhoneCards = async function (userId, serviceProvider, value1, value2, value3, value4, value5) {
+module.exports.buyPhoneCards = async function (userid, operator, value1, value2, value3, value4, value5, name) {
   // Đừng đặt tên như này. Mình bí tên quá mới đặt vậy thôi.
   let phoneCard1 = '';
   let phoneCard2 = '';
@@ -381,34 +366,51 @@ module.exports.buyPhoneCards = async function (userId, serviceProvider, value1, 
   let phoneCard5 = '';
   let transactionId = crypto.randomBytes(16).toString("hex");
 
-  if (value2 == null) value2 = 0;
-  if (value3 == null) value3 = 0;
-  if (value4 == null) value4 = 0;
-  if (value5 == null) value5 = 0;
-  console.log(value1, value2, value3, value4, value5);
-  console.log(userId);
+  // Tránh trường hợp các giá trị ra thành kiểu float hay kiểu gì khác làm ảnh hưởng đến kết quả.
+  value1 = parseInt(value1);
+  value2 = parseInt(value2);
+  value3 = parseInt(value3);
+  value4 = parseInt(value4);
+  value5 = parseInt(value5);
+  // Tránh sum = NaN.
+  let sum = 0;
+  sum = value1 + value2 + value3 + value4 + value5;
+  sum = parseInt(sum);
 
-  let sum = value1 + value2 + value3 + value4 + value5;
+  let price1 = value1;
+  let price2 = value2;
+  let price3 = value3;
+  let price4 = value4;
+  let price5 = value5;
 
   // Tạo số thẻ cào người dùng cần mua.
-  phoneCard1 = await this.generatePhoneCard(serviceProvider);
-  if (value2) phoneCard2 = await this.generatePhoneCard(serviceProvider);
-  if (value3) phoneCard3 = await this.generatePhoneCard(serviceProvider);
-  if (value4) phoneCard4 = await this.generatePhoneCard(serviceProvider);
-  if (value5) phoneCard5 = await this.generatePhoneCard(serviceProvider);
+  phoneCard1 = await this.generatePhoneCard(operator);
+  if (value2) phoneCard2 = await this.generatePhoneCard(operator);
+  if (value3) phoneCard3 = await this.generatePhoneCard(operator);
+  if (value4) phoneCard4 = await this.generatePhoneCard(operator);
+  if (value5) phoneCard5 = await this.generatePhoneCard(operator);
 
-  if (sum > userId.balance) return 'Insufficient balance';
+  let balance = (await User.findById({ _id: mongoose.Types.ObjectId(userid) }))[
+    "balance"
+  ];
+  let userBalance = parseInt(balance);
+  if (userBalance < sum) return 'Your wallet has insufficient balance';
   else {
-    userId.balance -= sum;
-    await userId.save();
     // Ghi nhận vào lịch sử giao dịch.
     await Transaction.create({
-      userId: userId.id,
+      userId: [{ userid, name }],
+      date: new Date(Date.now()),
       transactionId: transactionId,
       type: 'phonecard',
       amount: sum,
+      status: 'success',
+      phonecard: [{ phoneCard1, price1, phoneCard2, price2, phoneCard3, price3, phoneCard4, price4, phoneCard5, price5 }],
+      operator: operator,
+    });
+    await User.findByIdAndUpdate({ _id: mongoose.Types.ObjectId(userid) }, {
+      balance: userBalance - sum,
     });
 
-    return 'Các thẻ của bạn vừa mua là: ' + phoneCard1 + ' ' + phoneCard2 + ' ' + phoneCard3 + ' ' + phoneCard4 + ' ' + phoneCard5;
+    return 'The card(s) you purcharsed are: ' + phoneCard1 + ' ' + phoneCard2 + ' ' + phoneCard3 + ' ' + phoneCard4 + ' ' + phoneCard5;
   }
 }

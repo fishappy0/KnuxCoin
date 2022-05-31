@@ -115,8 +115,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label>Card Number</label>
-                                            <input type="text" class="form-control" value="{{detail.phonecard}}"
-                                                name="card" readonly="">
+                                            <textarea style="resize: none; height: 300px;" type="text" class="form-control" readonly="">{{ detail.phonecard }}</textarea>
                                         </div>
                                         {{/eq}}
                                         {{#eq detail.type "recharge"}}

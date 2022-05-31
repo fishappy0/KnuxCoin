@@ -9,7 +9,6 @@ const session = require("express-session");
 var dashboardRouter = require("./routes/dashboard");
 var indexRouter = require("./routes/index");
 var adminRouter = require("./routes/admin");
-var balanceRouter = require("./routes/balance");
 const mongoose = require("mongoose");
 const { handlebars } = require("hbs");
 const { env } = require("process");
@@ -67,8 +66,6 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/", indexRouter);
 app.use("/admin", adminRouter);
 app.use("/dashboard", dashboardRouter);
-// Nạp tiền, rút tiền, chuyển tiền,...
-app.use("/balance", balanceRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
