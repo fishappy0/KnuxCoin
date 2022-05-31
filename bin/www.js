@@ -5,7 +5,7 @@
  */
 
 var app = require('../app');
-var debug = require('debug')('web-reagain:server');
+var debug = require('debug')('knux-coin:server');
 var http = require('http');
 
 /**

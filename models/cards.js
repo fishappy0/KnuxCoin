@@ -170,14 +170,14 @@ module.exports.withdraw = async function (cardNumber, expiryDate, cvv, amount, d
 
   if (cardNumber == 111111 && expiryDate == defaultExpiryDate && cvv == 411) {
     // Đếm số lần rút tiền của hôm nay. Nếu quá 2 thì không cho rút.
-      let count = await Transaction.find({userId: {$elemMatch: {userid: userid}}}).countDocuments({
-        // userId sai gì đó nên count = 0.
-        // userId: [{ user, full_name }],
-        date: { $gte: new Date(Date.now() - 86400000) },
-        type: 'withdraw',
-        status: 'success',
-      });
-      console.log(count);
+    let count = await Transaction.find({ userId: { $elemMatch: { userid: userid } } }).countDocuments({
+      // userId sai gì đó nên count = 0.
+      // userId: [{ user, full_name }],
+      date: { $gte: new Date(Date.now() - 86400000) },
+      type: 'withdraw',
+      status: 'success',
+    });
+    console.log(count);
 
     if (count > 2) return 'You have reached the limit of withdrawals today';
     // Nếu chưa đến giới hạn rút tiền thì tiến hành rút tiền.

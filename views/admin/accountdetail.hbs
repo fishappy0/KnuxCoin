@@ -1,5 +1,6 @@
 <body>
     <div id="snippetContent">
+
         <form enctype="multipart/form-data" action="" method="POST">
             <div class="container">
                 <div class="row gutters">
@@ -7,6 +8,7 @@
                         <div class="card h-100">
                             <div class="card-body">
                                 <div class="row gutters">
+                                    <h1>Profile</h1>
                                     <div class="col">
                                         <button type="button" class="btn btn-dark" onclick="goBack()" name="goback">Go
                                             Back</button>
@@ -66,13 +68,11 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="frontId">Front ID Card</label>
-                                            <img src="{{detail.idfront}}" alt="Front ID Card" width="300"
-                                                height="200">
+                                            <img src="{{detail.idfront}}" alt="Front ID Card" width="300" height="200">
                                         </div>
                                         <div class="form-group">
                                             <label for="backId">Back ID Card</label>
-                                            <img src="{{detail.idback}}" alt="Back ID Card" width="300"
-                                                height="200">
+                                            <img src="{{detail.idback}}" alt="Back ID Card" width="300" height="200">
                                         </div>
                                     </div>
                                 </div>
@@ -83,11 +83,13 @@
                                         {{/eq }}
 
                                         {{#eq detail.status "locked"}}
-                                        <td><button type="button" class="btn btn-light"><strong>Locked</strong></button></td>
+                                        <td><button type="button" class="btn btn-light"><strong>Locked</strong></button>
+                                        </td>
                                         {{/eq }}
 
                                         {{#eq detail.status "disabled"}}
-                                        <td><button type="button" class="btn btn-danger"><strong>Disabled</strong></button></td>
+                                        <td><button type="button"
+                                                class="btn btn-danger"><strong>Disabled</strong></button></td>
                                         {{/eq }}
 
                                         {{#eq detail.status "unapproved"}}
@@ -96,8 +98,10 @@
                                         {{/eq }}
 
                                         {{#eq detail.status "waiting"}}
-                                        <td><button name="waiting" type="button" class="btn btn-warning"><stong>Wait for
-                                                update</stong></button></td>
+                                        <td><button name="waiting" type="button" class="btn btn-warning">
+                                                <stong>Wait for
+                                                    update</stong>
+                                            </button></td>
                                         {{/eq }}
                                     </label>
                                 </div>

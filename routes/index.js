@@ -297,7 +297,6 @@ router.post("/register", async (req, res, next) => {
     if (sendAccountInfoToMail(email, email_message) != "success") {
       res.render('account/login', { success: "We send an account via your email.\nPlease check" })
     }
-
   });
 });
 

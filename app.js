@@ -12,7 +12,7 @@ var adminRouter = require("./routes/admin");
 const mongoose = require("mongoose");
 const { handlebars } = require("hbs");
 const { env } = require("process");
-const mongoUrl = "mongodb://0.0.0.0:27017/test-db";
+const mongoUrl = "mongodb://0.0.0.0:27017/knux-coin";
 mongoose.connect(mongoUrl).then(() => {
   console.log(`<KnuxCoin Web> Connected to the database at ${mongoUrl}`);
 });
